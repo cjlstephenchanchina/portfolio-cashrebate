@@ -1,10 +1,11 @@
-/* ================= 圖表渲染（ECharts）— 淺色克制風 ================= */
+/* ================= 圖表渲染（ECharts）— FT 品牌風 ================= */
 "use strict";
 const CHART_COLORS = {
-  text: "#161616", muted: "#6E6C66", faint: "#A5A29B",
-  black: "#1B1B1B", gray: "#8C8A84",
-  red: "#C2453E", green: "#2F7D5B",
-  gold: "#A67C00", blue: "#3B5B8C", purple: "#6A5A8C",
+  text: "#1D1D1B", muted: "#6F6E6A", faint: "#9C9A94",
+  ink: "#1D1D1B", gray: "#99948C",
+  blue: "#3333CC", blueDark: "#1A1AA6",
+  pink: "#FFF1E5", pinkDeep: "#F2D3C2",
+  red: "#C22F22", green: "#0E7A4E",
 };
 
 const MARKET_LABEL = { HK: "港股", A: "A股", US: "美股" };
@@ -21,10 +22,10 @@ const CHART_BASE = {
   grid: { left: 10, right: 28, top: 22, bottom: 6, containLabel: true },
   tooltip: {
     backgroundColor: "#FFFFFF",
-    borderColor: "#E7E5E0",
+    borderColor: "#E5E3DD",
     borderWidth: 1,
     textStyle: { color: CHART_COLORS.text, fontSize: 12.5 },
-    extraCssText: "box-shadow: 0 12px 32px rgba(20,20,20,0.12); border-radius: 8px;",
+    extraCssText: "box-shadow: 0 12px 32px rgba(29,29,27,0.12); border-radius: 6px;",
   },
 };
 
@@ -42,7 +43,7 @@ function resizeCharts() {
 }
 window.addEventListener("resize", resizeCharts);
 
-/* Top 3 持倉股票 — 橫向條形 */
+/* Top 3 持倉股票 — 橫向條形（FT 深藍） */
 function renderTop3(id, data) {
   const chart = initChart(id);
   if (!chart) return;
@@ -53,33 +54,33 @@ function renderTop3(id, data) {
     xAxis: {
       type: "value",
       axisLabel: { color: CHART_COLORS.muted, formatter: (v) => (v >= 1e6 ? (v / 1e6) + "M" : v >= 1e4 ? (v / 1e4) + "萬" : v) },
-      splitLine: { lineStyle: { color: "#F0EEE9" } },
+      splitLine: { lineStyle: { color: "#EFEDE7" } },
     },
     yAxis: {
       type: "category", data: labels,
-      axisLabel: { color: CHART_COLORS.text, fontSize: 13, fontWeight: 500 },
+      axisLabel: { color: CHART_COLORS.text, fontSize: 13, fontWeight: 600 },
       axisLine: { show: false }, axisTick: { show: false },
     },
     series: [{
       type: "bar", data: values, barWidth: 18,
       itemStyle: {
-        borderRadius: [0, 6, 6, 0],
-        color: "#1B1B1B",
+        borderRadius: [0, 4, 4, 0],
+        color: "#3333CC",
       },
       label: {
-        show: true, position: "right", color: CHART_COLORS.text, fontWeight: 500,
+        show: true, position: "right", color: "#3333CC", fontWeight: 600,
         formatter: (p) => "HK$" + fmtMoney(p.value),
       },
     }],
   }, true);
 }
 
-/* 市場分佈 — donut */
+/* 市場分佈 — donut（FT 色系） */
 function renderMarket(id, data) {
   const chart = initChart(id);
   if (!chart) return;
-  const palette = [CHART_COLORS.black, CHART_COLORS.gray, CHART_COLORS.red,
-                   CHART_COLORS.green, CHART_COLORS.blue];
+  const palette = [CHART_COLORS.blue, CHART_COLORS.ink, CHART_COLORS.gray,
+                   CHART_COLORS.green, CHART_COLORS.red];
   chart.setOption({
     ...CHART_BASE,
     tooltip: {
@@ -88,7 +89,7 @@ function renderMarket(id, data) {
     },
     series: [{
       type: "pie", radius: ["52%", "76%"], center: ["50%", "52%"],
-      avoidLabelOverlap: true, itemStyle: { borderRadius: 4, borderColor: "#FFFFFF", borderWidth: 3 },
+      avoidLabelOverlap: true, itemStyle: { borderRadius: 3, borderColor: "#FFFFFF", borderWidth: 3 },
       label: { color: CHART_COLORS.text, fontSize: 12.5, formatter: "{b}\n{c}" },
       labelLine: { lineStyle: { color: CHART_COLORS.gray } },
       data: (data || []).map((d, i) => ({
@@ -99,7 +100,7 @@ function renderMarket(id, data) {
   }, true);
 }
 
-/* 各客戶回贈 — 柱狀 */
+/* 各客戶回贈 — 柱狀（FT 綠） */
 function renderRebate(id, data) {
   const chart = initChart(id);
   if (!chart) return;
@@ -110,18 +111,18 @@ function renderRebate(id, data) {
     xAxis: {
       type: "category", data: clients,
       axisLabel: { color: CHART_COLORS.muted, fontSize: 12 },
-      axisLine: { lineStyle: { color: "#E7E5E0" } }, axisTick: { show: false },
+      axisLine: { lineStyle: { color: "#E5E3DD" } }, axisTick: { show: false },
     },
     yAxis: {
       type: "value",
       axisLabel: { color: CHART_COLORS.muted },
-      splitLine: { lineStyle: { color: "#F0EEE9" } },
+      splitLine: { lineStyle: { color: "#EFEDE7" } },
     },
     series: [{
       type: "bar", data: rebates, barWidth: "42%",
-      itemStyle: { borderRadius: [6, 6, 0, 0], color: "#2F7D5B" },
+      itemStyle: { borderRadius: [4, 4, 0, 0], color: "#0E7A4E" },
       label: {
-        show: true, position: "top", color: CHART_COLORS.green, fontWeight: 500,
+        show: true, position: "top", color: "#0E7A4E", fontWeight: 600,
         formatter: (p) => "HK$" + fmtMoney(p.value),
       },
     }],
