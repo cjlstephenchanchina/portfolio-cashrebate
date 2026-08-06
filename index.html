@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>個人投資工作台 — 持倉市值查詢</title>
+<meta name="description" content="港股 / A股 / 美股持倉市值查詢、批量作業與現金回贈統計">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Noto+Serif+TC:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- ================= 導覽 ================= -->
+<header class="site-nav">
+  <div class="container nav-row">
+    <a class="brand" href="#top">個人投資工作台<span class="brand-dot">.</span></a>
+    <nav class="nav-links" aria-label="主導覽">
+      <a href="#quote">單筆查詢</a>
+      <a href="#batch">批量作業</a>
+      <a href="#stats">回贈統計</a>
+    </nav>
+    <span class="nav-live"><i class="dot"></i>真實行情</span>
+  </div>
+</header>
+
+<!-- ================= HERO ================= -->
+<section class="hero" id="top">
+  <div class="container">
+    <p class="hero-kicker">港股 · A股 · 美股 — 真實收市價</p>
+    <h1 class="hero-title">掌控每一筆持倉，<br>精準到每個交易日。</h1>
+    <p class="hero-sub">
+      查詢指定日期的真實收市價，自動計算持倉市值與現金回贈。
+      行情來自公開接口，匯率採用歐洲央行 ECB 官方參考價 —— <em>查不到即明示，絕不模擬。</em>
+    </p>
+    <div class="hero-cta">
+      <a class="btn btn-dark" href="#quote">開始查詢</a>
+      <a class="btn btn-ghost" href="#stats">查看回贈統計</a>
+    </div>
+    <dl class="hero-meta">
+      <div><dt>支援市場</dt><dd>港股 HK / A股 / 美股 US</dd></div>
+      <div><dt>匯率基準</dt><dd>ECB 官方參考匯率（按查詢日）</dd></div>
+      <div><dt>作業方式</dt><dd>單筆查詢 · Excel 批量 · 一鍵匯出</dd></div>
+    </dl>
+  </div>
+</section>
+
+<main class="container main">
+
+  <!-- ================= 單筆查詢 ================= -->
+  <section class="section" id="quote">
+    <div class="section-head">
+      <span class="sec-no">01</span>
+      <div>
+        <h2>單筆查詢</h2>
+        <p>輸入股票代碼與日期，立即返回真實收市價與市值（可選填股數）。</p>
+      </div>
+    </div>
+    <div class="card">
+      <form id="quote-form" class="form-grid">
+        <div class="field">
+          <label for="q-market">市場</label>
+          <select id="q-market" name="market">
+            <option value="HK">港股（HK）</option>
+            <option value="A">A股（A）</option>
+            <option value="US">美股（US）</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="q-code">股票代碼</label>
+          <input id="q-code" type="text" placeholder="0700 / 600519 / AAPL" autocomplete="off" required>
+        </div>
+        <div class="field">
+          <label for="q-date">查詢日期</label>
+          <input id="q-date" type="date" required>
+        </div>
+        <div class="field">
+          <label for="q-shares">股份數量 <span class="opt">（選填）</span></label>
+          <input id="q-shares" type="number" min="1" step="any" placeholder="不填僅顯示收市價">
+        </div>
+        <div class="field field-action">
+          <button class="btn btn-dark" type="submit" id="q-submit">查詢收市價</button>
+        </div>
+      </form>
+      <div id="q-result" class="result-area" hidden></div>
+    </div>
+  </section>
+
+  <!-- ================= 批量作業 ================= -->
+  <section class="section" id="batch">
+    <div class="section-head">
+      <span class="sec-no">02</span>
+      <div>
+        <h2>批量作業</h2>
+        <p>上傳 Excel（客戶編號／市場／股票代碼／股份數量），系統自動查價、計算並寫入港幣市值。</p>
+      </div>
+      <button class="link-btn" id="dl-template" type="button">下載 Excel 樣本模板 ↓</button>
+    </div>
+    <div class="card">
+      <form id="batch-form" class="form-grid">
+        <div class="field">
+          <label for="b-date">查詢日期（批量）</label>
+          <input id="b-date" type="date" required>
+        </div>
+        <div class="field field-file">
+          <label for="b-file">Excel 檔案</label>
+          <input id="b-file" type="file" accept=".xlsx" required>
+        </div>
+        <div class="field field-action">
+          <button class="btn btn-dark" type="submit" id="b-submit">上傳並計算</button>
+        </div>
+      </form>
+      <div id="b-progress" class="progress" hidden></div>
+      <div id="b-result" class="result-area" hidden></div>
+    </div>
+  </section>
+
+  <!-- ================= 回贈與統計 ================= -->
+  <section class="section" id="stats">
+    <div class="section-head">
+      <span class="sec-no">03</span>
+      <div>
+        <h2>回贈與統計分析</h2>
+        <p>設定每人現金回贈上限與條件（如每 10 萬港幣送 100 元），自動統計總回贈、客戶人數與平均市值。</p>
+      </div>
+    </div>
+    <div class="card">
+      <form id="stats-form" class="form-grid">
+        <div class="field">
+          <label for="s-cap">每人回贈上限（HKD）</label>
+          <input id="s-cap" type="number" min="0" step="any" value="10000" required>
+        </div>
+        <div class="field">
+          <label for="s-threshold">每（HKD）</label>
+          <input id="s-threshold" type="number" min="1" step="any" value="100000" required>
+        </div>
+        <div class="field">
+          <label for="s-amount">回贈金額（HKD）</label>
+          <input id="s-amount" type="number" min="0" step="any" value="100" required>
+        </div>
+        <div class="field">
+          <label for="s-date">查詢日期（演示用）</label>
+          <input id="s-date" type="date">
+        </div>
+        <div class="field">
+          <label for="s-source">數據源</label>
+          <select id="s-source">
+            <option value="demo">內建演示（真實行情）</option>
+            <option value="last">最近一次批量結果</option>
+          </select>
+        </div>
+        <div class="field field-action">
+          <button class="btn btn-dark" type="submit" id="s-submit">計算統計</button>
+        </div>
+      </form>
+
+      <div id="s-loading" class="progress" hidden>正在載入真實行情與統計…</div>
+
+      <div id="s-kpis" class="kpis" hidden>
+        <div class="kpi">
+          <span class="kpi-label">總回贈金額</span>
+          <span class="kpi-value" id="k-total">—</span>
+          <span class="kpi-unit">HKD</span>
+        </div>
+        <div class="kpi">
+          <span class="kpi-label">涉及客戶人數</span>
+          <span class="kpi-value" id="k-clients">—</span>
+          <span class="kpi-unit">位</span>
+        </div>
+        <div class="kpi">
+          <span class="kpi-label">單一客戶平均市值</span>
+          <span class="kpi-value" id="k-avg">—</span>
+          <span class="kpi-unit">HKD</span>
+        </div>
+        <div class="kpi kpi-hl">
+          <span class="kpi-label">持倉總市值</span>
+          <span class="kpi-value" id="k-total-mv">—</span>
+          <span class="kpi-unit">HKD</span>
+        </div>
+      </div>
+
+      <div id="s-charts" class="charts" hidden>
+        <div class="chart-box chart-top3">
+          <h3 class="chart-title">持倉市值 Top 3</h3>
+          <div id="chartTop3" class="chart"></div>
+        </div>
+        <div class="chart-box chart-market">
+          <h3 class="chart-title">市場分佈</h3>
+          <div id="chartMarket" class="chart"></div>
+        </div>
+        <div class="chart-box chart-rebate">
+          <h3 class="chart-title">各客戶回贈</h3>
+          <div id="chartRebate" class="chart"></div>
+        </div>
+      </div>
+
+      <div id="s-error" class="error-box" hidden></div>
+      <div id="s-note" class="note-box" hidden></div>
+    </div>
+  </section>
+</main>
+
+<!-- ================= FOOTER ================= -->
+<footer class="site-footer">
+  <div class="container footer-row">
+    <span class="footer-brand">個人投資工作台</span>
+    <p class="footer-note">
+      行情來源：騰訊公開行情接口、stockanalysis.com（真實收市價）｜匯率來源：歐洲央行 ECB 官方參考匯率<br>
+      查無數據時系統將明確提示，所有計算結果僅供參考，不構成投資建議。
+    </p>
+    <p class="footer-copy">© 2026 個人投資工作台</p>
+  </div>
+</footer>
+
+<script src="vendor/echarts.min.js"></script>
+<script src="vendor/xlsx.full.min.js"></script>
+<script src="js/data.js"></script>
+<script src="js/charts.js"></script>
+<script src="js/excel.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
