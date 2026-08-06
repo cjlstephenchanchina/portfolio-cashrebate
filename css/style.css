@@ -111,7 +111,7 @@ button, input, select { font-family: inherit; }
 
 /* ================= HERO ================= */
 .hero {
-  background-image: url("img/hero-city.jpg");
+  background-image: url("../img/hero-city.jpg");
   min-height: 92vh;
   display: flex; align-items: center;
   padding: 96px 0 80px;
@@ -177,9 +177,9 @@ button, input, select { font-family: inherit; }
 /* ================= 主體 ================= */
 .main { padding: 0 28px 80px; }
 .section { padding: 120px 0 0; scroll-margin-top: 84px; }
-#quote { background-image: url("img/finance-chart.jpg"); min-height: 80vh; }
-#batch { background-image: url("img/office.jpg"); min-height: 80vh; }
-#stats { background-image: url("img/abstract.jpg"); min-height: 80vh; }
+#quote { background-image: url("../img/finance-chart.jpg"); min-height: 80vh; }
+#batch { background-image: url("../img/office.jpg"); min-height: 80vh; }
+#stats { background-image: url("../img/abstract.jpg"); min-height: 80vh; }
 #quote::before, #batch::before, #stats::before {
   background:
     linear-gradient(180deg, rgba(6,8,15,0.88) 0%, rgba(6,8,15,0.7) 50%, rgba(6,8,15,0.92) 100%);
