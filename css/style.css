@@ -50,6 +50,7 @@
 
 /* ---------- 基礎 ---------- */
 * { box-sizing: border-box; }
+[hidden] { display: none !important; }   /* 修正 .error-box / .progress / .kpis 等 [hidden] 被 CSS display 屬性蓋掉的 bug（會在頁面顯示空紅色 bar） */
 html { scroll-behavior: smooth; }
 body {
   margin: 0;
