@@ -17,8 +17,9 @@
 <meta name="twitter:image" content="img/logo-mark-512.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500&family=Inter:wght@200;300;400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/hero.css">
 </head>
 <body>
 
@@ -34,22 +35,60 @@
       <a href="#history">走勢</a>
     </nav>
     <span class="nav-live"><i class="dot"></i>真實行情</span>
+    <button class="nav__toggle" id="menuToggle" aria-expanded="false" aria-controls="mobileMenu" aria-label="Open menu">
+      <span class="bar"></span>
+      <span class="bar"></span>
+      <span class="bar"></span>
+    </button>
   </div>
 </header>
 
-<!-- ================= 頁頭 ================= -->
-<section class="page-hero" id="top">
-  <div class="container">
-    <p class="hero-kicker">港股 · A股 · 美股 — 真實收市價</p>
-    <h1 class="hero-title">See clearly. Act precisely.</h1>
-    <p class="hero-sub">
-      維護你的持倉清單，自動彙總跨市場市值與未實現盈虧；行情來自公開接口，匯率採用歐洲央行 ECB 官方參考價 —— <em>查不到即明示，絕不模擬。</em>
-    </p>
-    <div class="hero-cta">
-      <a class="btn btn-primary" href="#overview">查看持倉總覽</a>
-      <a class="btn btn-ghost" href="#history">查看歷史走勢</a>
+<!-- ================= 全螢幕 mobile menu（hero 漢堡觸發） ================= -->
+<nav class="mobile-menu" id="mobileMenu" role="dialog" aria-modal="true" aria-label="Site menu" aria-hidden="true" inert>
+  <a class="m-link" href="#overview" style="--i:0">持倉總覽</a>
+  <a class="m-link" href="#quote" style="--i:1">單筆查詢</a>
+  <a class="m-link" href="#batch" style="--i:2">批量作業</a>
+  <a class="m-link" href="#stats" style="--i:3">回贈統計</a>
+  <a class="m-link" href="#history" style="--i:4">走勢</a>
+  <a class="m-cta" href="#overview" style="--i:5">開始使用</a>
+</nav>
+
+<!-- ================= 頁頭（cinematic hero，站點第一視覺焦點） ================= -->
+<section class="hero-cinema" id="top">
+  <div class="hero-cinema__media">
+    <video autoplay muted loop playsinline preload="auto"
+      poster="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260806_132328_5f9029c8-218f-4489-82b6-29ff2849920e.png">
+      <source src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260806_133255_956f653f-5d80-4b06-abd5-0f46c98b60fa.mp4" type="video/mp4">
+    </video>
+  </div>
+  <div class="hero-cinema__scrim" aria-hidden="true"></div>
+
+  <div class="hero-cinema__body">
+    <div class="hero-cinema__panel">
+      <span class="hc-chip">[ Portfolio access ]</span>
+      <h1 class="hc-title">Nora-AI</h1>
+      <p class="hc-tagline">See clearly. Act precisely.</p>
+
+      <form class="hc-form" action="#" method="post" novalidate>
+        <div>
+          <label class="hc-label" for="hc-email">Email</label>
+          <input class="hc-input" id="hc-email" name="email" type="email" placeholder="Email" autocomplete="email">
+        </div>
+        <button class="hc-btn hc-btn--ghost" type="submit">以 Email 開始</button>
+        <a class="hc-btn hc-btn--solid" href="#overview">進入持倉總覽</a>
+      </form>
+
+      <a class="hc-referral" href="#overview">我已有帳號</a>
     </div>
   </div>
+
+  <footer class="hero-cinema__legal">
+    <p class="hc-legal">
+      開立 Nora-AI Capital 帳戶即表示你同意我們的
+      <a href="#privacy-notice">隱私通知</a> 與
+      <a href="#service-contract">服務合約</a>。
+    </p>
+  </footer>
 </section>
 
 <main class="container main">
@@ -316,5 +355,6 @@
 <script src="js/excel.js"></script>
 <script src="js/portfolio.js"></script>
 <script src="js/app.js"></script>
+<script src="js/hero-menu.js"></script>
 </body>
 </html>

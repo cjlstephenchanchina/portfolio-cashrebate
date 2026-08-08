@@ -351,7 +351,7 @@ table.data .num { font-family: var(--font-mono); }
 @media (max-width: 639px) {
   .container { padding: 0 16px; }
   .nav-links { display: none; }
-  .page-hero { padding: 40px 0 28px; }
+  .hero-cinema { padding: 0; }
   .card { padding: 18px; border-radius: var(--radius); }
   .section { padding: 34px 0; }
   .kpi-value { font-size: 22px; }
@@ -377,8 +377,8 @@ table.data .num { font-family: var(--font-mono); }
 
 /* ---------- 列印（報表匯出） ---------- */
 @media print {
-  .site-nav, .page-hero, .hero-cta, .fab-stack, .section:not(#overview),
-  .pf-toolbar, .nav-live, .site-footer { display: none !important; }
+  .site-nav, .hero-cinema, .hero-cta, .fab-stack, .section:not(#overview),
+  .pf-toolbar, .nav-live, .mobile-menu, .nav__toggle, .site-footer { display: none !important; }
   body { background: #fff; color: #000; }
   .card, .kpi, .chart-box, .curve-box, .table-wrap { box-shadow: none; border-color: #ccc; background: #fff; }
   .kpi-value { color: #000 !important; }
