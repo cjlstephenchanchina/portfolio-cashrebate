@@ -75,13 +75,15 @@
   z-index: 2;
   display: flex;
   align-items: center;
-  justify-content: flex-start;       /* Nora-AI / slogan 左對齊 */
-  padding: 0 var(--hc-gutter);
+  /* 左側 padding 與站體 .container 內容左緣對齊：當 viewport > 1140px，
+     為 (vpW-1140)/2 + 24（=container 的 24px 內 padding + 自身居中留白）；
+     較小視口直接取 24px 或安全區。右側保留較寬 gutter 維持呼吸感。 */
+  padding: 0 var(--hc-gutter) 0 max(24px, calc((100vw - var(--maxw)) / 2 + 24px), env(safe-area-inset-left));
   min-height: 0;
   overflow-y: auto;
 }
 @media (max-width: 720px) {
-  .hero-cinema__body { justify-content: center; }
+  .hero-cinema__body { padding: 0 max(20px, env(safe-area-inset-left)) max(20px, env(safe-area-inset-bottom)) max(20px, env(safe-area-inset-right)); justify-content: center; }
 }
 
 .hero-cinema__panel {
@@ -98,27 +100,14 @@
   .hero-cinema__panel { width: 100%; align-items: stretch; }
 }
 
-.hc-title {
-  font-family: var(--font-sans);
-  font-weight: 200;
-  font-size: clamp(54px, 6.2vw, 118px);
-  letter-spacing: 0.03em;
-  line-height: 0.95;
-  margin-top: clamp(28px, 3vw, 52px);
-  color: var(--hc-text);
-}
-@media (max-width: 380px) {
-  .hc-title { font-size: clamp(44px, 15vw, 64px); }
-}
-
 /* ── Hero slogan：Playfair Display 斜體 + 正體兩行品牌 Slogan ── */
 .hc-slogan {
-  margin-top: clamp(20px, 2vw, 36px);
+  margin-top: 0;                      /* slogan 為 panel 第一個元素，不再有上方大標題預留空間 */
   font-family: "Playfair Display", "Times New Roman", Georgia, serif;
   color: var(--hc-text);
   display: flex;
   flex-direction: column;
-  align-items: flex-start;          /* slogan 文字左對齊（與左側面板一致） */
+  align-items: flex-start;            /* slogan 文字左對齊（與左側面板一致） */
   text-align: left;
   line-height: 0.98;
 }
@@ -136,6 +125,58 @@
 @media (max-width: 380px) {
   .hc-slogan__line { font-size: clamp(36px, 12vw, 56px); }
 }
+
+/* ── "powered by Nora-AI"：slogan 下方一行小字，弱化處理 ── */
+.hc-powered {
+  margin-top: clamp(14px, 1.4vw, 22px);
+  font-family: var(--font-sans);
+  font-weight: 400;
+  font-size: clamp(12px, 0.95vw, 15px);
+  color: var(--hc-dim);
+  letter-spacing: 0.04em;
+  line-height: 1.4;
+}
+.hc-powered b {
+  color: var(--hc-text);
+  font-weight: 500;
+  letter-spacing: 0.06em;
+}
+
+/* ── Get Started 圓角按鈕（白底深字、pill 形，類似 Apple/Linear 風格） ── */
+.hc-cta {
+  align-self: flex-start;             /* 與 panel 左緣對齊，不撐滿 */
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: clamp(28px, 2.6vw, 44px);
+  padding: clamp(12px, 1.1vw, 16px) clamp(26px, 2.4vw, 38px);
+  background: #ffffff;
+  color: #0B0E14;
+  font-family: var(--font-sans);
+  font-weight: 500;
+  font-size: clamp(14px, 0.95vw, 16px);
+  letter-spacing: 0.005em;
+  text-decoration: none;
+  border-radius: 999px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.28), 0 1px 0 rgba(255, 255, 255, 0.06) inset;
+  transition: transform 0.18s ease, background 0.2s ease, box-shadow 0.25s ease;
+  cursor: pointer;
+}
+.hc-cta:hover {
+  background: #E7EAF0;
+  transform: translateY(-1px);
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.4), 0 1px 0 rgba(255, 255, 255, 0.08) inset;
+}
+.hc-cta:active { transform: translateY(0); }
+.hc-cta:focus-visible {
+  outline: 2px solid var(--hc-accent-hi);
+  outline-offset: 3px;
+}
+.hc-cta .arrow {
+  display: inline-block;
+  transition: transform 0.2s ease;
+}
+.hc-cta:hover .arrow { transform: translateX(3px); }
 
 /* ── 以下舊元素樣式（chip / form / input / btn / referral / legal）保留為空殼以相容，
      但當前頁面不再使用；未來若重新啟用可參考之前 git 歷史。 ── */
