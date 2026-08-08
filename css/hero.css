@@ -25,7 +25,7 @@
   min-height: 640px;
   overflow: hidden;
   display: grid;
-  grid-template-rows: 1fr auto;     /* body 佔滿，legal 置底（導覽由站體 site-nav 負責） */
+  grid-template-rows: 1fr;          /* body 佔滿（legal 已移除，導覽由站體 site-nav 負責） */
   isolation: isolate;
 }
 @media (max-height: 640px) {
@@ -46,6 +46,7 @@
   height: 100%;
   object-fit: cover;
   object-position: center;
+  transform: scaleX(-1);          /* 視訊鏡像反轉 */
 }
 
 /* ── 雙漸變 scrim（覆蓋影片、低於內容） ── */
@@ -95,20 +96,6 @@
 }
 @media (max-width: 720px) {
   .hero-cinema__panel { width: 100%; align-items: stretch; }
-  .hc-chip { align-self: flex-start; }
-}
-
-/* chip：銳利矩形（無圓角） */
-.hc-chip {
-  font-family: var(--font-mono);
-  font-weight: 400;
-  font-size: clamp(11px, 0.72vw, 14px);
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  line-height: 1;
-  color: var(--hc-text);
-  background: rgba(255, 255, 255, 0.09);
-  padding: clamp(9px, 0.8vw, 14px) clamp(14px, 1.1vw, 20px);
 }
 
 .hc-title {
@@ -124,117 +111,34 @@
   .hc-title { font-size: clamp(44px, 15vw, 64px); }
 }
 
-.hc-tagline {
-  font-family: var(--font-mono);
-  font-weight: 300;
-  font-size: clamp(11px, 0.94vw, 17px);
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  line-height: 1.4;
-  color: var(--hc-dim);
-  margin-top: clamp(14px, 1.4vw, 24px);
-}
-
-.hc-form {
-  margin-top: clamp(38px, 4.6vw, 82px);
+/* ── Hero slogan：Playfair Display 斜體 + 正體兩行品牌 Slogan ── */
+.hc-slogan {
+  margin-top: clamp(20px, 2vw, 36px);
+  font-family: "Playfair Display", "Times New Roman", Georgia, serif;
+  color: var(--hc-text);
   display: flex;
   flex-direction: column;
-  gap: clamp(14px, 1.3vw, 22px);
-  width: 100%;
+  align-items: flex-end;          /* slogan 文字右對齊（與右側面板一致） */
+  text-align: right;
+  line-height: 0.98;
 }
-
-.hc-label {
-  position: absolute;
-  width: 1px; height: 1px;
-  padding: 0; margin: -1px;
-  overflow: hidden;
-  clip: rect(0 0 0 0);
-  white-space: nowrap;
-  border: 0;
-}
-.hc-input {
-  width: 100%;
-  background: transparent;
-  border: 0;
-  border-bottom: 1px solid var(--hc-line-strong);
-  border-radius: 0;
-  padding: 0 2px clamp(12px, 1.1vw, 18px);
-  font-family: var(--font-sans);
-  font-weight: 300;
-  font-size: clamp(16px, 0.95vw, 18px);
-  color: var(--hc-text);
-  transition: border-color 0.25s ease;
-}
-.hc-input::placeholder { color: var(--hc-dim); }
-.hc-input:focus { outline: none; border-bottom-color: rgba(255, 255, 255, 0.85); }
-.hc-input:focus::placeholder { color: var(--hc-dimmer); }
-
-.hc-btn {
-  width: 100%;
-  border: 0;
-  border-radius: 0;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: clamp(17px, 1.6vw, 27px) 20px;
-  font-family: var(--font-mono);
+.hc-slogan__line {
+  display: block;
+  font-size: clamp(44px, 6.6vw, 116px);
   font-weight: 400;
-  text-transform: uppercase;
-  letter-spacing: 0.22em;
-  font-size: clamp(11px, 0.78vw, 14px);
-  text-decoration: none;
-  transition: background 0.25s ease, color 0.25s ease;
+  letter-spacing: -0.005em;
 }
-.hc-btn--ghost { background: var(--hc-fill-ghost); color: var(--hc-dimmer); }
-.hc-btn--ghost:hover { background: rgba(255, 255, 255, 0.09); color: var(--hc-text); }
-.hc-btn--solid { background: var(--hc-fill-solid); color: var(--hc-text); }
-.hc-btn--solid:hover { background: rgba(255, 255, 255, 0.17); }
-
-.hc-referral {
-  align-self: center;
-  margin-top: clamp(26px, 2.6vw, 46px);
-  font-family: var(--font-mono);
-  font-weight: 400;
-  text-transform: uppercase;
-  font-size: clamp(11px, 0.74vw, 14px);
-  letter-spacing: 0.18em;
-  color: var(--hc-text);
-  text-decoration: none;
-  transition: color 0.25s ease;
+.hc-slogan__line--italic {
+  font-style: italic;
+  font-weight: 500;
+  letter-spacing: 0.005em;
 }
-.hc-referral:hover {
-  color: var(--hc-accent-hi);
-  text-decoration: underline;
-  text-underline-offset: 4px;
+@media (max-width: 380px) {
+  .hc-slogan__line { font-size: clamp(36px, 12vw, 56px); }
 }
 
-/* ── 法律條款（hero 底部） ── */
-.hero-cinema__legal {
-  position: relative;
-  z-index: 2;
-  border-top: 1px solid var(--hc-line);
-  padding: clamp(18px, 1.7vw, 30px) var(--hc-gutter);
-  padding-left: max(var(--hc-gutter), env(safe-area-inset-left));
-  padding-right: max(var(--hc-gutter), env(safe-area-inset-right));
-  padding-bottom: max(clamp(18px, 1.7vw, 30px), env(safe-area-inset-bottom));
-  text-align: center;
-}
-.hc-legal {
-  font-family: var(--font-sans);
-  font-weight: 300;
-  font-size: clamp(12px, 0.82vw, 16px);
-  line-height: 1.5;
-  color: var(--hc-dim);
-}
-.hc-legal a {
-  color: var(--hc-text);
-  text-decoration: underline;
-  text-underline-offset: 3px;
-  text-decoration-thickness: 1px;
-  transition: color 0.25s ease;
-}
-.hc-legal a:hover { color: var(--hc-accent-hi); }
+/* ── 以下舊元素樣式（chip / form / input / btn / referral / legal）保留為空殼以相容，
+     但當前頁面不再使用；未來若重新啟用可參考之前 git 歷史。 ── */
 
 /* ── 全螢幕 mobile menu（掛在站體 site-nav 上） ── */
 .mobile-menu {
@@ -352,8 +256,6 @@
 /* ── 短高度壓縮（max-height:640px） ── */
 @media (max-height: 640px) {
   .hc-title { font-size: clamp(36px, 7vw, 64px); }
-  .hc-form { margin-top: clamp(20px, 3vw, 40px); gap: clamp(10px, 1vw, 16px); }
-  .hc-btn { padding: clamp(12px, 1.2vw, 18px) 20px; }
-  .hero-cinema__legal { font-size: 11px; padding-top: clamp(10px, 1.2vw, 18px); padding-bottom: max(clamp(10px, 1.2vw, 18px), env(safe-area-inset-bottom)); }
+  .hc-slogan__line { font-size: clamp(28px, 6vw, 64px); }
   .m-link { font-size: clamp(18px, 4.5vw, 24px); }
 }
