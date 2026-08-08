@@ -1,10 +1,18 @@
-/* ================= 圖表渲染（ECharts）— 淺色克制風 ================= */
+/* ================= 圖表渲染（ECharts）— 精簡數據儀表板 ================= */
 "use strict";
 const CHART_COLORS = {
-  text: "#161616", muted: "#6E6C66", faint: "#A5A29B",
-  black: "#1B1B1B", gray: "#8C8A84",
-  red: "#C2453E", green: "#2F7D5B",
-  gold: "#A67C00", blue: "#3B5B8C", purple: "#6A5A8C",
+  text: "#E7EAF0",
+  muted: "#8A93A6",
+  faint: "rgba(231, 234, 240, 0.4)",
+  ink: "#FFFFFF",
+  gray: "#8A93A6",
+  accent: "#5B8DEF",
+  accentHi: "#7AA4F4",
+  accentDeep: "#2C4F8F",
+  up: "#FF5B6E",
+  down: "#1FC79B",
+  grid: "rgba(255,255,255,0.07)",
+  axis: "rgba(255,255,255,0.12)",
 };
 
 const MARKET_LABEL = { HK: "港股", A: "A股", US: "美股" };
@@ -18,13 +26,13 @@ const fmtInt = (v) => Number(v || 0).toLocaleString("zh-HK");
 const CHART_BASE = {
   backgroundColor: "transparent",
   textStyle: { color: CHART_COLORS.text, fontFamily: "Inter, system-ui, sans-serif", fontSize: 12 },
-  grid: { left: 10, right: 28, top: 22, bottom: 6, containLabel: true },
+  grid: { left: 10, right: 26, top: 22, bottom: 6, containLabel: true },
   tooltip: {
-    backgroundColor: "#FFFFFF",
-    borderColor: "#E7E5E0",
+    backgroundColor: "rgba(17, 21, 31, 0.96)",
+    borderColor: "rgba(91, 141, 239, 0.4)",
     borderWidth: 1,
     textStyle: { color: CHART_COLORS.text, fontSize: 12.5 },
-    extraCssText: "box-shadow: 0 12px 32px rgba(20,20,20,0.12); border-radius: 8px;",
+    extraCssText: "box-shadow: 0 18px 40px rgba(0,0,0,0.5); border-radius: 10px;",
   },
 };
 
@@ -42,7 +50,7 @@ function resizeCharts() {
 }
 window.addEventListener("resize", resizeCharts);
 
-/* Top 3 持倉股票 — 橫向條形 */
+/* Top 3 — 橫向條形（藍調） */
 function renderTop3(id, data) {
   const chart = initChart(id);
   if (!chart) return;
@@ -53,7 +61,7 @@ function renderTop3(id, data) {
     xAxis: {
       type: "value",
       axisLabel: { color: CHART_COLORS.muted, formatter: (v) => (v >= 1e6 ? (v / 1e6) + "M" : v >= 1e4 ? (v / 1e4) + "萬" : v) },
-      splitLine: { lineStyle: { color: "#F0EEE9" } },
+      splitLine: { lineStyle: { color: CHART_COLORS.grid } },
     },
     yAxis: {
       type: "category", data: labels,
@@ -64,10 +72,12 @@ function renderTop3(id, data) {
       type: "bar", data: values, barWidth: 18,
       itemStyle: {
         borderRadius: [0, 6, 6, 0],
-        color: "#1B1B1B",
+        color: new echarts.graphic.LinearGradient(0, 0, 1, 0, [
+          { offset: 0, color: CHART_COLORS.accentDeep }, { offset: 1, color: CHART_COLORS.accent },
+        ]),
       },
       label: {
-        show: true, position: "right", color: CHART_COLORS.text, fontWeight: 500,
+        show: true, position: "right", color: CHART_COLORS.accentHi, fontWeight: 500,
         formatter: (p) => "HK$" + fmtMoney(p.value),
       },
     }],
@@ -78,8 +88,8 @@ function renderTop3(id, data) {
 function renderMarket(id, data) {
   const chart = initChart(id);
   if (!chart) return;
-  const palette = [CHART_COLORS.black, CHART_COLORS.gray, CHART_COLORS.red,
-                   CHART_COLORS.green, CHART_COLORS.blue];
+  const palette = [CHART_COLORS.accent, CHART_COLORS.down, CHART_COLORS.up,
+                   CHART_COLORS.accentHi, "#9AA6C0"];
   chart.setOption({
     ...CHART_BASE,
     tooltip: {
@@ -88,9 +98,9 @@ function renderMarket(id, data) {
     },
     series: [{
       type: "pie", radius: ["52%", "76%"], center: ["50%", "52%"],
-      avoidLabelOverlap: true, itemStyle: { borderRadius: 4, borderColor: "#FFFFFF", borderWidth: 3 },
+      avoidLabelOverlap: true, itemStyle: { borderRadius: 4, borderColor: "rgba(255,255,255,0.08)", borderWidth: 2 },
       label: { color: CHART_COLORS.text, fontSize: 12.5, formatter: "{b}\n{c}" },
-      labelLine: { lineStyle: { color: CHART_COLORS.gray } },
+      labelLine: { lineStyle: { color: CHART_COLORS.muted } },
       data: (data || []).map((d, i) => ({
         name: MARKET_LABEL[d.market] || d.market, value: d.value,
         itemStyle: { color: palette[i % palette.length] },
@@ -99,7 +109,7 @@ function renderMarket(id, data) {
   }, true);
 }
 
-/* 各客戶回贈 — 柱狀 */
+/* 各客戶回贈 — 柱狀（藍綠漸變） */
 function renderRebate(id, data) {
   const chart = initChart(id);
   if (!chart) return;
@@ -110,20 +120,96 @@ function renderRebate(id, data) {
     xAxis: {
       type: "category", data: clients,
       axisLabel: { color: CHART_COLORS.muted, fontSize: 12 },
-      axisLine: { lineStyle: { color: "#E7E5E0" } }, axisTick: { show: false },
+      axisLine: { lineStyle: { color: CHART_COLORS.axis } }, axisTick: { show: false },
     },
     yAxis: {
       type: "value",
       axisLabel: { color: CHART_COLORS.muted },
-      splitLine: { lineStyle: { color: "#F0EEE9" } },
+      splitLine: { lineStyle: { color: CHART_COLORS.grid } },
     },
     series: [{
       type: "bar", data: rebates, barWidth: "42%",
-      itemStyle: { borderRadius: [6, 6, 0, 0], color: "#2F7D5B" },
+      itemStyle: {
+        borderRadius: [6, 6, 0, 0],
+        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+          { offset: 0, color: CHART_COLORS.accent }, { offset: 1, color: CHART_COLORS.down },
+        ]),
+      },
       label: {
-        show: true, position: "top", color: CHART_COLORS.green, fontWeight: 500,
+        show: true, position: "top", color: CHART_COLORS.accentHi, fontWeight: 500,
         formatter: (p) => "HK$" + fmtMoney(p.value),
       },
     }],
   }, true);
+}
+
+/* ---------- 組合淨值走勢（折線） ---------- */
+function renderPortfolioCurve(id, series) {
+  const chart = initChart(id);
+  if (!chart) return;
+  const dates = (series || []).map((p) => p[0]);
+  const values = (series || []).map((p) => Math.round(p[1]));
+  chart.setOption({
+    ...CHART_BASE,
+    grid: { left: 10, right: 22, top: 18, bottom: 24, containLabel: true },
+    tooltip: {
+      ...CHART_BASE.tooltip, trigger: "axis",
+      formatter: (ps) => {
+        const p = ps[0];
+        return `${p.axisValue}<br/><b>HK$${fmtMoney(p.value)}</b>`;
+      },
+    },
+    xAxis: {
+      type: "category", data: dates, boundaryGap: false,
+      axisLabel: { color: CHART_COLORS.muted, fontSize: 11, hideOverlap: true },
+      axisLine: { lineStyle: { color: CHART_COLORS.axis } }, axisTick: { show: false },
+    },
+    yAxis: {
+      type: "value",
+      axisLabel: { color: CHART_COLORS.muted, formatter: (v) => (v >= 1e6 ? (v / 1e6) + "M" : v >= 1e4 ? (v / 1e4) + "萬" : v) },
+      splitLine: { lineStyle: { color: CHART_COLORS.grid } },
+    },
+    dataZoom: [{ type: "inside" }, { type: "slider", height: 16, bottom: 2, borderColor: "transparent", backgroundColor: "rgba(255,255,255,0.04)", fillerColor: "rgba(91,141,239,0.2)", textStyle: { color: CHART_COLORS.muted } }],
+    series: [{
+      type: "line", data: values, smooth: true, showSymbol: false,
+      lineStyle: { color: CHART_COLORS.accent, width: 2 },
+      areaStyle: {
+        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+          { offset: 0, color: "rgba(91,141,239,0.30)" }, { offset: 1, color: "rgba(91,141,239,0.02)" },
+        ]),
+      },
+    }],
+  }, true);
+}
+
+/* ---------- 日 K 線（蠟燭圖，漲紅跌綠） ---------- */
+function renderKline(id, data, title) {
+  const chart = initChart(id);
+  if (!chart) return;
+  const dates = (data || []).map((b) => b[0]);
+  const kdata = (data || []).map((b) => [b[1], b[2], b[4], b[3]]); // [open, close, low, high]
+  chart.setOption({
+    ...CHART_BASE,
+    grid: { left: 10, right: 18, top: 18, bottom: 24, containLabel: true },
+    tooltip: { ...CHART_BASE.tooltip, trigger: "axis", axisPointer: { type: "cross" } },
+    xAxis: {
+      type: "category", data: dates, boundaryGap: false,
+      axisLabel: { color: CHART_COLORS.muted, fontSize: 11, hideOverlap: true },
+      axisLine: { lineStyle: { color: CHART_COLORS.axis } }, axisTick: { show: false },
+    },
+    yAxis: {
+      type: "value", scale: true,
+      axisLabel: { color: CHART_COLORS.muted },
+      splitLine: { lineStyle: { color: CHART_COLORS.grid } },
+    },
+    dataZoom: [{ type: "inside" }, { type: "slider", height: 16, bottom: 2, borderColor: "transparent", backgroundColor: "rgba(255,255,255,0.04)", fillerColor: "rgba(91,141,239,0.2)", textStyle: { color: CHART_COLORS.muted } }],
+    series: [{
+      type: "candlestick", data: kdata,
+      itemStyle: {
+        color: CHART_COLORS.up, color0: CHART_COLORS.down,
+        borderColor: CHART_COLORS.up, borderColor0: CHART_COLORS.down,
+      },
+    }],
+  }, true);
+  if (title) { /* 標題由外部 DOM 控制 */ }
 }
