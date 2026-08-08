@@ -1,5 +1,5 @@
 /* =====================================================================
- * 個人投資工作台 · 精簡數據儀表板
+ * Nora-AI Capital · 精簡數據儀表板
  * 實心深色底 · 單一藍色強調 · 等寬數字 · 無照片背景
  * ===================================================================== */
 
@@ -85,9 +85,10 @@ em { font-style: normal; color: var(--accent-hi); }
 .nav-row { display: flex; align-items: center; gap: 24px; height: 60px; }
 .brand {
   font-weight: 600; font-size: 16px; letter-spacing: -0.02em;
-  display: flex; align-items: baseline; gap: 8px; white-space: nowrap;
+  display: flex; align-items: center; gap: 10px; white-space: nowrap;
 }
-.brand-en { font-size: 11px; color: var(--muted); font-weight: 500; letter-spacing: 0.04em; }
+.brand-logo { width: 26px; height: 26px; border-radius: 7px; flex: none; display: block; }
+.brand-sub { font-size: 11px; color: var(--muted); font-weight: 500; letter-spacing: 0.04em; }
 .brand-dot { color: var(--accent); }
 .nav-links { display: flex; gap: 4px; margin-left: auto; }
 .nav-links a {
@@ -325,7 +326,8 @@ table.data .num { font-family: var(--font-mono); }
 /* ---------- 頁尾 ---------- */
 .site-footer { border-top: 1px solid var(--border); background: var(--bg-soft); padding: 30px 0; }
 .footer-row { display: flex; flex-direction: column; gap: 10px; }
-.footer-brand { font-weight: 600; font-size: 14px; }
+.footer-brand { font-weight: 600; font-size: 14px; display: inline-flex; align-items: center; gap: 8px; }
+.footer-logo { width: 20px; height: 20px; border-radius: 5px; flex: none; }
 .footer-note { color: var(--muted); font-size: 12.5px; line-height: 1.7; }
 .footer-copy { color: var(--faint); font-size: 12px; }
 
@@ -342,7 +344,7 @@ table.data .num { font-family: var(--font-mono); }
 @media (max-width: 1023px) {
   .nav-links { gap: 0; }
   .nav-links a { padding: 8px 9px; font-size: 13px; }
-  .brand-en { display: none; }
+  .brand-sub { display: none; }
   .charts { grid-template-columns: 1fr; }
 }
 @media (max-width: 639px) {
