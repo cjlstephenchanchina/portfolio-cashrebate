@@ -16,8 +16,8 @@
 
   /* 文字 */
   --text:  #E7EAF0;
-  --muted: #8A93A6;
-  --faint: #5C6577;
+  --muted: #B4BCCB;
+  --faint: #95A0B5;
 
   /* 單一強調色（藍） */
   --accent:      #5B8DEF;
@@ -63,6 +63,7 @@ body {
     radial-gradient(900px 500px at -10% 10%, rgba(91,141,239,0.05), transparent 55%);
   background-attachment: fixed;
   line-height: 1.6;
+  overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }

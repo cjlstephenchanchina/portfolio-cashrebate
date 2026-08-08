@@ -23,6 +23,9 @@ const fmtMoney = (v) => {
 };
 const fmtInt = (v) => Number(v || 0).toLocaleString("zh-HK");
 
+/* 窄屏偵測：ECharts 在 ≤640px 時縮小字號 / 旋轉軸標籤 / 加大柱寬以避免標籤擠壓重疊 */
+const IS_MOBILE = () => window.matchMedia("(max-width: 640px)").matches;
+
 const CHART_BASE = {
   backgroundColor: "transparent",
   textStyle: { color: CHART_COLORS.text, fontFamily: "Inter, system-ui, sans-serif", fontSize: 12 },
@@ -72,7 +75,7 @@ function renderTop3(id, data) {
       axisLine: { show: false }, axisTick: { show: false },
     },
     series: [{
-      type: "bar", data: values, barWidth: 18,
+      type: "bar", data: values, barWidth: IS_MOBILE() ? 12 : 18,
       itemStyle: {
         borderRadius: [0, 6, 6, 0],
         color: new echarts.graphic.LinearGradient(0, 0, 1, 0, [
@@ -81,6 +84,7 @@ function renderTop3(id, data) {
       },
       label: {
         show: true, position: "right", color: CHART_COLORS.accentHi, fontWeight: 500,
+        fontSize: IS_MOBILE() ? 10 : 12,
         formatter: (p) => "HK$" + fmtMoney(p.value),
       },
     }],
@@ -122,7 +126,7 @@ function renderRebate(id, data) {
     ...CHART_BASE,
     xAxis: {
       type: "category", data: clients,
-      axisLabel: { color: CHART_COLORS.muted, fontSize: 12 },
+      axisLabel: { color: CHART_COLORS.muted, fontSize: IS_MOBILE() ? 10 : 12, rotate: IS_MOBILE() ? 35 : 0 },
       axisLine: { lineStyle: { color: CHART_COLORS.axis } }, axisTick: { show: false },
     },
     yAxis: {
@@ -131,7 +135,7 @@ function renderRebate(id, data) {
       splitLine: { lineStyle: { color: CHART_COLORS.grid } },
     },
     series: [{
-      type: "bar", data: rebates, barWidth: "42%",
+      type: "bar", data: rebates, barWidth: IS_MOBILE() ? "55%" : "42%",
       itemStyle: {
         borderRadius: [6, 6, 0, 0],
         color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
@@ -140,6 +144,7 @@ function renderRebate(id, data) {
       },
       label: {
         show: true, position: "top", color: CHART_COLORS.accentHi, fontWeight: 500,
+        fontSize: IS_MOBILE() ? 10 : 12,
         formatter: (p) => "HK$" + fmtMoney(p.value),
       },
     }],
@@ -164,7 +169,7 @@ function renderPortfolioCurve(id, series) {
     },
     xAxis: {
       type: "category", data: dates, boundaryGap: false,
-      axisLabel: { color: CHART_COLORS.muted, fontSize: 11, hideOverlap: true },
+      axisLabel: { color: CHART_COLORS.muted, fontSize: IS_MOBILE() ? 9 : 11, hideOverlap: true, rotate: IS_MOBILE() ? 35 : 0 },
       axisLine: { lineStyle: { color: CHART_COLORS.axis } }, axisTick: { show: false },
     },
     yAxis: {
@@ -197,7 +202,7 @@ function renderKline(id, data, title) {
     tooltip: { ...CHART_BASE.tooltip, trigger: "axis", axisPointer: { type: "cross" } },
     xAxis: {
       type: "category", data: dates, boundaryGap: false,
-      axisLabel: { color: CHART_COLORS.muted, fontSize: 11, hideOverlap: true },
+      axisLabel: { color: CHART_COLORS.muted, fontSize: IS_MOBILE() ? 9 : 11, hideOverlap: true, rotate: IS_MOBILE() ? 35 : 0 },
       axisLine: { lineStyle: { color: CHART_COLORS.axis } }, axisTick: { show: false },
     },
     yAxis: {
