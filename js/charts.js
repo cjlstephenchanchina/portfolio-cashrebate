@@ -54,7 +54,10 @@ window.addEventListener("resize", resizeCharts);
 function renderTop3(id, data) {
   const chart = initChart(id);
   if (!chart) return;
-  const labels = (data || []).map((d) => `${d.code} · ${MARKET_LABEL[d.market] || d.market}`);
+  const labels = (data || []).map((d) => {
+    const info = (typeof hkLogoInfo === "function") ? hkLogoInfo(d.code) : null;
+    return info && info.cn ? info.cn : `${d.code} · ${MARKET_LABEL[d.market] || d.market}`;
+  });
   const values = (data || []).map((d) => d.value);
   chart.setOption({
     ...CHART_BASE,

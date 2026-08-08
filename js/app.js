@@ -274,6 +274,7 @@ function renderStats(st, rows) {
   $("k-total-mv").textContent = "HK$" + fmtMoney(st.total_mv_hkd);
 
   renderTop3("chartTop3", st.stock_top3);
+  renderTop3Cards(st.stock_top3, st.total_mv_hkd);
   renderMarket("chartMarket", st.market_distribution);
   renderRebate("chartRebate", st.rebate_by_client);
 
@@ -283,6 +284,40 @@ function renderStats(st, rows) {
     `條件：每 ${fmtInt(p.threshold)} 港幣回贈 ${fmtMoney(p.amount)} 元，每人上限 ${fmtMoney(p.cap)} 元。` +
     `統計基於${state.rowsFromDemo ? "演示持倉（真實行情）" : "最近一次批量結果"}，成功 ${rows.filter((r) => r.status === "ok").length} 行。`;
   setTimeout(resizeCharts, 80);
+}
+
+/* ---------- 持倉市值 Top 3 卡片（Logo + 公司名 + 排名 + 倉位比重） ---------- */
+function renderTop3Cards(list, totalMv) {
+  const box = $("top3-cards");
+  if (!box) return;
+  if (!list || !list.length) { box.innerHTML = ""; return; }
+  box.innerHTML = list.map((d, i) => {
+    const info = (typeof hkLogoInfo === "function") ? hkLogoInfo(d.code) : null;
+    const cn = info ? info.cn : d.code;
+    const en = info ? info.en : "";
+    const color = info ? info.color : "var(--accent)";
+    const monoChar = info ? (info.mono || d.code.slice(0, 1)) : d.code.slice(0, 1);
+    const hasLogo = !!info;
+    const rank = i + 1;
+    const w = totalMv ? (d.value / totalMv) * 100 : 0;
+    const wPct = w.toFixed(1);
+    return `
+      <div class="top3-card">
+        <span class="top3-rank">#${rank}</span>
+        <span class="top3-badge" style="background:${color}">
+          ${hasLogo ? `<img class="top3-logo" src="img/logos/${info.key}.png" alt="${esc(cn)}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">` : ""}
+          <span class="top3-mono" style="display:${hasLogo ? "none" : "flex"}">${esc(monoChar)}</span>
+        </span>
+        <div class="top3-info">
+          <div class="top3-name">${esc(cn)}${en ? ` <span class="top3-en">${esc(en)}</span>` : ""}</div>
+          <div class="top3-sub">${(MARKET_LABEL[d.market] || d.market)} · ${esc(d.code)}</div>
+        </div>
+        <div class="top3-weight">
+          <span class="top3-w-val">${wPct}%</span>
+          <span class="top3-w-bar"><i style="width:${wPct}%"></i></span>
+        </div>
+      </div>`;
+  }).join("");
 }
 
 /* ---------- 初始化 ---------- */
