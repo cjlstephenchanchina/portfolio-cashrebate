@@ -5,8 +5,8 @@
 
 /* ---------- 設計變量 ---------- */
 :root {
-  /* 表面 */
-  --bg:        #0B0E14;
+  /* 表面 —— 全站底色改為 hero 影片的深黑，使 hero 與內容區無縫銜接 */
+  --bg:        #000000;
   --bg-soft:   #0E121B;
   --surface:   #11151F;
   --surface-2: #161B27;
@@ -79,7 +79,7 @@ em { font-style: normal; color: var(--accent-hi); }
 /* ---------- 導覽（實心 sticky） ---------- */
 .site-nav {
   position: sticky; top: 0; z-index: 50;
-  background: rgba(11, 14, 20, 0.82);
+  background: rgba(0, 0, 0, 0.82);
   backdrop-filter: blur(14px) saturate(140%);
   border-bottom: 1px solid var(--border);
 }

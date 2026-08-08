@@ -69,6 +69,26 @@
   }
 }
 
+/* ── 底部淡出層：影片深色 → 全站底色（var(--bg)），消除 hero 與內容間的視覺斷層 ── */
+.hero-cinema__fade {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1;            /* 高於 scrim(0)，低於內容(2)，故不會蓋住置中的 slogan */
+  height: clamp(140px, 28vh, 340px);
+  pointer-events: none;
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgba(0, 0, 0, 0) 38%,
+    var(--bg) 100%
+  );
+}
+@media (max-height: 640px) {
+  .hero-cinema__fade { height: clamp(90px, 18vh, 160px); }
+}
+
 /* ── 右側面板容器 ── */
 .hero-cinema__body {
   position: relative;
