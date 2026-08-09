@@ -270,11 +270,15 @@ em { font-style: normal; color: var(--accent-hi); }
 }
 .section:last-child { border-bottom: none; }
 /* hero→第一內容區無縫銜接：#quote 頂端純黑（接 hero 底部全黑），向下平滑淡出至全透明，露出極光背景。
-   用純黑 rgba(0,0,0)（非深藍），且頂端不長時間維持高不透明，故只是一道小型漸變過渡而非色塊。
+   用純黑 rgba(0,0,0)（非深藍）；頂端不長時間維持高不透明，故只是一道小型漸變過渡而非色塊。
+   full-bleed：#quote 在 .container（最大寬 1140px 置中）內，若用 left:0/right:0 只會蓋中間欄，
+   左右留白區會露出極光 → 銜接斷在兩側。改成 left:50% + width:100vw + translateX(-50%) 破出容器，
+   讓黑色漸層橫跨整個視口寬度，與 hero 全寬黑底無縫接上。（body 已 overflow-x:hidden，不會產生橫向捲軸）
    （注意：不能用 .section:first-of-type —— 第一個 <section> 是 .hero-cinema，會落空，故直接用 #quote） */
 #quote::before {
   content: "";
-  position: absolute; top: 0; left: 0; right: 0;
+  position: absolute; top: 0; left: 50%; right: auto;
+  width: 100vw; transform: translateX(-50%);
   height: 30vh;
   z-index: 0;
   pointer-events: none;
