@@ -127,7 +127,7 @@ em { font-style: normal; color: var(--accent-hi); }
 .nav-links a:focus-visible .nav-link__txt { transform: translateY(-120%); }
 .nav-links a:hover .nav-link__txt + .nav-link__txt,
 .nav-links a:focus-visible .nav-link__txt + .nav-link__txt { transform: translateY(0); }
-.nav-links a:hover { color: #fff; background: rgba(255, 255, 255, 0.10); }
+.nav-links a:hover { color: #fff; }
 .nav-links a.active { color: #fff; }
 
 /* 滑動指示條：依用戶要求移除會跳動的色塊（已改用文字亮度標示目前章節） */
@@ -182,28 +182,21 @@ em { font-style: normal; color: var(--accent-hi); }
     background .3s ease;
   pointer-events: none;
 }
-/* 玻璃本體：深色磨砂玻璃——深半透明底 + 強模糊增飽和（背景透出 frost），
-   細微頂部亮邊 + 底部輪廓光 + 深邃環境投影，定義出玻璃層次 */
+/* 玻璃本體：純深色磨砂玻璃——深半透明底 + 強模糊增飽和（背景透出 frost），
+   無白色高光，只用深邃環境投影定義層次，呈現「一整塊磨砂玻璃」的均質感 */
 .site-nav .nav-row::before {
   background: linear-gradient(180deg,
       rgba(22, 27, 39, 0.62) 0%,
       rgba(13, 17, 26, 0.55) 100%);
   backdrop-filter: blur(26px) saturate(160%) brightness(0.92);
   -webkit-backdrop-filter: blur(26px) saturate(160%) brightness(0.92);
-  border: 1px solid rgba(255, 255, 255, 0.10);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   box-shadow:
     0 14px 38px rgba(0, 0, 0, 0.45),
-    0 2px 10px rgba(0, 0, 0, 0.30),
-    inset 0 1px 0 rgba(255, 255, 255, 0.16),
-    inset 0 -0.5px 0 rgba(255, 255, 255, 0.06),
-    inset 0 10px 22px rgba(255, 255, 255, 0.04);
+    0 2px 10px rgba(0, 0, 0, 0.30);
 }
-/* 表面高光層：左上珠光 + 頂部漸隱鏡面光澤（深色玻璃上的微弱反光） */
-.site-nav .nav-row::after {
-  background:
-    radial-gradient(130% 170% at 18% -30%, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0) 48%),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0) 42%);
-}
+/* 表面高光層：已移除白色珠光/鏡面光澤，保留圖層但設為透明（無白色高亮） */
+.site-nav .nav-row::after { background: none; }
 .site-nav.scrolled .nav-row::before,
 .site-nav.scrolled .nav-row::after { opacity: 1; transform: none; }
 
@@ -216,7 +209,7 @@ em { font-style: normal; color: var(--accent-hi); }
 
 /* 膠囊內文字：深色頁面上的淺色玻璃 → 白字保持高對比可讀 */
 .site-nav.scrolled .nav-links a { color: rgba(255, 255, 255, 0.68); }
-.site-nav.scrolled .nav-links a:hover { color: #fff; background: rgba(255, 255, 255, 0.12); }
+.site-nav.scrolled .nav-links a:hover { color: #fff; }
 .site-nav.scrolled .nav-links a.active { color: #fff; }
 .site-nav.scrolled .nav-live {
   color: rgba(255, 255, 255, 0.85);
