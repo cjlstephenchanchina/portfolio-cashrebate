@@ -4,6 +4,20 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Nora-AI Capital — 股票市值計算器</title>
+<script>
+  /* 防止微信/瀏覽器在載入時自動復原上次滾動位置（導致 hero 一閃後跳到下方區塊）。
+     設為 manual 可關掉瀏覽器自帶的 scroll restoration，並在載入時瞬間回到頂部。 */
+  (function () {
+    try { if ('scrollRestoration' in history) history.scrollRestoration = 'manual'; } catch (e) {}
+    function toTop() {
+      try { window.scrollTo({ top: 0, left: 0, behavior: 'instant' }); }
+      catch (e) { window.scrollTo(0, 0); }
+    }
+    toTop();
+    document.addEventListener('DOMContentLoaded', toTop);
+    window.addEventListener('load', toTop);
+  })();
+</script>
 <meta name="description" content="Nora-AI Capital — 港股 / A股 / 美股持倉市值計算、批量作業與現金回贈統計">
 <link rel="icon" type="image/png" sizes="32x32" href="img/logo-mark-32.png">
 <link rel="icon" type="image/png" sizes="192x192" href="img/logo-mark-192.png">
@@ -18,8 +32,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500&family=Inter:wght@200;300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/style.css?v=20260809b">
-<link rel="stylesheet" href="css/hero.css?v=20260809b">
+<link rel="stylesheet" href="css/style.css?v=20260809c">
+<link rel="stylesheet" href="css/hero.css?v=20260809c">
 </head>
 <body>
 
@@ -332,14 +346,14 @@
   </div>
 </footer>
 
-<script src="vendor/echarts.min.js?v=20260809b"></script>
-<script src="vendor/xlsx.full.min.js?v=20260809b"></script>
-<script src="js/data.js?v=20260809b"></script>
-<script src="js/hk-logos.js?v=20260809b"></script>
-<script src="js/charts.js?v=20260809b"></script>
-<script src="js/excel.js?v=20260809b"></script>
-<script src="js/portfolio.js?v=20260809b"></script>
-<script src="js/app.js?v=20260809b"></script>
-<script src="js/hero-menu.js?v=20260809b"></script>
+<script src="vendor/echarts.min.js?v=20260809c"></script>
+<script src="vendor/xlsx.full.min.js?v=20260809c"></script>
+<script src="js/data.js?v=20260809c"></script>
+<script src="js/hk-logos.js?v=20260809c"></script>
+<script src="js/charts.js?v=20260809c"></script>
+<script src="js/excel.js?v=20260809c"></script>
+<script src="js/portfolio.js?v=20260809c"></script>
+<script src="js/app.js?v=20260809c"></script>
+<script src="js/hero-menu.js?v=20260809c"></script>
 </body>
 </html>
