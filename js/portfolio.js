@@ -18,13 +18,13 @@ let pfResults = [];
 function defaultHoldings() {
   // 與 data.js 的 DEMO_HOLDINGS 對齊（真實代碼，成本留空）
   return [
-    ["HK", "0700", 1000, ""],
+    ["HK", "700", 1000, ""],
     ["HK", "9988", 2000, ""],
     ["A",  "600519", 100, ""],
     ["A",  "300750", 300, ""],
     ["US", "AAPL", 200, ""],
     ["US", "TSLA", 50, ""],
-    ["HK", "0005", 4000, ""],
+    ["HK", "5", 4000, ""],
     ["A",  "000001", 5000, ""],
   ].map(([market, code, shares, cost]) => ({ market, code, shares, cost }));
 }
@@ -204,7 +204,11 @@ async function buildPortfolioSeries(tasks) {
 function syncFromDom() {
   document.querySelectorAll("#pf-body tr[data-i]").forEach((tr) => {
     const i = +tr.dataset.i;
-    tr.querySelectorAll("[data-f]").forEach((inp) => { pfHoldings[i][inp.dataset.f] = inp.value; });
+    tr.querySelectorAll("[data-f]").forEach((inp) => {
+      let v = inp.value;
+      if (inp.dataset.f === "code" && String(pfHoldings[i].market).toUpperCase() === "HK") v = hkCanon(v);
+      pfHoldings[i][inp.dataset.f] = v;
+    });
   });
 }
 
@@ -270,7 +274,8 @@ async function submitKline(e) {
     const bars = market === "US" ? await fetchUsBars(symbol) : await fetchTencentBars(symbol);
     if (!bars || !bars.length) throw new Error("查無歷史資料");
     const names = await fetchNames(symbol);
-    $pf("h-curve-title").textContent = `日 K 線 — ${names.cn || code}（${MARKET_LABEL[market]} ${code}）`;
+    const dispCode = market === "HK" ? hkCanon(code) : code;
+    $pf("h-curve-title").textContent = `日 K 線 — ${names.cn || code}（${MARKET_LABEL[market]} ${dispCode}）`;
     $pf("h-curve-box").hidden = false;
     renderKline("chartKline", bars);
   } catch (err) {

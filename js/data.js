@@ -27,7 +27,9 @@ function normalizeSymbol(code, market) {
   market = String(market || "").trim().toUpperCase();
   if (market === "HK") {
     if (code.endsWith(".HK")) code = code.slice(0, -3);
-    return /^\d{4,5}$/.test(code) ? "hk" + code.padStart(5, "0") : "";
+    // 接受 1-5 位數字：用戶可輸入「去前導零」形式（1=00001、5=00005、700=0700）
+    if (!/^\d{1,5}$/.test(code)) return "";
+    return "hk" + code.padStart(5, "0");
   }
   if (market === "A") {
     if (!/^\d{6}$/.test(code)) return "";
@@ -41,6 +43,13 @@ function normalizeSymbol(code, market) {
     return /^[A-Z][A-Z.\-]{0,9}$/.test(code) ? "us" + code : "";
   }
   return "";
+}
+
+/* 港股代碼以「去前導零」後的數字為準（1 而非 00001、5 而非 00005、700 而非 0700） */
+function hkCanon(code) {
+  let c = String(code || "").trim().toUpperCase().replace(/\.HK$/, "").replace(/\s+/g, "");
+  c = c.replace(/^0+/, "");
+  return c || "";
 }
 
 /* ---------- 騰訊日 K（港股/A股，無復權） ---------- */
@@ -181,7 +190,7 @@ async function getClosePrice(code, market, dateStr) {
   if (!MARKETS[market]) throw Object.assign(new Error(`不支援的市場: ${market}`), { status: 400 });
   const symbol = normalizeSymbol(code, market);
   if (!symbol) throw Object.assign(
-    new Error(`無法識別的股票代碼「${code}」：港股 4-5 位數字，A股 6 位數字，美股字母代碼`),
+    new Error(`無法識別的股票代碼「${code}」：港股 1-5 位數字（自動去前導零），A股 6 位數字，美股字母代碼`),
     { status: 400 }
   );
   const bars = market === "US" ? await fetchUsBars(symbol) : await fetchTencentBars(symbol);
@@ -206,7 +215,7 @@ async function getClosePrice(code, market, dateStr) {
   const mktLabel = MARKETS[market].label;
   const fallbackCN = `${mktLabel} ${symbol.slice(2)}`;
   return {
-    code: String(code).trim().toUpperCase(),
+    code: market === "HK" ? hkCanon(code) : String(code).trim().toUpperCase(),
     market,
     symbol,
     name_cn: names.cn || fallbackCN,
@@ -220,12 +229,12 @@ async function getClosePrice(code, market, dateStr) {
 
 /* ---------- 演示持倉（真實代碼） ---------- */
 const DEMO_HOLDINGS = [
-  ["C0001", "HK", "0700", 2000],   // 騰訊控股
+  ["C0001", "HK", "700", 2000],   // 騰訊控股
   ["C0001", "HK", "9988", 8000],   // 阿里巴巴-W
   ["C0001", "HK", "3690", 10000],  // 美團-W
   ["C0002", "A", "600519", 100],   // 貴州茅台
   ["C0003", "US", "AAPL", 120],    // Apple
-  ["C0004", "HK", "0005", 1000],   // 匯豐控股
+  ["C0004", "HK", "5", 1000],   // 匯豐控股
   ["C0005", "A", "000001", 2000],  // 平安銀行
 ];
 
