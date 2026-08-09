@@ -94,14 +94,15 @@ function renderQuote(q) {
    只要檔案任一列有指定日期 → 鎖定批量日期以避免誤改影響結果。 */
 function setBatchDateFieldState(locked) {
   const el = $("b-date");
-  const help = $("b-date-help");
+  const hint = $("bDateHint");
   if (!el) return;
   el.disabled = !!locked;
   el.classList.toggle("field-locked", !!locked);
-  if (help) {
-    help.hidden = !locked;
-    help.textContent = locked
-      ? "🔒 檔案含「指定日期」欄，批量日期已鎖定。各列以自己的指定日期查詢收市價。"
+  if (hint) {
+    hint.style.display = locked ? "inline" : "none";
+    const bubble = hint.querySelector(".tip-bubble");
+    if (bubble) bubble.textContent = locked
+      ? "檔案含「指定日期」欄，批量日期已鎖定。各列以自己的指定日期查詢收市價。"
       : "";
   }
 }

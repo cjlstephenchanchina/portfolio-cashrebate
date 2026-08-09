@@ -56,30 +56,39 @@ function downloadTemplate() {
   ];
   const ws = XLSX.utils.json_to_sheet(rows, { header: EXCEL_HEADERS });
   ws["!cols"] = [
-    { wch: 14 }, // 客戶編號
-    { wch: 14 }, // 指定日期
-    { wch: 8 },  // 市場
-    { wch: 12 }, // 股票代碼
-    { wch: 10 }, // 股份數量
-    { wch: 56 }, // 說明欄（B 欄以後）
+    { wch: 14 }, // A 客戶編號
+    { wch: 14 }, // B 指定日期
+    { wch: 8 },  // C 市場
+    { wch: 12 }, // D 股票代碼
+    { wch: 10 }, // E 股份數量
+    { wch: 3 },  // F 留空（上傳欄位僅到 E）
+    { wch: 14 }, // G 說明欄位名
+    { wch: 22 }, // H 說明文字
+    { wch: 22 }, // I
+    { wch: 22 }, // J
+    { wch: 22 }, // K
   ];
-  /* 在第 7 列起的「欄位說明」幫助使用者理解每個欄位要 input 什麼 */
+  /* 在第 7 列（G 起）的「欄位說明」幫助使用者理解每個欄位要 input 什麼。
+     說明移到 G 列之後，A–F 僅保留實際上傳欄位（A–E），使用者上傳時無須手刪說明區。 */
   const EXPLANATIONS = [
-    { col: "A", head: "客戶編號", body: "選填。例：C0001、C0002。可留空；全檔皆空時結果改依「股票代碼」排序。" },
-    { col: "B", head: "指定日期", body: "選填。例：2024-12-31。系統查詢此日收市價；若整列留空則退回頂部「批量日期」。" },
-    { col: "C", head: "市場",     body: "必填。HK=港股、A=A 股、US=美股（字母代碼，例如 AAPL）。" },
-    { col: "D", head: "股票代碼", body: "必填。港股輸入代碼數字即可，系統自動去前導零（例 700=0700、5=00005、1=00001）；A 股 6 位（例 600519）；美股字母（例 AAPL）。" },
-    { col: "E", head: "股份數量", body: "必填。正整數，例如 100、200。" },
+    { col: "G", head: "客戶編號", body: "選填。例：C0001、C0002。可留空；全檔皆空時結果改依「股票代碼」排序。" },
+    { col: "G", head: "指定日期", body: "選填。例：2024-12-31。系統查詢此日收市價；若整列留空則退回頂部「批量日期」。" },
+    { col: "G", head: "市場",     body: "必填。HK=港股、A=A 股、US=美股（字母代碼，例如 AAPL）。" },
+    { col: "G", head: "股票代碼", body: "必填。港股輸入代碼數字即可，系統自動去前導零（例 700=0700、5=00005、1=00001）；A 股 6 位（例 600519）；美股字母（例 AAPL）。" },
+    { col: "G", head: "股份數量", body: "必填。正整數，例如 100、200。" },
   ];
-  // 在第 6 列加說明區的標題並把 A:F 合併為一格
-  XLSX.utils.sheet_add_aoa(ws, [["📝 欄位填寫說明（看完可刪除此區）"]], { origin: "A6" });
-  const merges = [{ s: { r: 5, c: 0 }, e: { r: 5, c: 5 } }]; // A6 跨 A6:F6
-  // 從第 7 列起：每欄一條「欄位名 + 說明」，把 B/C/D/E 與右側合併以容納較長文字
+  // 在第 6 列加說明區的標題並把 G:K 合併為一格（A–F 不含說明）
+  XLSX.utils.sheet_add_aoa(ws, [["📝 欄位填寫說明（上傳前可刪除 G 列起此區）"]], { origin: "G6" });
+  const merges = [{ s: { r: 5, c: 6 }, e: { r: 5, c: 10 } }]; // G6 跨 G6:K6
+  // 從第 7 列起：每欄一條「欄位名 + 說明」，欄位名置於 G 列（黃底），說明文字橫跨 H:K
   const guideStartRow = 7;
+  const headFill = { fill: { fgColor: { rgb: "FFF4C2" } }, font: { bold: true } };
   EXPLANATIONS.forEach((exp, i) => {
     const r = guideStartRow + i;
-    XLSX.utils.sheet_add_aoa(ws, [[exp.head, exp.body]], { origin: `A${r}` });
-    merges.push({ s: { r: r - 1, c: 1 }, e: { r: r - 1, c: 5 } }); // 將說明文字橫跨右側 5 欄
+    XLSX.utils.sheet_add_aoa(ws, [[exp.head, exp.body]], { origin: `G${r}` });
+    merges.push({ s: { r: r - 1, c: 7 }, e: { r: r - 1, c: 10 } }); // 說明文字橫跨 H:K（4 欄）
+    const headAddr = XLSX.utils.encode_cell({ r: r - 1, c: 6 });      // G 列欄位名（黃底）
+    if (ws[headAddr]) ws[headAddr].s = headFill;
   });
   ws["!merges"] = merges;
   ws["!rows"] = [];
