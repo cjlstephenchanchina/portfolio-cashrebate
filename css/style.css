@@ -66,60 +66,18 @@ body {
   text-rendering: optimizeLegibility;
 }
 
-/* ---------- 極光背景層（受 Google Stitch hero 啟發：流動的彩色光團） ---------- */
-.aurora-bg {
-  position: fixed; inset: 0; z-index: -1;
-  background: var(--bg);
-  overflow: hidden;
+/* ---------- 極光背景層（WebGL 流體極光，由 js/aurora-bg.js 繪製） ----------
+   固定滿版、永遠在最底層；本身不透明輸出，蓋滿視口成為全站統一底色。
+   body 透明（見上）才能讓它透出；html 背景 #06080E 作為 WebGL 不可用時的兜底。 */
+#aurora-canvas {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  z-index: -1;
+  display: block;
   pointer-events: none;
-}
-.aurora-blob {
-  position: absolute;
-  width: 62vmax; height: 62vmax;
-  border-radius: 50%;
-  filter: blur(90px);
-  opacity: 0.42;
-  mix-blend-mode: screen;
-  will-change: transform;
-}
-.aurora-blob--1 {
-  background: radial-gradient(circle at 50% 50%, rgba(56, 189, 248, 0.55), rgba(56, 189, 248, 0) 60%);
-  top: -12%; left: -6%;
-  animation: aurora-drift-1 38s ease-in-out infinite;
-}
-.aurora-blob--2 {
-  background: radial-gradient(circle at 50% 50%, rgba(167, 139, 250, 0.50), rgba(167, 139, 250, 0) 60%);
-  top: 8%; right: -12%;
-  animation: aurora-drift-2 47s ease-in-out infinite;
-}
-.aurora-blob--3 {
-  background: radial-gradient(circle at 50% 50%, rgba(45, 212, 191, 0.40), rgba(45, 212, 191, 0) 60%);
-  bottom: -16%; left: 16%;
-  animation: aurora-drift-3 54s ease-in-out infinite;
-}
-.aurora-blob--4 {
-  background: radial-gradient(circle at 50% 50%, rgba(129, 140, 248, 0.40), rgba(129, 140, 248, 0) 60%);
-  bottom: -6%; right: 6%;
-  animation: aurora-drift-4 63s ease-in-out infinite;
-}
-@keyframes aurora-drift-1 {
-  0%, 100% { transform: translate(0, 0) scale(1); }
-  50%      { transform: translate(16%, 12%) scale(1.28); }
-}
-@keyframes aurora-drift-2 {
-  0%, 100% { transform: translate(0, 0) scale(1.05); }
-  50%      { transform: translate(-18%, 14%) scale(1.3); }
-}
-@keyframes aurora-drift-3 {
-  0%, 100% { transform: translate(0, 0) scale(1.1); }
-  50%      { transform: translate(14%, -16%) scale(1.32); }
-}
-@keyframes aurora-drift-4 {
-  0%, 100% { transform: translate(0, 0) scale(1); }
-  50%      { transform: translate(-14%, -12%) scale(1.26); }
-}
-@media (prefers-reduced-motion: reduce) {
-  .aurora-blob { animation: none; }
 }
 
 h1, h2, h3, h4 { margin: 0; font-weight: 600; letter-spacing: -0.01em; line-height: 1.2; }
