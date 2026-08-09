@@ -100,6 +100,8 @@ em { font-style: normal; color: var(--accent-hi); }
   background: transparent;
   border-bottom: 1px solid transparent;
   color: #fff;
+  /* header 直接融入 hero 影片（頂部無黑底），用輕 text-shadow 保證白字在亮影片處仍清晰 */
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.55);
   transition:
     background .45s var(--nav-ease),
     border-color .45s var(--nav-ease),
@@ -261,7 +263,7 @@ em { font-style: normal; color: var(--accent-hi); }
 .btn-dark:hover { background: var(--surface-2); border-color: var(--accent-line); }
 
 /* ---------- 區塊 ---------- */
-.main { padding: 8px 0 80px; }
+.main { padding: 0 0 80px; }
 .section {
   position: relative;
   padding: 46px 0;
