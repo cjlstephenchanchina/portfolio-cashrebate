@@ -128,7 +128,7 @@ em { font-style: normal; color: var(--accent-hi); }
 .nav-links a:hover .nav-link__txt + .nav-link__txt,
 .nav-links a:focus-visible .nav-link__txt + .nav-link__txt { transform: translateY(0); }
 .nav-links a:hover { color: #fff; background: rgba(255, 255, 255, 0.10); }
-.nav-links a.active { color: #fff; background: rgba(91, 141, 239, 0.16); }
+.nav-links a.active { color: #fff; background: rgba(255, 255, 255, 0.12); }
 
 /* 滑動指示條（底部 underline + 微弱背景，跟在 active link 後移動） */
 .nav-indicator {
@@ -165,7 +165,7 @@ em { font-style: normal; color: var(--accent-hi); }
   100% { box-shadow: 0 0 0 0 rgba(31,199,155,0); }
 }
 
-/* ── 滾動後：Apple 液態玻璃膠囊（只包住 logo→真實行情，非通欄白條） ──
+/* ── 滾動後：Apple 深色磨砂液態玻璃膠囊（只包住 logo→真實行情，非通欄白條） ──
    依 liquid-glass-design 原則：模糊背後內容、反射周圍光影、回應指針互動、
    玻璃僅用於導航/控制層；玻璃上的文字必須保持可讀（本站深色主題 → 白字） */
 .site-nav.scrolled {
@@ -196,38 +196,36 @@ em { font-style: normal; color: var(--accent-hi); }
     background .3s ease;
   pointer-events: none;
 }
-/* 玻璃本體：垂直漸層底（頂部聚光）+ 強模糊增飽和提亮（背景透出 frost）
-   + 折射邊光（頂部亮邊/底部微光）+ 環境投影 */
+/* 玻璃本體：深色磨砂玻璃——深半透明底 + 強模糊增飽和（背景透出 frost），
+   細微頂部亮邊 + 底部輪廓光 + 深邃環境投影，定義出玻璃層次 */
 .site-nav .nav-row::before {
   background: linear-gradient(180deg,
-      rgba(255, 255, 255, 0.20) 0%,
-      rgba(255, 255, 255, 0.10) 46%,
-      rgba(255, 255, 255, 0.07) 100%);
-  backdrop-filter: blur(26px) saturate(180%) brightness(1.07);
-  -webkit-backdrop-filter: blur(26px) saturate(180%) brightness(1.07);
-  border: 0.5px solid rgba(255, 255, 255, 0.32);
+      rgba(22, 27, 39, 0.62) 0%,
+      rgba(13, 17, 26, 0.55) 100%);
+  backdrop-filter: blur(26px) saturate(160%) brightness(0.92);
+  -webkit-backdrop-filter: blur(26px) saturate(160%) brightness(0.92);
+  border: 1px solid rgba(255, 255, 255, 0.10);
   box-shadow:
-    0 12px 32px rgba(2, 8, 24, 0.38),
-    0 2px 8px rgba(2, 8, 24, 0.20),
-    inset 0 1px 0 rgba(255, 255, 255, 0.55),
-    inset 0 -0.5px 0 rgba(255, 255, 255, 0.16),
-    inset 0 10px 22px rgba(255, 255, 255, 0.05);
+    0 14px 38px rgba(0, 0, 0, 0.45),
+    0 2px 10px rgba(0, 0, 0, 0.30),
+    inset 0 1px 0 rgba(255, 255, 255, 0.16),
+    inset 0 -0.5px 0 rgba(255, 255, 255, 0.06),
+    inset 0 10px 22px rgba(255, 255, 255, 0.04);
 }
-/* 表面高光層：左上珠光 + 頂部漸隱鏡面光澤，強化液態質感 */
+/* 表面高光層：左上珠光 + 頂部漸隱鏡面光澤（深色玻璃上的微弱反光） */
 .site-nav .nav-row::after {
   background:
-    radial-gradient(130% 170% at 18% -30%, rgba(255, 255, 255, 0.20), rgba(255, 255, 255, 0) 48%),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.26) 0%, rgba(255, 255, 255, 0) 42%);
+    radial-gradient(130% 170% at 18% -30%, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0) 48%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0) 42%);
 }
 .site-nav.scrolled .nav-row::before,
 .site-nav.scrolled .nav-row::after { opacity: 1; transform: none; }
 
-/* 指針互動：懸停時玻璃微微提亮（對應 .interactive() 的觸覺回饋） */
+/* 指針互動：懸停時深色玻璃微微提亮（對應 .interactive() 的觸覺回饋） */
 .site-nav.scrolled .nav-row:hover::before {
   background: linear-gradient(180deg,
-      rgba(255, 255, 255, 0.24) 0%,
-      rgba(255, 255, 255, 0.13) 46%,
-      rgba(255, 255, 255, 0.09) 100%);
+      rgba(30, 36, 51, 0.66) 0%,
+      rgba(17, 22, 33, 0.58) 100%);
 }
 
 /* 膠囊內文字：深色頁面上的淺色玻璃 → 白字保持高對比可讀 */
@@ -235,11 +233,11 @@ em { font-style: normal; color: var(--accent-hi); }
 .site-nav.scrolled .nav-links a:hover { color: #fff; background: rgba(255, 255, 255, 0.12); }
 .site-nav.scrolled .nav-links a.active {
   color: #fff;
-  background: rgba(91, 141, 239, 0.20);
+  background: rgba(255, 255, 255, 0.12);
 }
 .site-nav.scrolled .nav-indicator {
-  background: rgba(91, 141, 239, 0.16);
-  box-shadow: 0 1px 0 rgba(91, 141, 239, 0.18) inset;
+  background: rgba(255, 255, 255, 0.10);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14);
 }
 .site-nav.scrolled .nav-live {
   color: rgba(255, 255, 255, 0.85);
