@@ -89,6 +89,31 @@ function renderQuote(q) {
 }
 
 /* ---------- 批量作業 ---------- */
+
+/* 依檔案是否有指定日期，切換頂部「批量日期」欄位為可用或鎖定。
+   只要檔案任一列有指定日期 → 鎖定批量日期以避免誤改影響結果。 */
+function setBatchDateFieldState(locked) {
+  const el = $("b-date");
+  const help = $("b-date-help");
+  if (!el) return;
+  el.disabled = !!locked;
+  el.classList.toggle("field-locked", !!locked);
+  if (help) {
+    help.hidden = !locked;
+    help.textContent = locked
+      ? "🔒 檔案含「指定日期」欄，批量日期已鎖定。各列以自己的指定日期查詢收市價。"
+      : "";
+  }
+}
+
+/* 當使用者重新挑選檔案時，把批量日期欄位重新啟用（等新檔解析後由 submitBatch 再決定） */
+function handleBatchFileChange() {
+  const file = $("b-file").files[0];
+  if (!file) return;
+  setBatchDateFieldState(false); // 預設解鎖，等解析後再判定
+  $("b-result").hidden = true;
+}
+
 async function submitBatch(e) {
   e.preventDefault();
   const btn = $("b-submit");
@@ -102,6 +127,9 @@ async function submitBatch(e) {
     const fallbackDate = $("b-date").value || todayStr();
     prog.textContent = "正在解析 Excel…";
     const rows = await parseExcel(file);
+    /* 檔案若有任一列指定日期 → 鎖定頂部「批量日期」（避免誤改影響未指定列） */
+    const fileHasDates = rows.some((r) => !!r.date);
+    setBatchDateFieldState(fileHasDates);
     // 依全檔判斷：以客戶編號或股票代碼排序
     const ordered = sortBatchRows(rows);
     prog.textContent = `正在逐行查詢真實行情（共 ${ordered.length} 行）…`;
@@ -112,7 +140,13 @@ async function submitBatch(e) {
         // 每列可用自己的指定日期；缺則退回批量日期
         const rowDate = r.date || fallbackDate;
         const q = await getClosePrice(r.code, r.market, rowDate);
-        const fx = await fetchFx(q.currency, q.quote_date);
+        // 匯率使用「指定日期」（用戶要求）；若該日 ECB 拿不到，fallback 到實際交易日
+        let fx;
+        try {
+          fx = await fetchFx(q.currency, rowDate);
+        } catch (_) {
+          fx = await fetchFx(q.currency, q.quote_date);
+        }
         const mv = round4(q.price * r.shares);
         results.push({
           ...r, ...q,
@@ -189,9 +223,10 @@ function renderBatch(rows, fallbackDate) {
       <thead><tr><th>客戶編號</th><th>指定日期</th><th>市場</th><th>股票</th><th>股份數量</th><th>收市價</th><th>原幣市值</th><th>匯率→HKD</th><th>港幣市值</th><th>狀態</th><th>備註</th></tr></thead>
       <tbody>${rowsHtml}</tbody>
     </table></div>
-    <div style="display:flex;gap:16px;margin-top:20px;flex-wrap:wrap;align-items:center">
+    <div class="b-export-row">
       <button class="btn btn-dark" type="button" id="b-export-btn">⬇ 匯出結果（Excel）</button>
       <span class="r-note" style="margin:0">${dateNote}；${sortNote}；失敗行原因見備註。</span>
+      <span class="r-note r-note-fx" style="margin:0">💱 <strong>匯率→HKD</strong> 採用每列「指定日期」的 ECB 日匯率（實時抓取）；若該日恰逢外匯假日，將自動回退到前一交易日。</span>
     </div>
   `;
   $("b-export-btn").addEventListener("click", () => {
@@ -342,6 +377,8 @@ function init() {
   $("batch-form").addEventListener("submit", submitBatch);
   $("stats-form").addEventListener("submit", (e) => { e.preventDefault(); computeStats(); });
   $("dl-template").addEventListener("click", downloadTemplate);
+  /* 重新挑檔時先把批量日期欄位解鎖，等解析後再判定 */
+  $("b-file").addEventListener("change", handleBatchFileChange);
 
   initReveal();
   computeStats();

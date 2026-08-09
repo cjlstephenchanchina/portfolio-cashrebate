@@ -49,13 +49,43 @@ function parseCellDate(v) {
 /* 生成樣本模板並觸發下載 */
 function downloadTemplate() {
   const rows = [
-    { "客戶編號": "C0001", "指定日期": "2024-12-31", "市場": "HK", "股票代碼": "0700", "股份數量": 100 },
-    { "客戶編號": "C0001", "指定日期": "2024-12-31", "市場": "A",  "股票代碼": "600519", "股份數量": 200 },
-    { "客戶編號": "C0002", "指定日期": "2025-03-14", "市場": "US", "股票代碼": "AAPL", "股份數量": 50 },
-    { "客戶編號": "",        "指定日期": "",              "市場": "HK", "股票代碼": "9988", "股份數量": 200 },
+    { "客戶編號": "C0001", "指定日期": "2024-12-31", "市場": "HK", "股票代碼": "700",   "股份數量": 100 },
+    { "客戶編號": "C0001", "指定日期": "2024-12-31", "市場": "A",  "股票代碼": "600519","股份數量": 200 },
+    { "客戶編號": "C0002", "指定日期": "2025-03-14", "市場": "US", "股票代碼": "AAPL",  "股份數量": 50  },
+    { "客戶編號": "",        "指定日期": "",              "市場": "HK", "股票代碼": "9988",  "股份數量": 200 },
   ];
   const ws = XLSX.utils.json_to_sheet(rows, { header: EXCEL_HEADERS });
-  ws["!cols"] = [{ wch: 12 }, { wch: 14 }, { wch: 8 }, { wch: 12 }, { wch: 10 }];
+  ws["!cols"] = [
+    { wch: 14 }, // 客戶編號
+    { wch: 14 }, // 指定日期
+    { wch: 8 },  // 市場
+    { wch: 12 }, // 股票代碼
+    { wch: 10 }, // 股份數量
+    { wch: 56 }, // 說明欄（B 欄以後）
+  ];
+  /* 在第 7 列起的「欄位說明」幫助使用者理解每個欄位要 input 什麼 */
+  const EXPLANATIONS = [
+    { col: "A", head: "客戶編號", body: "選填。例：C0001、C0002。可留空；全檔皆空時結果改依「股票代碼」排序。" },
+    { col: "B", head: "指定日期", body: "選填。例：2024-12-31。系統查詢此日收市價；若整列留空則退回頂部「批量日期」。" },
+    { col: "C", head: "市場",     body: "必填。HK=港股、A=A 股、US=美股（字母代碼，例如 AAPL）。" },
+    { col: "D", head: "股票代碼", body: "必填。港股只輸入 4-5 位數字（例 700 而非 0700）、A 股 6 位數字（例 600519）、美股字母（例 AAPL）。" },
+    { col: "E", head: "股份數量", body: "必填。正整數，例如 100、200。" },
+  ];
+  // 在第 6 列加說明區的標題並把 A:F 合併為一格
+  XLSX.utils.sheet_add_aoa(ws, [["📝 欄位填寫說明（看完可刪除此區）"]], { origin: "A6" });
+  const merges = [{ s: { r: 5, c: 0 }, e: { r: 5, c: 5 } }]; // A6 跨 A6:F6
+  // 從第 7 列起：每欄一條「欄位名 + 說明」，把 B/C/D/E 與右側合併以容納較長文字
+  const guideStartRow = 7;
+  EXPLANATIONS.forEach((exp, i) => {
+    const r = guideStartRow + i;
+    XLSX.utils.sheet_add_aoa(ws, [[exp.head, exp.body]], { origin: `A${r}` });
+    merges.push({ s: { r: r - 1, c: 1 }, e: { r: r - 1, c: 5 } }); // 將說明文字橫跨右側 5 欄
+  });
+  ws["!merges"] = merges;
+  ws["!rows"] = [];
+  for (let i = 0; i < guideStartRow - 1 + EXPLANATIONS.length; i++) ws["!rows"][i] = { hpt: 18 };
+  ws["!rows"][5] = { hpt: 22 };                                     // 第 6 列：標題列稍高
+  EXPLANATIONS.forEach((_, i) => { ws["!rows"][guideStartRow - 1 + i] = { hpt: 36 }; });
   const wb = XLSX.utils.book_new();
   XLSX.utils.book_append_sheet(wb, ws, "持倉明細");
   XLSX.writeFile(wb, "持倉模板.xlsx");

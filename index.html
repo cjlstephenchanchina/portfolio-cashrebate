@@ -32,8 +32,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500&family=Inter:wght@200;300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/style.css?v=20260809d">
-<link rel="stylesheet" href="css/hero.css?v=20260809d">
+<link rel="stylesheet" href="css/style.css?v=20260809e">
+<link rel="stylesheet" href="css/hero.css?v=20260809e">
 </head>
 <body>
 
@@ -113,7 +113,7 @@
         </div>
         <div class="field">
           <label for="q-code">股票代碼</label>
-          <input id="q-code" type="text" placeholder="0700 / 600519 / AAPL" autocomplete="off" required>
+          <input id="q-code" type="text" placeholder="700 / 600519 / AAPL" autocomplete="off" required>
         </div>
         <div class="field">
           <label for="q-date">查詢日期</label>
@@ -146,6 +146,7 @@
         <div class="field">
           <label for="b-date">批量日期 <span class="opt">（缺省值：每列未指定日期時使用）</span></label>
           <input id="b-date" type="date" required>
+          <p id="b-date-help" class="field-help-note" hidden></p>
         </div>
         <div class="field field-file">
           <label for="b-file">Excel 檔案</label>
@@ -319,7 +320,7 @@
         </div>
         <div class="field">
           <label for="h-code">股票代碼</label>
-          <input id="h-code" type="text" placeholder="0700 / 600519 / AAPL" autocomplete="off">
+          <input id="h-code" type="text" placeholder="700 / 600519 / AAPL" autocomplete="off">
         </div>
         <div class="field field-action">
           <button class="btn btn-primary" type="submit" id="h-submit">查看 K 線</button>
@@ -346,14 +347,14 @@
   </div>
 </footer>
 
-<script src="vendor/echarts.min.js?v=20260809d"></script>
-<script src="vendor/xlsx.full.min.js?v=20260809d"></script>
-<script src="js/data.js?v=20260809d"></script>
-<script src="js/hk-logos.js?v=20260809d"></script>
-<script src="js/charts.js?v=20260809d"></script>
-<script src="js/excel.js?v=20260809d"></script>
-<script src="js/portfolio.js?v=20260809d"></script>
-<script src="js/app.js?v=20260809d"></script>
-<script src="js/hero-menu.js?v=20260809d"></script>
+<script src="vendor/echarts.min.js?v=20260809e"></script>
+<script src="vendor/xlsx.full.min.js?v=20260809e"></script>
+<script src="js/data.js?v=20260809e"></script>
+<script src="js/hk-logos.js?v=20260809e"></script>
+<script src="js/charts.js?v=20260809e"></script>
+<script src="js/excel.js?v=20260809e"></script>
+<script src="js/portfolio.js?v=20260809e"></script>
+<script src="js/app.js?v=20260809e"></script>
+<script src="js/hero-menu.js?v=20260809e"></script>
 </body>
 </html>
