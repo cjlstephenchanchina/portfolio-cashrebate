@@ -58,15 +58,68 @@ body {
   font-weight: 400;
   color: var(--text);
   background: var(--bg);
-  background-image:
-    radial-gradient(1200px 600px at 80% -10%, rgba(91,141,239,0.08), transparent 60%),
-    radial-gradient(900px 500px at -10% 10%, rgba(91,141,239,0.05), transparent 55%);
-  background-attachment: fixed;
   line-height: 1.6;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
+
+/* ---------- 極光背景層（受 Google Stitch hero 啟發：流動的彩色光團） ---------- */
+.aurora-bg {
+  position: fixed; inset: 0; z-index: -1;
+  background: var(--bg);
+  overflow: hidden;
+  pointer-events: none;
+}
+.aurora-blob {
+  position: absolute;
+  width: 62vmax; height: 62vmax;
+  border-radius: 50%;
+  filter: blur(90px);
+  opacity: 0.42;
+  mix-blend-mode: screen;
+  will-change: transform;
+}
+.aurora-blob--1 {
+  background: radial-gradient(circle at 50% 50%, rgba(56, 189, 248, 0.55), rgba(56, 189, 248, 0) 60%);
+  top: -12%; left: -6%;
+  animation: aurora-drift-1 38s ease-in-out infinite;
+}
+.aurora-blob--2 {
+  background: radial-gradient(circle at 50% 50%, rgba(167, 139, 250, 0.50), rgba(167, 139, 250, 0) 60%);
+  top: 8%; right: -12%;
+  animation: aurora-drift-2 47s ease-in-out infinite;
+}
+.aurora-blob--3 {
+  background: radial-gradient(circle at 50% 50%, rgba(45, 212, 191, 0.40), rgba(45, 212, 191, 0) 60%);
+  bottom: -16%; left: 16%;
+  animation: aurora-drift-3 54s ease-in-out infinite;
+}
+.aurora-blob--4 {
+  background: radial-gradient(circle at 50% 50%, rgba(129, 140, 248, 0.40), rgba(129, 140, 248, 0) 60%);
+  bottom: -6%; right: 6%;
+  animation: aurora-drift-4 63s ease-in-out infinite;
+}
+@keyframes aurora-drift-1 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50%      { transform: translate(16%, 12%) scale(1.28); }
+}
+@keyframes aurora-drift-2 {
+  0%, 100% { transform: translate(0, 0) scale(1.05); }
+  50%      { transform: translate(-18%, 14%) scale(1.3); }
+}
+@keyframes aurora-drift-3 {
+  0%, 100% { transform: translate(0, 0) scale(1.1); }
+  50%      { transform: translate(14%, -16%) scale(1.32); }
+}
+@keyframes aurora-drift-4 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50%      { transform: translate(-14%, -12%) scale(1.26); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .aurora-blob { animation: none; }
+}
+
 h1, h2, h3, h4 { margin: 0; font-weight: 600; letter-spacing: -0.01em; line-height: 1.2; }
 p { margin: 0; }
 a { color: inherit; text-decoration: none; }
@@ -275,6 +328,41 @@ em { font-style: normal; color: var(--accent-hi); }
   border-radius: var(--radius-lg);
   padding: 26px;
   box-shadow: var(--shadow);
+}
+
+/* 單筆查詢：磨砂半透明對話框（受 Google Stitch hero 對話框啟發） */
+#quote .card {
+  position: relative;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(24px) saturate(150%);
+  -webkit-backdrop-filter: blur(24px) saturate(150%);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 20px;
+  box-shadow:
+    0 26px 70px rgba(0, 0, 0, 0.50),
+    0 2px 10px rgba(0, 0, 0, 0.30),
+    inset 0 1px 0 rgba(255, 255, 255, 0.10);
+}
+/* 頂部微高光，強化磨砂玻璃的立體感 */
+#quote .card::before {
+  content: "";
+  position: absolute; inset: 0;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.10) 0%, rgba(255, 255, 255, 0) 28%);
+  pointer-events: none;
+}
+/* 對話框內的輸入/選擇框也轉為半透明，與磨砂質感一致 */
+#quote .card input[type="text"],
+#quote .card input[type="number"],
+#quote .card input[type="date"],
+#quote .card select {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.16);
+}
+#quote .card input:focus,
+#quote .card select:focus {
+  border-color: rgba(122, 164, 244, 0.55);
+  box-shadow: 0 0 0 3px rgba(122, 164, 244, 0.18);
 }
 
 /* ---------- 表單 ---------- */
