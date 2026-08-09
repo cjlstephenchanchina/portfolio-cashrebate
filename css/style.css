@@ -263,11 +263,30 @@ em { font-style: normal; color: var(--accent-hi); }
 /* ---------- 區塊 ---------- */
 .main { padding: 8px 0 80px; }
 .section {
+  position: relative;
   padding: 46px 0;
   border-bottom: 1px solid var(--border);
   scroll-margin-top: calc(var(--nav-h) + 12px);
 }
 .section:last-child { border-bottom: none; }
+/* hero→第一內容區無縫銜接：#quote 頂端純黑，向下漸透明，與 hero 底部黑融為一體
+   （注意：不能用 .section:first-of-type —— 第一個 <section> 是 .hero-cinema，會落空，故直接用 #quote） */
+#quote::before {
+  content: "";
+  position: absolute; top: 0; left: 0; right: 0;
+  height: 46vh;
+  z-index: 0;
+  pointer-events: none;
+  background: linear-gradient(to bottom,
+    rgba(6, 8, 14, 1)    0%,
+    rgba(6, 8, 14, 1)    12%,
+    rgba(6, 8, 14, 0.92) 28%,
+    rgba(6, 8, 14, 0.70) 46%,
+    rgba(6, 8, 14, 0.42) 64%,
+    rgba(6, 8, 14, 0.16) 82%,
+    rgba(6, 8, 14, 0)   100%);
+}
+.section > * { position: relative; z-index: 1; }
 .section-head { display: flex; align-items: flex-start; gap: 16px; margin-bottom: 22px; flex-wrap: wrap; }
 .section-head h2 { font-size: 22px; }
 .section-head p { color: var(--muted); font-size: 14px; max-width: 64ch; margin-top: 6px; }
@@ -281,13 +300,19 @@ em { font-style: normal; color: var(--accent-hi); }
 }
 .link-btn:hover { text-decoration: underline; }
 
-/* ---------- 卡片 ---------- */
+/* ---------- 卡片（全站統一毛玻璃：各章節 box 皆與 #quote 對話框同質感） ---------- */
 .card {
-  background: var(--surface);
-  border: 1px solid var(--border);
+  position: relative;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(22px) saturate(150%);
+  -webkit-backdrop-filter: blur(22px) saturate(150%);
+  border: 1px solid rgba(255, 255, 255, 0.14);
   border-radius: var(--radius-lg);
   padding: 26px;
-  box-shadow: var(--shadow);
+  box-shadow:
+    0 26px 70px rgba(0, 0, 0, 0.50),
+    0 2px 10px rgba(0, 0, 0, 0.30),
+    inset 0 1px 0 rgba(255, 255, 255, 0.10);
 }
 
 /* 單筆查詢：磨砂半透明對話框（受 Google Stitch hero 對話框啟發） */
@@ -374,7 +399,8 @@ input[type="file"]::file-selector-button {
 /* ---------- KPI ---------- */
 .kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 14px; margin: 22px 0; }
 .kpi {
-  background: var(--surface-2); border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(16px) saturate(140%); -webkit-backdrop-filter: blur(16px) saturate(140%);
   border-radius: var(--radius); padding: 16px 18px; display: flex; flex-direction: column; gap: 6px;
 }
 .kpi-label { font-size: 12px; color: var(--muted); }
@@ -384,7 +410,7 @@ input[type="file"]::file-selector-button {
 .kpi-hl .kpi-value { color: var(--accent-hi); }
 
 /* ---------- 表格 ---------- */
-.table-wrap { overflow-x: auto; border: 1px solid var(--border); border-radius: var(--radius); margin-top: 4px; }
+.table-wrap { overflow-x: auto; background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.12); border-radius: var(--radius); margin-top: 4px; backdrop-filter: blur(14px) saturate(140%); -webkit-backdrop-filter: blur(14px) saturate(140%); }
 table.data { width: 100%; border-collapse: collapse; font-size: 13.5px; min-width: 720px; }
 table.data thead th {
   position: sticky; top: 0; background: var(--surface-3); color: var(--muted);
@@ -412,7 +438,7 @@ table.data .num { font-family: var(--font-mono); }
 /* ---------- 結果區 / 提示 ---------- */
 .result-area { margin-top: 20px; }
 .result-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px; }
-.r-cell { background: var(--surface-2); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px 16px; display: flex; flex-direction: column; gap: 6px; }
+.r-cell { background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.12); border-radius: var(--radius); padding: 14px 16px; display: flex; flex-direction: column; gap: 6px; backdrop-filter: blur(16px) saturate(140%); -webkit-backdrop-filter: blur(16px) saturate(140%); }
 .r-k { font-size: 12px; color: var(--muted); }
 .r-v { font-family: var(--font-mono); font-size: 20px; font-weight: 500; }
 .r-cell.hl { background: var(--accent-soft); border-color: var(--accent-line); }
@@ -458,7 +484,7 @@ table.data .num { font-family: var(--font-mono); }
   background: var(--up-soft); border: 1px solid rgba(255,91,110,0.3); color: var(--up);
   border-radius: var(--radius); padding: 13px 16px; font-size: 13.5px;
 }
-.note-box { margin-top: 16px; color: var(--muted); font-size: 13px; background: var(--surface-2); border: 1px solid var(--border); border-radius: var(--radius); padding: 12px 15px; }
+.note-box { margin-top: 16px; color: var(--muted); font-size: 13px; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.12); border-radius: var(--radius); padding: 12px 15px; backdrop-filter: blur(16px) saturate(140%); -webkit-backdrop-filter: blur(16px) saturate(140%); }
 .progress { margin-top: 16px; color: var(--accent-hi); font-size: 13.5px; display: flex; align-items: center; gap: 9px; }
 .progress::before { content: ""; width: 14px; height: 14px; border: 2px solid var(--accent-soft); border-top-color: var(--accent); border-radius: 50%; animation: spin .7s linear infinite; }
 @keyframes spin { to { transform: rotate(360deg); } }
@@ -482,11 +508,11 @@ table.data .num { font-family: var(--font-mono); }
 
 /* ---------- 圖表 ---------- */
 .charts { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 20px; }
-.chart-box { background: var(--surface-2); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px; }
+.chart-box { background: rgba(255, 255, 255, 0.045); border: 1px solid rgba(255, 255, 255, 0.12); border-radius: var(--radius); padding: 18px; backdrop-filter: blur(16px) saturate(140%); -webkit-backdrop-filter: blur(16px) saturate(140%); }
 .chart-title { font-size: 14px; color: var(--text); margin-bottom: 12px; font-weight: 500; }
 .chart { width: 100%; height: 280px; }
 #pf-curve, #chartKline { width: 100%; height: 320px; }
-.curve-box { background: var(--surface-2); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px; margin-top: 20px; }
+.curve-box { background: rgba(255, 255, 255, 0.045); border: 1px solid rgba(255, 255, 255, 0.12); border-radius: var(--radius); padding: 18px; margin-top: 20px; backdrop-filter: blur(16px) saturate(140%); -webkit-backdrop-filter: blur(16px) saturate(140%); }
 
 /* ---------- 持倉市值 Top 3 卡片（Logo + 公司名 + 排名 + 比重） ---------- */
 .chart-top3 { grid-column: 1 / -1; }
@@ -495,9 +521,10 @@ table.data .num { font-family: var(--font-mono); }
 .top3-card {
   display: flex; align-items: center; gap: 10px;
   padding: 8px 10px;
-  background: var(--surface-3);
-  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: var(--radius);
+  backdrop-filter: blur(14px) saturate(140%); -webkit-backdrop-filter: blur(14px) saturate(140%);
   transition: border-color .2s ease, transform .2s ease;
 }
 .top3-card:hover { border-color: var(--accent-line); transform: translateY(-1px); }
