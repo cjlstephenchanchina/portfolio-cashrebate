@@ -32,8 +32,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500&family=Inter:wght@200;300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/style.css?v=20260809c">
-<link rel="stylesheet" href="css/hero.css?v=20260809c">
+<link rel="stylesheet" href="css/style.css?v=20260809d">
+<link rel="stylesheet" href="css/hero.css?v=20260809d">
 </head>
 <body>
 
@@ -42,10 +42,10 @@
   <div class="container nav-row">
     <a class="brand" href="#top"><img class="brand-logo" src="img/logo-mark-192.png" alt="Nora-AI Capital" width="26" height="26">Nora-AI Capital<span class="brand-sub">See clearly. Act precisely.</span><span class="brand-dot">.</span></a>
     <nav class="nav-links" aria-label="主導覽">
-      <a href="#overview" class="active">持倉總覽</a>
-      <a href="#quote">單筆查詢</a>
+      <a href="#quote" class="active">單筆查詢</a>
       <a href="#batch">批量作業</a>
       <a href="#stats">回贈統計</a>
+      <a href="#overview">持倉總覽</a>
       <a href="#history">走勢</a>
     </nav>
     <span class="nav-live"><i class="dot"></i>真實行情</span>
@@ -59,10 +59,10 @@
 
 <!-- ================= 全螢幕 mobile menu（hero 漢堡觸發） ================= -->
 <nav class="mobile-menu" id="mobileMenu" role="dialog" aria-modal="true" aria-label="Site menu" aria-hidden="true" inert>
-  <a class="m-link" href="#overview" style="--i:0">持倉總覽</a>
-  <a class="m-link" href="#quote" style="--i:1">單筆查詢</a>
-  <a class="m-link" href="#batch" style="--i:2">批量作業</a>
-  <a class="m-link" href="#stats" style="--i:3">回贈統計</a>
+  <a class="m-link" href="#quote" style="--i:0">單筆查詢</a>
+  <a class="m-link" href="#batch" style="--i:1">批量作業</a>
+  <a class="m-link" href="#stats" style="--i:2">回贈統計</a>
+  <a class="m-link" href="#overview" style="--i:3">持倉總覽</a>
   <a class="m-link" href="#history" style="--i:4">走勢</a>
   <a class="m-cta" href="#overview" style="--i:5">開始使用</a>
 </nav>
@@ -92,60 +92,7 @@
 
 <main class="container main">
 
-  <!-- ================= 持倉總覽（主視圖） ================= -->
-  <section class="section" id="overview">
-    <div class="section-head">
-      <span class="sec-no">00</span>
-      <div>
-        <h2>持倉總覽</h2>
-        <p>維護持倉清單（市場／代碼／股數／成本），一鍵計算跨市場港幣市值、未實現盈虧與組合淨值走勢。清單自動保存在本機瀏覽器。</p>
-      </div>
-    </div>
-    <div class="card">
-      <div class="pf-toolbar">
-        <button class="btn btn-soft btn-sm" type="button" id="pf-add">＋ 新增持倉</button>
-        <button class="btn btn-primary btn-sm" type="button" id="pf-compute">計算市值</button>
-        <span class="spacer"></span>
-        <button class="btn btn-ghost btn-sm" type="button" id="pf-export">⬇ 匯出 Excel</button>
-        <button class="btn btn-ghost btn-sm" type="button" id="pf-print">🖨 列印 / PDF</button>
-      </div>
-
-      <div id="pf-loading" class="progress" hidden>正在查詢真實行情並計算…</div>
-      <div id="pf-msg" class="error-box" hidden></div>
-
-      <div class="kpis" id="pf-kpis" hidden>
-        <div class="kpi kpi-hl"><span class="kpi-label">持倉總市值</span><span class="kpi-value" id="k-pf-total">—</span><span class="kpi-unit">HKD</span></div>
-        <div class="kpi"><span class="kpi-label">總成本</span><span class="kpi-value" id="k-pf-cost">—</span><span class="kpi-unit">HKD</span></div>
-        <div class="kpi"><span class="kpi-label">未實現盈虧</span><span class="kpi-value" id="k-pf-pl">—</span><span class="kpi-unit">HKD</span></div>
-        <div class="kpi"><span class="kpi-label">持倉標的</span><span class="kpi-value" id="k-pf-count">—</span><span class="kpi-unit">檔</span></div>
-      </div>
-
-      <div class="table-wrap">
-        <table class="pf-table">
-          <thead>
-            <tr>
-              <th data-label="市場">市場</th>
-              <th data-label="股票代碼">股票代碼</th>
-              <th data-label="股數">股數</th>
-              <th data-label="成本價">成本價</th>
-              <th data-label="現價">現價</th>
-              <th data-label="港幣市值">港幣市值</th>
-              <th data-label="未實現盈虧">未實現盈虧</th>
-              <th class="col-act"></th>
-            </tr>
-          </thead>
-          <tbody id="pf-body"></tbody>
-        </table>
-      </div>
-
-      <div class="curve-box" id="pf-curve-box" hidden>
-        <h3 class="chart-title">組合淨值走勢（近 180 個交易日，HKD）</h3>
-        <div id="pf-curve" class="chart"></div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ================= 單筆查詢 ================= -->
+  <!-- ================= 單筆查詢（第一章） ================= -->
   <section class="section" id="quote">
     <div class="section-head">
       <span class="sec-no">01</span>
@@ -184,20 +131,20 @@
     </div>
   </section>
 
-  <!-- ================= 批量作業 ================= -->
+  <!-- ================= 批量作業（第二章） ================= -->
   <section class="section" id="batch">
     <div class="section-head">
       <span class="sec-no">02</span>
       <div>
         <h2>批量作業</h2>
-        <p>上傳 Excel（客戶編號／市場／股票代碼／股份數量），系統自動查價、計算並寫入港幣市值。</p>
+        <p>上傳 Excel（客戶編號選填／指定日期／市場／股票代碼／股份數量），每列可使用自己的指定日期查詢該日收市價；如未填寫則採用上方批量日期。</p>
       </div>
       <button class="link-btn" id="dl-template" type="button">下載 Excel 樣本模板 ↓</button>
     </div>
     <div class="card">
       <form id="batch-form" class="form-grid">
         <div class="field">
-          <label for="b-date">查詢日期（批量）</label>
+          <label for="b-date">批量日期 <span class="opt">（缺省值：每列未指定日期時使用）</span></label>
           <input id="b-date" type="date" required>
         </div>
         <div class="field field-file">
@@ -213,7 +160,7 @@
     </div>
   </section>
 
-  <!-- ================= 回贈與統計 ================= -->
+  <!-- ================= 回贈與統計（第三章） ================= -->
   <section class="section" id="stats">
     <div class="section-head">
       <span class="sec-no">03</span>
@@ -298,10 +245,63 @@
     </div>
   </section>
 
-  <!-- ================= 歷史走勢 ================= -->
-  <section class="section" id="history">
+  <!-- ================= 持倉總覽（第四章） ================= -->
+  <section class="section" id="overview">
     <div class="section-head">
       <span class="sec-no">04</span>
+      <div>
+        <h2>持倉總覽</h2>
+        <p>維護持倉清單（市場／代碼／股數／成本），一鍵計算跨市場港幣市值、未實現盈虧與組合淨值走勢。清單自動保存在本機瀏覽器。</p>
+      </div>
+    </div>
+    <div class="card">
+      <div class="pf-toolbar">
+        <button class="btn btn-soft btn-sm" type="button" id="pf-add">＋ 新增持倉</button>
+        <button class="btn btn-primary btn-sm" type="button" id="pf-compute">計算市值</button>
+        <span class="spacer"></span>
+        <button class="btn btn-ghost btn-sm" type="button" id="pf-export">⬇ 匯出 Excel</button>
+        <button class="btn btn-ghost btn-sm" type="button" id="pf-print">🖨 列印 / PDF</button>
+      </div>
+
+      <div id="pf-loading" class="progress" hidden>正在查詢真實行情並計算…</div>
+      <div id="pf-msg" class="error-box" hidden></div>
+
+      <div class="kpis" id="pf-kpis" hidden>
+        <div class="kpi kpi-hl"><span class="kpi-label">持倉總市值</span><span class="kpi-value" id="k-pf-total">—</span><span class="kpi-unit">HKD</span></div>
+        <div class="kpi"><span class="kpi-label">總成本</span><span class="kpi-value" id="k-pf-cost">—</span><span class="kpi-unit">HKD</span></div>
+        <div class="kpi"><span class="kpi-label">未實現盈虧</span><span class="kpi-value" id="k-pf-pl">—</span><span class="kpi-unit">HKD</span></div>
+        <div class="kpi"><span class="kpi-label">持倉標的</span><span class="kpi-value" id="k-pf-count">—</span><span class="kpi-unit">檔</span></div>
+      </div>
+
+      <div class="table-wrap">
+        <table class="pf-table">
+          <thead>
+            <tr>
+              <th data-label="市場">市場</th>
+              <th data-label="股票代碼">股票代碼</th>
+              <th data-label="股數">股數</th>
+              <th data-label="成本價">成本價</th>
+              <th data-label="現價">現價</th>
+              <th data-label="港幣市值">港幣市值</th>
+              <th data-label="未實現盈虧">未實現盈虧</th>
+              <th class="col-act"></th>
+            </tr>
+          </thead>
+          <tbody id="pf-body"></tbody>
+        </table>
+      </div>
+
+      <div class="curve-box" id="pf-curve-box" hidden>
+        <h3 class="chart-title">組合淨值走勢（近 180 個交易日，HKD）</h3>
+        <div id="pf-curve" class="chart"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= 歷史走勢（第五章） ================= -->
+  <section class="section" id="history">
+    <div class="section-head">
+      <span class="sec-no">05</span>
       <div>
         <h2>歷史走勢</h2>
         <p>檢視單一標的的日 K 線（收盤價、漲跌）。支援港股 / A股 / 美股，數據為真實歷史行情。</p>
@@ -346,14 +346,14 @@
   </div>
 </footer>
 
-<script src="vendor/echarts.min.js?v=20260809c"></script>
-<script src="vendor/xlsx.full.min.js?v=20260809c"></script>
-<script src="js/data.js?v=20260809c"></script>
-<script src="js/hk-logos.js?v=20260809c"></script>
-<script src="js/charts.js?v=20260809c"></script>
-<script src="js/excel.js?v=20260809c"></script>
-<script src="js/portfolio.js?v=20260809c"></script>
-<script src="js/app.js?v=20260809c"></script>
-<script src="js/hero-menu.js?v=20260809c"></script>
+<script src="vendor/echarts.min.js?v=20260809d"></script>
+<script src="vendor/xlsx.full.min.js?v=20260809d"></script>
+<script src="js/data.js?v=20260809d"></script>
+<script src="js/hk-logos.js?v=20260809d"></script>
+<script src="js/charts.js?v=20260809d"></script>
+<script src="js/excel.js?v=20260809d"></script>
+<script src="js/portfolio.js?v=20260809d"></script>
+<script src="js/app.js?v=20260809d"></script>
+<script src="js/hero-menu.js?v=20260809d"></script>
 </body>
 </html>

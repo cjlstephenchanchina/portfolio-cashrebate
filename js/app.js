@@ -99,20 +99,24 @@ async function submitBatch(e) {
   prog.hidden = false; prog.textContent = "正在解析 Excel…";
   $("b-result").hidden = true;
   try {
-    const date = $("b-date").value || todayStr();
+    const fallbackDate = $("b-date").value || todayStr();
     prog.textContent = "正在解析 Excel…";
     const rows = await parseExcel(file);
-    prog.textContent = `正在逐行查詢真實行情（共 ${rows.length} 行）…`;
+    // 依全檔判斷：以客戶編號或股票代碼排序
+    const ordered = sortBatchRows(rows);
+    prog.textContent = `正在逐行查詢真實行情（共 ${ordered.length} 行）…`;
     const results = [];
-    for (let i = 0; i < rows.length; i++) {
-      const r = rows[i];
+    for (let i = 0; i < ordered.length; i++) {
+      const r = ordered[i];
       try {
-        if (!r.client) throw new Error("客戶編號為空");
-        const q = await getClosePrice(r.code, r.market, date);
+        // 每列可用自己的指定日期；缺則退回批量日期
+        const rowDate = r.date || fallbackDate;
+        const q = await getClosePrice(r.code, r.market, rowDate);
         const fx = await fetchFx(q.currency, q.quote_date);
         const mv = round4(q.price * r.shares);
         results.push({
           ...r, ...q,
+          date: rowDate,
           market_value: mv,
           fx_to_hkd: fx.rate, fx_source: fx.source,
           hkd_value: round4(mv * fx.rate),
@@ -121,12 +125,12 @@ async function submitBatch(e) {
       } catch (err) {
         results.push({ ...r, status: "failed", reason: err.message });
       }
-      prog.textContent = `正在查詢真實行情（${i + 1}/${rows.length}）…`;
+      prog.textContent = `正在查詢真實行情（${i + 1}/${ordered.length}）…`;
     }
     state.lastRows = results;
     state.rowsFromDemo = false;
     prog.hidden = true;
-    renderBatch(results, date);
+    renderBatch(results, fallbackDate);
     $("s-source").value = "last";
     computeStats();
   } catch (err) {
@@ -139,17 +143,23 @@ async function submitBatch(e) {
 }
 
 const B_COLS = [
-  ["client", "客戶編號"], ["market", "市場"], ["stock", "股票"], ["shares", "股份數量"],
+  ["client", "客戶編號"], ["date", "指定日期"], ["market", "市場"], ["stock", "股票"], ["shares", "股份數量"],
   ["price", "收市價"], ["market_value", "原幣市值"], ["fx_to_hkd", "匯率→HKD"],
   ["hkd_value", "港幣市值"], ["status", "狀態"], ["reason", "備註"],
 ];
 
-function renderBatch(rows, date) {
+function renderBatch(rows, fallbackDate) {
   const el = $("b-result");
   el.hidden = false;
   const ok = rows.filter((r) => r.status === "ok");
   const failed = rows.length - ok.length;
   const totalHkd = ok.reduce((s, r) => s + (r.hkd_value || 0), 0);
+  const uniqueDates = [...new Set(rows.map((r) => r.date || fallbackDate))];
+  const dateNote = uniqueDates.length > 1
+    ? `每列以「指定日期」獨立查價（本次共 ${uniqueDates.length} 個不同日期）`
+    : `查詢日期：${fallbackDate}`;
+  const hasClient = rows.some((r) => String(r.client || "").trim() !== "");
+  const sortNote = hasClient ? "已依「客戶編號」排序" : "已依「股票代碼」排序";
   const rowsHtml = rows.map((row) => {
     const isOk = row.status === "ok";
     const cells = B_COLS.map(([k, label]) => {
@@ -160,6 +170,8 @@ function renderBatch(rows, date) {
       if (k === "price" || k === "market_value" || k === "hkd_value") v = v !== null && v !== undefined ? fmtMoney(v) : "—";
       if (k === "fx_to_hkd") v = v !== null && v !== undefined ? Number(v).toFixed(4) : "—";
       if (k === "shares") v = fmtInt(v);
+      if (k === "date") v = v ? esc(v) : `<span class="pf-muted">—（批量 ${esc(fallbackDate)}）</span>`;
+      if (k === "client") v = v ? esc(v) : `<span class="pf-muted">—</span>`;
       if (k === "reason" && !v) v = "—";
       return `<td data-label="${escAttr(label)}">${v || ""}</td>`;
     }).join("");
@@ -174,12 +186,12 @@ function renderBatch(rows, date) {
       <div class="kpi kpi-hl"><span class="kpi-label">港幣市值合計</span><span class="kpi-value" style="font-size:24px">HK$${fmtMoney(totalHkd)}</span></div>
     </div>
     <div class="table-wrap"><table class="data">
-      <thead><tr><th>客戶編號</th><th>市場</th><th>股票</th><th>股份數量</th><th>收市價</th><th>原幣市值</th><th>匯率→HKD</th><th>港幣市值</th><th>狀態</th><th>備註</th></tr></thead>
+      <thead><tr><th>客戶編號</th><th>指定日期</th><th>市場</th><th>股票</th><th>股份數量</th><th>收市價</th><th>原幣市值</th><th>匯率→HKD</th><th>港幣市值</th><th>狀態</th><th>備註</th></tr></thead>
       <tbody>${rowsHtml}</tbody>
     </table></div>
     <div style="display:flex;gap:16px;margin-top:20px;flex-wrap:wrap;align-items:center">
       <button class="btn btn-dark" type="button" id="b-export-btn">⬇ 匯出結果（Excel）</button>
-      <span class="r-note" style="margin:0">查詢日期：${esc(date)}；失敗行原因見備註。</span>
+      <span class="r-note" style="margin:0">${dateNote}；${sortNote}；失敗行原因見備註。</span>
     </div>
   `;
   $("b-export-btn").addEventListener("click", () => {
@@ -295,7 +307,6 @@ function renderTop3Cards(list, totalMv) {
     const info = (typeof hkLogoInfo === "function") ? hkLogoInfo(d.code) : null;
     const cn = info ? info.cn : d.code;
     const en = info ? info.en : "";
-    const color = info ? info.color : "var(--accent)";
     const monoChar = info ? (info.mono || d.code.slice(0, 1)) : d.code.slice(0, 1);
     const hasLogo = !!info;
     const rank = i + 1;
@@ -304,7 +315,7 @@ function renderTop3Cards(list, totalMv) {
     return `
       <div class="top3-card">
         <span class="top3-rank">#${rank}</span>
-        <span class="top3-badge" style="background:${color}">
+        <span class="top3-badge">
           ${hasLogo ? `<img class="top3-logo" src="img/logos/${info.key}.png" alt="${esc(cn)}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">` : ""}
           <span class="top3-mono" style="display:${hasLogo ? "none" : "flex"}">${esc(monoChar)}</span>
         </span>
