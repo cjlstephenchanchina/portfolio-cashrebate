@@ -165,33 +165,68 @@ em { font-style: normal; color: var(--accent-hi); }
   100% { box-shadow: 0 0 0 0 rgba(31,199,155,0); }
 }
 
-/* ── 滾動後：毛玻璃半透明 + 圓角 + 陰影 + 深色文字 ── */
+/* ── 滾動後：液態玻璃膠囊（只包住 logo→真實行情 內容，非通欄白條） ── */
 .site-nav.scrolled {
-  background: rgba(255, 255, 255, 0.72);
-  backdrop-filter: saturate(180%) blur(20px);
-  -webkit-backdrop-filter: saturate(180%) blur(20px);
-  border-bottom-color: rgba(15, 23, 42, 0.06);
-  border-radius: 0 0 18px 18px;
-  box-shadow:
-    0 10px 30px rgba(15, 23, 42, 0.10),
-    0 1px 0 rgba(255, 255, 255, 0.6) inset;
-  color: #0B0E14;
+  /* 取消通欄白色半透明橫條；玻璃效果改由 .nav-row 膠囊呈現 */
+  background: transparent;
+  border-bottom-color: transparent;
+  border-radius: 0;
+  box-shadow: none;
+  color: #fff;
 }
+/* 膠囊容器：抬升內容層、建立堆疊上下文 */
+.site-nav .nav-row { position: relative; isolation: isolate; }
+.site-nav .nav-row > * { position: relative; z-index: 1; }
+
+/* 液態玻璃膠囊：深色毛玻璃 + 強模糊；預設隐藏，滾動後淡入 */
+.site-nav .nav-row::before,
+.site-nav .nav-row::after {
+  content: "";
+  position: absolute;
+  inset: 8px 0;
+  z-index: 0;
+  border-radius: 999px;
+  opacity: 0;
+  transition: opacity .4s var(--nav-ease);
+  pointer-events: none;
+}
+.site-nav .nav-row::before {
+  background: rgba(17, 21, 31, 0.55);
+  backdrop-filter: blur(18px) saturate(160%);
+  -webkit-backdrop-filter: blur(18px) saturate(160%);
+  box-shadow:
+    0 10px 30px rgba(0, 0, 0, 0.35),
+    0 1px 0 rgba(255, 255, 255, 0.12) inset;
+}
+/* 漸變細光邊：上下亮、中間消失（mask-composite: xor 切出 1px 環） */
+.site-nav .nav-row::after {
+  box-sizing: border-box;
+  padding: 1px;
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.9), transparent 50%, rgba(255, 255, 255, 0.9));
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+          mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+          mask-composite: xor;
+}
+.site-nav.scrolled .nav-row::before,
+.site-nav.scrolled .nav-row::after { opacity: 1; }
+
+/* 膠囊內文字維持白色（深色玻璃在深色 hero 與淺色內文區都醒目） */
 .site-nav.scrolled .brand-logo { filter: none; }
-.site-nav.scrolled .nav-links a { color: rgba(15, 23, 42, 0.62); }
-.site-nav.scrolled .nav-links a:hover { color: #0B0E14; background: rgba(15, 23, 42, 0.06); }
+.site-nav.scrolled .nav-links a { color: rgba(255, 255, 255, 0.82); }
+.site-nav.scrolled .nav-links a:hover { color: #fff; background: rgba(255, 255, 255, 0.14); }
 .site-nav.scrolled .nav-links a.active {
-  color: #0B0E14;
-  background: rgba(91, 141, 239, 0.12);
+  color: #fff;
+  background: rgba(91, 141, 239, 0.30);
 }
 .site-nav.scrolled .nav-indicator {
-  background: rgba(91, 141, 239, 0.16);
-  box-shadow: 0 1px 0 rgba(91, 141, 239, 0.18) inset;
+  background: rgba(255, 255, 255, 0.16);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.18) inset;
 }
 .site-nav.scrolled .nav-live {
-  color: rgba(15, 23, 42, 0.62);
-  border-color: rgba(15, 23, 42, 0.12);
-  background: rgba(15, 23, 42, 0.03);
+  color: rgba(255, 255, 255, 0.9);
+  border-color: rgba(255, 255, 255, 0.28);
+  background: rgba(255, 255, 255, 0.08);
 }
 
 /* ---------- 頁頭（slim，無照片） ---------- */
