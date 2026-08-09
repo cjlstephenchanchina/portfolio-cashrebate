@@ -113,22 +113,21 @@ em { font-style: normal; color: var(--accent-hi); }
 .nav-links { position: relative; display: flex; gap: 4px; margin-left: auto; align-items: center; }
 .nav-links a {
   position: relative; z-index: 1;
-  font-size: 13.5px; color: rgba(255, 255, 255, 0.78);
+  display: inline-flex; flex-direction: column;
+  overflow: hidden;
+  font-size: 13.5px; font-weight: 500; color: rgba(255, 255, 255, 0.85);
   padding: 8px 12px; border-radius: var(--radius-sm);
-  transition: color .35s ease, background .35s ease, transform .25s var(--nav-ease);
+  transition: color .35s ease, background .35s ease;
   text-decoration: none;
 }
+.nav-link__txt { display: block; white-space: nowrap; transition: transform .5s cubic-bezier(.34, 1.56, .64, 1); }
+.nav-link__txt + .nav-link__txt { position: absolute; inset: 8px 12px; transform: translateY(120%); }
+.nav-links a:hover .nav-link__txt,
+.nav-links a:focus-visible .nav-link__txt { transform: translateY(-120%); }
+.nav-links a:hover .nav-link__txt + .nav-link__txt,
+.nav-links a:focus-visible .nav-link__txt + .nav-link__txt { transform: translateY(0); }
 .nav-links a:hover { color: #fff; background: rgba(255, 255, 255, 0.10); }
-.nav-links a.active {
-  color: #fff;
-  background: rgba(255, 255, 255, 0.14);
-  animation: navLinkPop .35s var(--nav-ease);
-}
-@keyframes navLinkPop {
-  0%   { transform: translateY(-2px) scale(0.97); }
-  60%  { transform: translateY(0)    scale(1.02); }
-  100% { transform: translateY(0)    scale(1); }
-}
+.nav-links a.active { color: #fff; background: rgba(91, 141, 239, 0.16); }
 
 /* 滑動指示條（底部 underline + 微弱背景，跟在 active link 後移動） */
 .nav-indicator {
@@ -210,20 +209,20 @@ em { font-style: normal; color: var(--accent-hi); }
 
 /* 膠囊內文字（淺色玻璃上方用深色，維持清晰） */
 .site-nav.scrolled .brand-logo { filter: none; }
-.site-nav.scrolled .nav-links a { color: rgba(15, 23, 42, 0.62); }
-.site-nav.scrolled .nav-links a:hover { color: #0B0E14; background: rgba(15, 23, 42, 0.06); }
+.site-nav.scrolled .nav-links a { color: rgba(255, 255, 255, 0.82); }
+.site-nav.scrolled .nav-links a:hover { color: #fff; background: rgba(255, 255, 255, 0.12); }
 .site-nav.scrolled .nav-links a.active {
-  color: #0B0E14;
-  background: rgba(91, 141, 239, 0.14);
+  color: #fff;
+  background: rgba(91, 141, 239, 0.20);
 }
 .site-nav.scrolled .nav-indicator {
   background: rgba(91, 141, 239, 0.16);
   box-shadow: 0 1px 0 rgba(91, 141, 239, 0.18) inset;
 }
 .site-nav.scrolled .nav-live {
-  color: rgba(15, 23, 42, 0.62);
-  border-color: rgba(15, 23, 42, 0.14);
-  background: rgba(15, 23, 42, 0.04);
+  color: rgba(255, 255, 255, 0.82);
+  border-color: rgba(255, 255, 255, 0.28);
+  background: rgba(255, 255, 255, 0.06);
 }
 
 /* ---------- 頁頭（slim，無照片） ---------- */
