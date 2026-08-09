@@ -1,0 +1,207 @@
+/* =====================================================================
+ * Language resource — English
+ * Key namespace is identical to zh-Hant / zh-Hans.
+ * ===================================================================== */
+window.I18N_DATA = window.I18N_DATA || {};
+window.I18N_DATA["en"] = {
+  /* ---------- Nav ---------- */
+  "nav.query": "Single Query",
+  "nav.batch": "Batch",
+  "nav.stats": "Rebate Stats",
+  "nav.overview": "Holdings",
+  "nav.history": "Trends",
+  "nav.live": "Live Quotes",
+  "nav.aria": "Main navigation",
+  "nav.menu": "Open menu",
+  "nav.close": "Close menu",
+  "menu.cta": "Get Started",
+
+  /* ---------- Hero ---------- */
+  "hero.cta": "Get Started",
+
+  /* ---------- Quote ---------- */
+  "quote.title": "Single Query",
+  "quote.desc": "Enter a stock code and date to instantly return the real closing price and market value (shares optional).",
+  "quote.lbl.market": "Market",
+  "quote.lbl.code": "Stock Code",
+  "quote.lbl.date": "Query Date",
+  "quote.lbl.shares": "Shares",
+  "quote.opt": "(optional)",
+  "quote.ph.code": "700 / 600519 / AAPL",
+  "quote.btn": "Get Closing Price",
+
+  /* ---------- Batch ---------- */
+  "batch.title": "Batch",
+  "batch.desc": "Upload an Excel file (client ID optional / assigned date / market / stock code / shares). Each row can use its own assigned date to query that day’s closing price; if left blank, the batch date above is used.",
+  "batch.dl": "Download Excel Template ↓",
+  "batch.lbl.date": "Batch Date",
+  "batch.lbl.dateHint": "(default: used when a row has no assigned date)",
+  "batch.lbl.file": "Excel File",
+  "batch.btn": "Upload & Calculate",
+
+  /* ---------- Stats ---------- */
+  "stats.title": "Rebate & Analytics",
+  "stats.desc": "Set a per-client cash-rebate cap and conditions (e.g. HK$100 per HK$100k). Total rebate, client count and average market value are computed automatically.",
+  "stats.lbl.cap": "Rebate Cap / Client (HKD)",
+  "stats.lbl.threshold": "Per (HKD)",
+  "stats.lbl.amount": "Rebate Amount (HKD)",
+  "stats.lbl.date": "Query Date (demo)",
+  "stats.lbl.source": "Data Source",
+  "stats.opt.demo": "Built-in demo (real quotes)",
+  "stats.opt.last": "Last batch result",
+  "stats.btn": "Calculate Stats",
+  "stats.loading": "Loading real quotes and statistics…",
+  "stats.kpi.totalRebate": "Total Rebate",
+  "stats.kpi.clients": "Clients Covered",
+  "stats.kpi.avg": "Avg MV / Client",
+  "stats.kpi.totalMv": "Total Holdings MV",
+  "stats.unit.clients": "clients",
+  "stats.chart.top3": "Top 3 by Market Value",
+  "stats.chart.top3sub": "Company ID",
+  "stats.chart.market": "Market Distribution",
+  "stats.chart.rebate": "Rebate by Client",
+
+  /* ---------- Overview ---------- */
+  "overview.title": "Holdings Overview",
+  "overview.desc": "Maintain a holdings list (market / code / shares / cost). One click computes cross-market HKD market value, unrealized P/L and the portfolio net-value trend. The list is auto-saved in your browser.",
+  "overview.btn.add": "+ Add Holding",
+  "overview.btn.compute": "Calculate Value",
+  "overview.btn.export": "⬇ Export Excel",
+  "overview.btn.print": "🖨 Print / PDF",
+  "overview.loading": "Querying real quotes and calculating…",
+  "overview.kpi.total": "Total Holdings MV",
+  "overview.kpi.cost": "Total Cost",
+  "overview.kpi.pl": "Unrealized P/L",
+  "overview.kpi.count": "Holdings",
+  "overview.kpi.unit.count": "items",
+  "overview.curve": "Portfolio Net Value Trend (last 180 sessions, HKD)",
+
+  /* ---------- Portfolio table ---------- */
+  "pf.th.market": "Market",
+  "pf.th.code": "Stock Code",
+  "pf.th.shares": "Shares",
+  "pf.th.cost": "Cost",
+  "pf.th.price": "Price",
+  "pf.th.mv": "HKD MV",
+  "pf.th.pl": "Unrealized P/L",
+  "pf.empty": "No holdings yet. Click “+ Add Holding” to start.",
+  "pf.costPh": "optional",
+  "pf.delTitle": "Delete",
+  "pf.export.sheet": "Holdings Overview",
+  "pf.export.file": "Holdings Overview",
+  "pf.export.headers": ["Market", "Stock Code", "Shares", "Cost", "Price", "Local CCY", "HKD MV", "HKD Cost", "Unrealized P/L"],
+
+  /* ---------- History ---------- */
+  "history.title": "Historical Trend",
+  "history.desc": "View the daily K-line (close price, change) of a single instrument. Supports HK / A-share / US stocks with real historical quotes.",
+  "history.lbl.market": "Market",
+  "history.lbl.code": "Stock Code",
+  "history.ph.code": "700 / 600519 / AAPL",
+  "history.btn": "View K-line",
+  "history.curve": "Daily K-line",
+
+  /* ---------- Footer ---------- */
+  "footer.note": "Quotes: Tencent public quote API, stockanalysis.com (real closing prices) ｜ FX: European Central Bank (ECB) official reference rates<br>When data is unavailable the system states so clearly. All results are for reference only and do not constitute investment advice.",
+
+  /* ---------- Meta ---------- */
+  "meta.title": "Nora-AI Capital — Stock Market Value Calculator",
+  "meta.description": "Nora-AI Capital — HK / A-share / US stock holding valuation, batch processing and cash-rebate analytics",
+  "meta.ogTitle": "Nora-AI Capital — Stock Market Value Calculator",
+  "meta.ogDescription": "See clearly. Act precisely. HK / A-share / US stock holding valuation, batch processing and cash-rebate analytics.",
+
+  /* ---------- Market labels ---------- */
+  "mk.hk": "HK",
+  "mk.a": "A-share",
+  "mk.us": "US",
+  "mk.opt.hk": "Hong Kong (HK)",
+  "mk.opt.a": "A-share (A)",
+  "mk.opt.us": "US (US)",
+
+  /* ---------- Dynamic: quote ---------- */
+  "app.quote.btnLoading": "Querying…",
+  "app.quote.errFill": "Please enter a stock code and query date",
+  "app.quote.btnLabel": "Get Closing Price",
+  "app.quote.lbl.stock": "Stock",
+  "app.quote.lbl.tradeDate": "Actual Trade Date",
+  "app.quote.lbl.price": "Close ({cur})",
+  "app.quote.lbl.shares": "Shares",
+  "app.quote.lbl.mv": "Market Value ({cur})",
+  "app.quote.lbl.fx": "FX (→HKD)",
+  "app.quote.lbl.hkdMv": "HKD Market Value",
+  "app.quote.note.ecb": "FX from {date} (ECB)",
+  "app.quote.note.fxSrc": "FX source: {src}",
+  "app.quote.note.sep": "; ",
+  "app.quote.note.end": ".",
+
+  /* ---------- Dynamic: batch ---------- */
+  "app.batch.btnLoading": "Processing…",
+  "app.batch.parsing": "Parsing Excel…",
+  "app.batch.querying": "Querying real quotes row by row ({n} rows)…",
+  "app.batch.queryProg": "Querying real quotes ({i}/{n})…",
+  "app.batch.btn": "Upload & Calculate",
+  "app.batch.lockedTip": "The file contains an “assigned date” column, so the batch date is locked. Each row is queried at its own assigned date.",
+  "app.batch.col.client": "Client ID",
+  "app.batch.col.date": "Assigned Date",
+  "app.batch.col.market": "Market",
+  "app.batch.col.stock": "Stock",
+  "app.batch.col.shares": "Shares",
+  "app.batch.col.price": "Close",
+  "app.batch.col.mv": "Local MV",
+  "app.batch.col.fx": "FX→HKD",
+  "app.batch.col.hkdMv": "HKD MV",
+  "app.batch.col.status": "Status",
+  "app.batch.col.reason": "Note",
+  "app.batch.kpi.total": "Total Rows",
+  "app.batch.kpi.ok": "Succeeded",
+  "app.batch.kpi.fail": "Failed",
+  "app.batch.kpi.totalMv": "Total HKD MV",
+  "app.batch.status.ok": "OK",
+  "app.batch.status.fail": "Failed",
+  "app.batch.dateNote.multi": "Each row is priced at its own “assigned date” ({n} distinct dates this run)",
+  "app.batch.dateNote.single": "Query date: {date}",
+  "app.batch.sortByClient": "Sorted by “Client ID”",
+  "app.batch.sortByStock": "Sorted by “Stock Code”",
+  "app.batch.sep": "; ",
+  "app.batch.failNote": "{n} rows failed.",
+  "app.batch.exportBtn": "⬇ Export Result (Excel)",
+  "app.batch.fxNote": "💱 <strong>FX→HKD</strong> uses each row’s “assigned date” ECB daily rate (fetched live); if that day is a forex holiday, it falls back to the previous trading day.",
+
+  /* ---------- Dynamic: stats ---------- */
+  "app.stats.loadingDate": "Loading {date} real quotes…",
+  "app.stats.note": "Rule: HK{amount} rebate per HK{threshold}, capped at HK{cap} per client. Based on {demo} (real quotes); {ok} rows succeeded.",
+  "app.stats.note.demo": "demo holdings",
+  "app.stats.note.last": "last batch result",
+
+  /* ---------- Dynamic: portfolio ---------- */
+  "pf.computing": "Calculating…",
+  "pf.btn": "Calculate Value",
+  "pf.noExcel": "Excel component not loaded",
+  "pf.err.blank": "Code or market is blank",
+  "pf.noCost": "No cost set",
+  "pf.noData": "N/A",
+  "pf.fail": "Failed",
+  "pf.kline.errCode": "Please enter a stock code",
+  "pf.kline.loading": "Loading…",
+  "pf.kline.badCode": "Unrecognized code",
+  "pf.kline.noData": "No historical data",
+  "pf.kline.title": "Daily K-line — {name} ({market} {code})",
+
+  /* ---------- Dynamic: data errors ---------- */
+  "data.marketUnsupported": "Unsupported market: {market}",
+  "data.badCode": "Unrecognized stock code “{code}”: HK 1–5 digits (leading zeros auto-stripped), A-share 6 digits, US letter code",
+  "data.noPrice": "No closing-price data for “{code}” (code may be invalid)",
+  "data.beforeRange": "No closing-price data for “{code}” on {date} (query date precedes available data)",
+  "data.noFx": "No {currency}→HKD FX data for {date} (ECB unavailable)",
+  "data.demoFail": "Demo data build failed: no usable real quotes for {date}",
+  "data.note.nonTrade": "Query date is a non-trading day; previous trading day’s close is used",
+  "data.fx.fixed": "Fixed (1:1)",
+
+  /* ---------- Dynamic: excel errors ---------- */
+  "excel.readErr": "Cannot read the file. Please upload a valid .xlsx file",
+  "excel.empty": "The Excel file is empty",
+  "excel.missingCols": "Missing required header(s): {missing}. Expected: {headers} (client ID and assigned date are optional)",
+  "excel.rowShares": "Row {i}: “Shares” is invalid or 0",
+  "excel.rowMarket": "Row {i}: “Market” is empty",
+  "excel.rowCode": "Row {i}: “Stock Code” is empty",
+  "excel.noDataRows": "The Excel file has no data rows"
+};

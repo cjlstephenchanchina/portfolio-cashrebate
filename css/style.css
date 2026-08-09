@@ -167,6 +167,35 @@ em { font-style: normal; color: var(--accent-hi); }
   100% { box-shadow: 0 0 0 0 rgba(31,199,155,0); }
 }
 
+/* ── 語言切換（header 右上，nav-live 與 hamburger 之間） ── */
+.lang-switch { position: relative; display: inline-flex; align-items: center; flex: none; }
+.lang-btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-family: var(--font-sans); font-size: 12px; font-weight: 500; color: #fff;
+  background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.28);
+  border-radius: 999px; padding: 5px 11px; cursor: pointer; white-space: nowrap;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.55);
+  transition: background .2s ease, border-color .2s ease, transform .08s ease;
+}
+.lang-btn:hover { background: rgba(255, 255, 255, 0.14); border-color: rgba(255, 255, 255, 0.45); }
+.lang-btn:active { transform: translateY(1px); }
+.lang-btn .caret { font-size: 9px; opacity: .82; line-height: 1; }
+.lang-menu {
+  position: absolute; top: calc(100% + 9px); right: 0;
+  min-width: 138px; margin: 0; padding: 6px; list-style: none;
+  background: rgba(17, 21, 31, 0.96); backdrop-filter: blur(20px) saturate(150%);
+  -webkit-backdrop-filter: blur(20px) saturate(150%);
+  border: 1px solid rgba(255, 255, 255, 0.14); border-radius: 12px;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5); z-index: 60;
+}
+.lang-menu[hidden] { display: none; }
+.lang-menu li {
+  font-size: 13px; color: var(--text); padding: 8px 12px; border-radius: 8px;
+  cursor: pointer; white-space: nowrap; transition: background .15s ease, color .15s ease;
+}
+.lang-menu li:hover { background: rgba(255, 255, 255, 0.08); }
+.lang-menu li.active { color: var(--accent-hi); background: var(--accent-soft); }
+
 /* ── 滾動後：Apple 深色磨砂液態玻璃膠囊（只包住 logo→真實行情，非通欄白條） ──
    依 liquid-glass-design 原則：模糊背後內容、反射周圍光影、回應指針互動、
    玻璃僅用於導航/控制層；玻璃上的文字必須保持可讀（本站深色主題 → 白字） */
@@ -628,7 +657,7 @@ table.data .num { font-family: var(--font-mono); }
 /* ---------- 列印（報表匯出） ---------- */
 @media print {
   .site-nav, .hero-cinema, .hero-cta, .fab-stack, .section:not(#overview),
-  .pf-toolbar, .nav-live, .mobile-menu, .nav__toggle, .site-footer { display: none !important; }
+  .pf-toolbar, .nav-live, .mobile-menu, .nav__toggle, .lang-switch, .site-footer { display: none !important; }
   body { background: #fff; color: #000; }
   .card, .kpi, .chart-box, .curve-box, .table-wrap { box-shadow: none; border-color: #ccc; background: #fff; }
   .kpi-value { color: #000 !important; }

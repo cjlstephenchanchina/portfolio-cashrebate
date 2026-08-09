@@ -104,21 +104,21 @@ async function parseExcel(file) {
   try {
     wb = XLSX.read(buf, { type: "array" });
   } catch (e) {
-    throw Object.assign(new Error("無法讀取檔案，請上傳有效的 .xlsx 檔案"), { status: 400 });
+    throw Object.assign(new Error(I18N.t("excel.readErr")), { status: 400 });
   }
   const ws = wb.Sheets[wb.SheetNames[0]];
   const raw = XLSX.utils.sheet_to_json(ws, { header: 1, defval: "", raw: false });
-  if (!raw.length) throw Object.assign(new Error("Excel 檔案為空"), { status: 400 });
+  if (!raw.length) throw Object.assign(new Error(I18N.t("excel.empty")), { status: 400 });
 
   const header = raw[0].map((h) => String(h).trim());
   // 只要必填欄位存在即可；客戶編號、指定日期兩欄若缺失視為選填
   const required = ["市場", "股票代碼", "股份數量"];
   const missing = required.filter((h) => !header.includes(h));
   if (missing.length) {
-    throw Object.assign(
-      new Error(`表頭缺少必要欄位：${missing.join("、")}。正確欄位：${EXCEL_HEADERS.join("、")}（客戶編號、指定日期為可選填）`),
-      { status: 400 }
-    );
+      throw Object.assign(
+        new Error(I18N.t("excel.missingCols", { missing: missing.join("、"), headers: EXCEL_HEADERS.join("、") })),
+        { status: 400 }
+      );
   }
   const idx = (name) => header.indexOf(name); // -1 表示缺欄位（可不填）
   const rows = [];
@@ -127,12 +127,12 @@ async function parseExcel(file) {
     if (!r || r.every((v) => String(v).trim() === "")) continue;
     const shares = parseFloat(r[idx("股份數量")]);
     if (!shares || shares <= 0) {
-      throw Object.assign(new Error(`第 ${i + 1} 列「股份數量」無效或為 0`), { status: 400 });
+      throw Object.assign(new Error(I18N.t("excel.rowShares", { i: i + 1 })), { status: 400 });
     }
     const marketVal = idx("市場") >= 0 ? String(r[idx("市場")]).trim().toUpperCase() : "";
     const codeVal = idx("股票代碼") >= 0 ? String(r[idx("股票代碼")]).trim() : "";
-    if (!marketVal) throw Object.assign(new Error(`第 ${i + 1} 列「市場」為空`), { status: 400 });
-    if (!codeVal) throw Object.assign(new Error(`第 ${i + 1} 列「股票代碼」為空`), { status: 400 });
+    if (!marketVal) throw Object.assign(new Error(I18N.t("excel.rowMarket", { i: i + 1 })), { status: 400 });
+    if (!codeVal) throw Object.assign(new Error(I18N.t("excel.rowCode", { i: i + 1 })), { status: 400 });
     const clientVal = idx("客戶編號") >= 0 ? String(r[idx("客戶編號")]).trim() : "";
     const dateIdx = idx("指定日期");
     const dateCell = dateIdx >= 0 ? r[dateIdx] : null;
@@ -145,7 +145,7 @@ async function parseExcel(file) {
       shares: shares,
     });
   }
-  if (!rows.length) throw Object.assign(new Error("Excel 中沒有數據行"), { status: 400 });
+  if (!rows.length) throw Object.assign(new Error(I18N.t("excel.noDataRows")), { status: 400 });
   return rows;
 }
 

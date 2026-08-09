@@ -1,0 +1,207 @@
+/* =====================================================================
+ * 語言資源檔 — 繁體中文（預設）
+ * 金鑰命名空間與 zh-Hans / en 完全一致；I18N.t(key, vars) 負責取值與 {var} 插值。
+ * ===================================================================== */
+window.I18N_DATA = window.I18N_DATA || {};
+window.I18N_DATA["zh-Hant"] = {
+  /* ---------- 導覽 / Nav ---------- */
+  "nav.query": "單筆查詢",
+  "nav.batch": "批量作業",
+  "nav.stats": "回贈統計",
+  "nav.overview": "持倉總覽",
+  "nav.history": "走勢",
+  "nav.live": "真實行情",
+  "nav.aria": "主導覽",
+  "nav.menu": "開啟選單",
+  "nav.close": "關閉選單",
+  "menu.cta": "開始使用",
+
+  /* ---------- 頁頭 / Hero ---------- */
+  "hero.cta": "開始使用",
+
+  /* ---------- 單筆查詢 / Quote ---------- */
+  "quote.title": "單筆查詢",
+  "quote.desc": "輸入股票代碼與日期，立即返回真實收市價與市值（可選填股數）。",
+  "quote.lbl.market": "市場",
+  "quote.lbl.code": "股票代碼",
+  "quote.lbl.date": "查詢日期",
+  "quote.lbl.shares": "股份數量",
+  "quote.opt": "（選填）",
+  "quote.ph.code": "700 / 600519 / AAPL",
+  "quote.btn": "查詢收市價",
+
+  /* ---------- 批量作業 / Batch ---------- */
+  "batch.title": "批量作業",
+  "batch.desc": "上傳 Excel（客戶編號選填／指定日期／市場／股票代碼／股份數量），每列可使用自己的指定日期查詢該日收市價；如未填寫則採用上方批量日期。",
+  "batch.dl": "下載 Excel 樣本模板 ↓",
+  "batch.lbl.date": "批量日期",
+  "batch.lbl.dateHint": "（缺省值：每列未指定日期時使用）",
+  "batch.lbl.file": "Excel 檔案",
+  "batch.btn": "上傳並計算",
+
+  /* ---------- 回贈與統計 / Stats ---------- */
+  "stats.title": "回贈與統計分析",
+  "stats.desc": "設定每人現金回贈上限與條件（如每 10 萬港幣送 100 元），自動統計總回贈、客戶人數與平均市值。",
+  "stats.lbl.cap": "每人回贈上限（HKD）",
+  "stats.lbl.threshold": "每（HKD）",
+  "stats.lbl.amount": "回贈金額（HKD）",
+  "stats.lbl.date": "查詢日期（演示用）",
+  "stats.lbl.source": "數據源",
+  "stats.opt.demo": "內建演示（真實行情）",
+  "stats.opt.last": "最近一次批量結果",
+  "stats.btn": "計算統計",
+  "stats.loading": "正在載入真實行情與統計…",
+  "stats.kpi.totalRebate": "總回贈金額",
+  "stats.kpi.clients": "涉及客戶人數",
+  "stats.kpi.avg": "單一客戶平均市值",
+  "stats.kpi.totalMv": "持倉總市值",
+  "stats.unit.clients": "位",
+  "stats.chart.top3": "持倉市值 Top 3",
+  "stats.chart.top3sub": "公司識別",
+  "stats.chart.market": "市場分佈",
+  "stats.chart.rebate": "各客戶回贈",
+
+  /* ---------- 持倉總覽 / Overview ---------- */
+  "overview.title": "持倉總覽",
+  "overview.desc": "維護持倉清單（市場／代碼／股數／成本），一鍵計算跨市場港幣市值、未實現盈虧與組合淨值走勢。清單自動保存在本機瀏覽器。",
+  "overview.btn.add": "＋ 新增持倉",
+  "overview.btn.compute": "計算市值",
+  "overview.btn.export": "⬇ 匯出 Excel",
+  "overview.btn.print": "🖨 列印 / PDF",
+  "overview.loading": "正在查詢真實行情並計算…",
+  "overview.kpi.total": "持倉總市值",
+  "overview.kpi.cost": "總成本",
+  "overview.kpi.pl": "未實現盈虧",
+  "overview.kpi.count": "持倉標的",
+  "overview.kpi.unit.count": "檔",
+  "overview.curve": "組合淨值走勢（近 180 個交易日，HKD）",
+
+  /* ---------- 持倉表欄位 / Portfolio table ---------- */
+  "pf.th.market": "市場",
+  "pf.th.code": "股票代碼",
+  "pf.th.shares": "股數",
+  "pf.th.cost": "成本價",
+  "pf.th.price": "現價",
+  "pf.th.mv": "港幣市值",
+  "pf.th.pl": "未實現盈虧",
+  "pf.empty": "尚無持倉，點擊「＋ 新增持倉」開始。",
+  "pf.costPh": "選填",
+  "pf.delTitle": "刪除",
+  "pf.export.sheet": "持倉總覽",
+  "pf.export.file": "持倉總覽",
+  "pf.export.headers": ["市場", "股票代碼", "股份數量", "成本價", "現價", "原幣", "港幣市值", "港幣成本", "未實現盈虧"],
+
+  /* ---------- 歷史走勢 / History ---------- */
+  "history.title": "歷史走勢",
+  "history.desc": "檢視單一標的的日 K 線（收盤盤價、漲跌）。支援港股 / A股 / 美股，數據為真實歷史行情。",
+  "history.lbl.market": "市場",
+  "history.lbl.code": "股票代碼",
+  "history.ph.code": "700 / 600519 / AAPL",
+  "history.btn": "查看 K 線",
+  "history.curve": "日 K 線",
+
+  /* ---------- 頁尾 / Footer ---------- */
+  "footer.note": "行情來源：騰訊公開行情接口、stockanalysis.com（真實收市價）｜匯率來源：歐洲央行 ECB 官方參考匯率<br>查無數據時系統將明確提示，所有計算結果僅供參考，不構成投資建議。",
+
+  /* ---------- Meta / 文件標題 ---------- */
+  "meta.title": "Nora-AI Capital — 股票市值計算器",
+  "meta.description": "Nora-AI Capital — 港股 / A股 / 美股持倉市值計算、批量作業與現金回贈統計",
+  "meta.ogTitle": "Nora-AI Capital — 股票市值計算器",
+  "meta.ogDescription": "See clearly. Act precisely. 港股 / A股 / 美股持倉市值計算、批量作業與現金回贈統計。",
+
+  /* ---------- 市場標籤 / Market labels ---------- */
+  "mk.hk": "港股",
+  "mk.a": "A股",
+  "mk.us": "美股",
+  "mk.opt.hk": "港股（HK）",
+  "mk.opt.a": "A股（A）",
+  "mk.opt.us": "美股（US）",
+
+  /* ---------- 動態：單筆查詢 / app.quote ---------- */
+  "app.quote.btnLoading": "查詢中…",
+  "app.quote.errFill": "請填寫股票代碼與查詢日期",
+  "app.quote.btnLabel": "查詢收市價",
+  "app.quote.lbl.stock": "股票",
+  "app.quote.lbl.tradeDate": "實際交易日",
+  "app.quote.lbl.price": "收市價（{cur}）",
+  "app.quote.lbl.shares": "股份數量",
+  "app.quote.lbl.mv": "市值（{cur}）",
+  "app.quote.lbl.fx": "匯率（→HKD）",
+  "app.quote.lbl.hkdMv": "港幣市值",
+  "app.quote.note.ecb": "匯率採用 {date}（ECB）",
+  "app.quote.note.fxSrc": "匯率來源：{src}",
+  "app.quote.note.sep": "；",
+  "app.quote.note.end": "。",
+
+  /* ---------- 動態：批量作業 / app.batch ---------- */
+  "app.batch.btnLoading": "處理中…",
+  "app.batch.parsing": "正在解析 Excel…",
+  "app.batch.querying": "正在逐行查詢真實行情（共 {n} 行）…",
+  "app.batch.queryProg": "正在查詢真實行情（{i}/{n}）…",
+  "app.batch.btn": "上傳並計算",
+  "app.batch.lockedTip": "檔案含「指定日期」欄，批量日期已鎖定。各列以自己的指定日期查詢收市價。",
+  "app.batch.col.client": "客戶編號",
+  "app.batch.col.date": "指定日期",
+  "app.batch.col.market": "市場",
+  "app.batch.col.stock": "股票",
+  "app.batch.col.shares": "股份數量",
+  "app.batch.col.price": "收市價",
+  "app.batch.col.mv": "原幣市值",
+  "app.batch.col.fx": "匯率→HKD",
+  "app.batch.col.hkdMv": "港幣市值",
+  "app.batch.col.status": "狀態",
+  "app.batch.col.reason": "備註",
+  "app.batch.kpi.total": "總行數",
+  "app.batch.kpi.ok": "成功",
+  "app.batch.kpi.fail": "失敗",
+  "app.batch.kpi.totalMv": "港幣市值合計",
+  "app.batch.status.ok": "成功",
+  "app.batch.status.fail": "失敗",
+  "app.batch.dateNote.multi": "每列以「指定日期」獨立查價（本次共 {n} 個不同日期）",
+  "app.batch.dateNote.single": "查詢日期：{date}",
+  "app.batch.sortByClient": "已依「客戶編號」排序",
+  "app.batch.sortByStock": "已依「股票代碼」排序",
+  "app.batch.sep": "；",
+  "app.batch.failNote": "失敗 {n} 行。",
+  "app.batch.exportBtn": "⬇ 匯出結果（Excel）",
+  "app.batch.fxNote": "💱 <strong>匯率→HKD</strong> 採用每列「指定日期」的 ECB 日匯率（實時抓取）；若該日恰逢外匯假日，將自動回退到前一交易日。",
+
+  /* ---------- 動態：統計 / app.stats ---------- */
+  "app.stats.loadingDate": "正在載入 {date} 真實行情…",
+  "app.stats.note": "條件：每 {threshold} 港幣回贈 {amount} 元，每人上限 {cap} 元。統計基於{demo}（真實行情），成功 {ok} 行。",
+  "app.stats.note.demo": "演示持倉",
+  "app.stats.note.last": "最近一次批量結果",
+
+  /* ---------- 動態：持倉總覽 / portfolio ---------- */
+  "pf.computing": "計算中…",
+  "pf.btn": "計算市值",
+  "pf.noExcel": "Excel 元件未載入",
+  "pf.err.blank": "代碼或市場空白",
+  "pf.noCost": "未設成本",
+  "pf.noData": "查無",
+  "pf.fail": "失敗",
+  "pf.kline.errCode": "請輸入股票代碼",
+  "pf.kline.loading": "載入中…",
+  "pf.kline.badCode": "無法識別的代碼",
+  "pf.kline.noData": "查無歷史資料",
+  "pf.kline.title": "日 K 線 — {name}（{market} {code}）",
+
+  /* ---------- 動態：數據層錯誤 / data ---------- */
+  "data.marketUnsupported": "不支援的市場: {market}",
+  "data.badCode": "無法識別的股票代碼「{code}」：港股 1-5 位數字（自動去前導零），A股 6 位數字，美股字母代碼",
+  "data.noPrice": "查無「{code}」的收市價資料（代碼可能無效）",
+  "data.beforeRange": "查無「{code}」於 {date} 的收市價資料（查詢日早於可獲數據範圍）",
+  "data.noFx": "查無 {date} 的 {currency}→HKD 匯率資料（ECB 數據不可用）",
+  "data.demoFail": "演示數據構建失敗：{date} 無任何可用真實行情",
+  "data.note.nonTrade": "查詢日為非交易日，採用前一交易日收市價",
+  "data.fx.fixed": "固定（1:1）",
+
+  /* ---------- 動態：Excel 錯誤 / excel ---------- */
+  "excel.readErr": "無法讀取檔案，請上傳有效的 .xlsx 檔案",
+  "excel.empty": "Excel 檔案為空",
+  "excel.missingCols": "表頭缺少必要欄位：{missing}。正確欄位：{headers}（客戶編號、指定日期為可選填）",
+  "excel.rowShares": "第 {i} 列「股份數量」無效或為 0",
+  "excel.rowMarket": "第 {i} 列「市場」為空",
+  "excel.rowCode": "第 {i} 列「股票代碼」為空",
+  "excel.noDataRows": "Excel 中沒有數據行"
+};

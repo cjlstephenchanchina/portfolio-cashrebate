@@ -146,7 +146,7 @@ async function fetchNames(symbol) {
 async function fetchFx(currency, dateStr) {
   const key = `${currency}|${dateStr}`;
   if (cache.fx.has(key)) return cache.fx.get(key);
-  let rate = 1.0, actual = dateStr, source = "固定(1:1)";
+  let rate = 1.0, actual = dateStr, source = I18N.t("data.fx.fixed");
   if (currency !== "HKD") {
     const d = new Date(dateStr + "T00:00:00");
     let found = null;
@@ -174,7 +174,7 @@ async function fetchFx(currency, dateStr) {
       } catch (e) { /* 下一日 */ }
     }
     if (!found) {
-      const err = new Error(`查無 ${dateStr} 的 ${currency}→HKD 匯率資料（ECB 數據不可用）`);
+      const err = new Error(I18N.t("data.noFx", { date: dateStr, currency }));
       err.status = 404;
       throw err;
     }
@@ -187,15 +187,15 @@ async function fetchFx(currency, dateStr) {
 /* ---------- 核心：查指定日期收市價 ---------- */
 async function getClosePrice(code, market, dateStr) {
   market = String(market || "").trim().toUpperCase();
-  if (!MARKETS[market]) throw Object.assign(new Error(`不支援的市場: ${market}`), { status: 400 });
+  if (!MARKETS[market]) throw Object.assign(new Error(I18N.t("data.marketUnsupported", { market })), { status: 400 });
   const symbol = normalizeSymbol(code, market);
   if (!symbol) throw Object.assign(
-    new Error(`無法識別的股票代碼「${code}」：港股 1-5 位數字（自動去前導零），A股 6 位數字，美股字母代碼`),
+    new Error(I18N.t("data.badCode", { code })),
     { status: 400 }
   );
   const bars = market === "US" ? await fetchUsBars(symbol) : await fetchTencentBars(symbol);
   if (!bars || !bars.length) {
-    throw Object.assign(new Error(`查無「${code}」的收市價資料（代碼可能無效）`), { status: 404 });
+    throw Object.assign(new Error(I18N.t("data.noPrice", { code })), { status: 404 });
   }
   // 取 date <= 查詢日 的最後一筆（升序）
   let chosen = null;
@@ -204,15 +204,15 @@ async function getClosePrice(code, market, dateStr) {
     else break;
   }
   if (!chosen) {
-    throw Object.assign(
-      new Error(`查無「${code}」於 ${dateStr} 的收市價資料（查詢日早於可獲數據範圍）`),
-      { status: 404 }
-    );
+      throw Object.assign(
+        new Error(I18N.t("data.beforeRange", { code, date: dateStr })),
+        { status: 404 }
+      );
   }
   const names = await fetchNames(symbol);
   const quoteDate = chosen[0];
   const price = parseFloat(chosen[2]); // [date, open, close, high, low, volume]
-  const mktLabel = MARKETS[market].label;
+  const mktLabel = MARKET_LABEL(market);
   const fallbackCN = `${mktLabel} ${symbol.slice(2)}`;
   return {
     code: market === "HK" ? hkCanon(code) : String(code).trim().toUpperCase(),
@@ -223,7 +223,7 @@ async function getClosePrice(code, market, dateStr) {
     quote_date: quoteDate,
     price,
     currency: MARKETS[market].currency,
-    note: quoteDate !== dateStr ? `查詢日為非交易日，採用前一交易日收市價` : "",
+    note: quoteDate !== dateStr ? I18N.t("data.note.nonTrade") : "",
   };
 }
 

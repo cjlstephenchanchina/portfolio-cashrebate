@@ -15,7 +15,7 @@ const CHART_COLORS = {
   axis: "rgba(255,255,255,0.12)",
 };
 
-const MARKET_LABEL = { HK: "港股", A: "A股", US: "美股" };
+/* MARKET_LABEL 已移至 i18n.js（語言感知函式），此處不再重複定義 */
 
 const fmtMoney = (v) => {
   if (v === null || v === undefined || isNaN(v)) return "—";
@@ -59,7 +59,7 @@ function renderTop3(id, data) {
   if (!chart) return;
   const labels = (data || []).map((d) => {
     const info = (typeof hkLogoInfo === "function") ? hkLogoInfo(d.code) : null;
-    return info && info.cn ? info.cn : `${d.code} · ${MARKET_LABEL[d.market] || d.market}`;
+    return info && info.cn ? info.cn : `${d.code} · ${MARKET_LABEL(d.market) || d.market}`;
   });
   const values = (data || []).map((d) => d.value);
   chart.setOption({
@@ -109,7 +109,7 @@ function renderMarket(id, data) {
       label: { color: CHART_COLORS.text, fontSize: 12.5, formatter: "{b}\n{c}" },
       labelLine: { lineStyle: { color: CHART_COLORS.muted } },
       data: (data || []).map((d, i) => ({
-        name: MARKET_LABEL[d.market] || d.market, value: d.value,
+        name: MARKET_LABEL(d.market) || d.market, value: d.value,
         itemStyle: { color: palette[i % palette.length] },
       })),
     }],

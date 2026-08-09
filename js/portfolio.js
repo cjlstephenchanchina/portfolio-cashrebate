@@ -5,6 +5,7 @@
  *  - 組合淨值走勢（近 180 交易日）
  *  - Excel 匯出 / 列印 PDF
  *  - 歷史 K 線（接 fetchTencentBars / fetchUsBars）
+ *  多語系：所有可見字串改經 I18N.t；MARKET_LABEL 為 i18n.js 提供的語言感知函式。
  * ===================================================================== */
 "use strict";
 
@@ -45,21 +46,21 @@ function saveHoldings() {
 
 function marketOptions(sel) {
   return ["HK", "A", "US"].map((m) =>
-    `<option value="${m}" ${m === sel ? "selected" : ""}>${MARKET_LABEL[m] || m}</option>`
+    `<option value="${m}" ${m === sel ? "selected" : ""}>${MARKET_LABEL(m) || m}</option>`
   ).join("");
 }
 
 function renderTable() {
   const body = $pf("pf-body");
   if (!pfHoldings.length) {
-    body.innerHTML = `<tr><td colspan="8" class="pf-muted" style="text-align:center;padding:22px">尚無持倉，點擊「＋ 新增持倉」開始。</td></tr>`;
+    body.innerHTML = `<tr><td colspan="8" class="pf-muted" style="text-align:center;padding:22px">${I18N.t("pf.empty")}</td></tr>`;
     return;
   }
   body.innerHTML = pfHoldings.map((h, i) => {
     const r = pfResults[i];
     const priceCell = r && r.ok
       ? `${fmtMoney(r.price)} <span class="pf-muted">${r.currency}</span>`
-      : (r ? `<span class="up">查無</span>` : `—`);
+      : (r ? `<span class="up">${I18N.t("pf.noData")}</span>` : `—`);
     const mvCell = r && r.ok ? `HK$${fmtMoney(r.hkd)}` : (r ? `<span class="up">—</span>` : `—`);
     let plCell = `—`;
     if (r && r.ok && r.pl !== null) {
@@ -68,20 +69,20 @@ function renderTable() {
       const pct = r.plPct !== null ? ` (${sign}${r.plPct.toFixed(2)}%)` : "";
       plCell = `<span class="${cls}">${sign}HK$${fmtMoney(r.pl)}${pct}</span>`;
     } else if (r && r.ok) {
-      plCell = `<span class="pf-muted">未設成本</span>`;
+      plCell = `<span class="pf-muted">${I18N.t("pf.noCost")}</span>`;
     } else if (r) {
-      plCell = `<span class="up" title="${escAttr(r.error || "")}">失敗</span>`;
+      plCell = `<span class="up" title="${escAttr(r.error || "")}">${I18N.t("pf.fail")}</span>`;
     }
     return `
       <tr data-i="${i}">
-        <td data-label="市場"><select class="field-inline" data-f="market">${marketOptions(h.market)}</select></td>
-        <td data-label="股票代碼"><input class="field-inline" data-f="code" value="${escAttr(h.code)}" autocomplete="off"></td>
-        <td data-label="股數"><input class="field-inline num" data-f="shares" type="number" min="0" step="any" value="${escAttr(h.shares)}"></td>
-        <td data-label="成本價"><input class="field-inline num" data-f="cost" type="number" min="0" step="any" placeholder="選填" value="${escAttr(h.cost)}"></td>
-        <td data-label="現價" class="pf-val">${priceCell}</td>
-        <td data-label="港幣市值" class="pf-val">${mvCell}</td>
-        <td data-label="未實現盈虧" class="pf-val">${plCell}</td>
-        <td class="col-act"><button class="pf-del" data-del="${i}" title="刪除" type="button">×</button></td>
+        <td data-label="${escAttr(I18N.t("pf.th.market"))}"><select class="field-inline" data-f="market">${marketOptions(h.market)}</select></td>
+        <td data-label="${escAttr(I18N.t("pf.th.code"))}"><input class="field-inline" data-f="code" value="${escAttr(h.code)}" autocomplete="off"></td>
+        <td data-label="${escAttr(I18N.t("pf.th.shares"))}"><input class="field-inline num" data-f="shares" type="number" min="0" step="any" value="${escAttr(h.shares)}"></td>
+        <td data-label="${escAttr(I18N.t("pf.th.cost"))}"><input class="field-inline num" data-f="cost" type="number" min="0" step="any" placeholder="${escAttr(I18N.t("pf.costPh"))}" value="${escAttr(h.cost)}"></td>
+        <td data-label="${escAttr(I18N.t("pf.th.price"))}" class="pf-val">${priceCell}</td>
+        <td data-label="${escAttr(I18N.t("pf.th.mv"))}" class="pf-val">${mvCell}</td>
+        <td data-label="${escAttr(I18N.t("pf.th.pl"))}" class="pf-val">${plCell}</td>
+        <td class="col-act"><button class="pf-del" data-del="${i}" title="${escAttr(I18N.t("pf.delTitle"))}" type="button">×</button></td>
       </tr>`;
   }).join("");
 }
@@ -115,7 +116,7 @@ async function computePortfolio() {
   syncFromDom();
   saveHoldings();
   const btn = $pf("pf-compute");
-  btn.disabled = true; btn.textContent = "計算中…";
+  btn.disabled = true; btn.textContent = I18N.t("pf.computing");
   $pf("pf-loading").hidden = false;
   $pf("pf-msg").hidden = true;
   $pf("pf-kpis").hidden = true;
@@ -129,7 +130,7 @@ async function computePortfolio() {
     for (let i = 0; i < pfHoldings.length; i++) {
       const h = pfHoldings[i];
       try {
-        if (!h.code || !h.market) throw new Error("代碼或市場空白");
+        if (!h.code || !h.market) throw new Error(I18N.t("pf.err.blank"));
         const q = await getClosePrice(h.code, h.market, today);
         const fx = await fetchFx(q.currency, q.quote_date);
         const shares = parseFloat(h.shares) || 0;
@@ -174,7 +175,7 @@ async function computePortfolio() {
   } catch (err) {
     showPfMsg(err.message);
   } finally {
-    btn.disabled = false; btn.textContent = "計算市值";
+    btn.disabled = false; btn.textContent = I18N.t("pf.btn");
     $pf("pf-loading").hidden = true;
   }
 }
@@ -220,28 +221,27 @@ function showPfMsg(msg) {
 
 /* ---------- 匯出 Excel ---------- */
 function exportPortfolioExcel() {
-  if (typeof XLSX === "undefined") { showPfMsg("Excel 元件未載入"); return; }
+  if (typeof XLSX === "undefined") { showPfMsg(I18N.t("pf.noExcel")); return; }
+  const headers = I18N.t("pf.export.headers"); // 陣列，順序即欄位順序
   const data = pfHoldings.map((h, i) => {
     const r = pfResults[i];
-    return {
-      "市場": MARKET_LABEL[h.market] || h.market,
-      "股票代碼": h.code || "",
-      "股份數量": h.shares ?? "",
-      "成本價": h.cost ?? "",
-      "現價": r && r.ok ? r.price : "",
-      "原幣": r && r.ok ? r.currency : "",
-      "港幣市值": r && r.ok ? pfRound2(r.hkd) : "",
-      "港幣成本": r && r.ok ? pfRound2(r.costHkd || 0) : "",
-      "未實現盈虧": r && r.ok ? (r.pl === null ? "" : pfRound2(r.pl)) : "",
-    };
+    const row = {};
+    row[headers[0]] = MARKET_LABEL(h.market) || h.market;
+    row[headers[1]] = h.code || "";
+    row[headers[2]] = h.shares ?? "";
+    row[headers[3]] = h.cost ?? "";
+    row[headers[4]] = r && r.ok ? r.price : "";
+    row[headers[5]] = r && r.ok ? r.currency : "";
+    row[headers[6]] = r && r.ok ? pfRound2(r.hkd) : "";
+    row[headers[7]] = r && r.ok ? pfRound2(r.costHkd || 0) : "";
+    row[headers[8]] = r && r.ok ? (r.pl === null ? "" : pfRound2(r.pl)) : "";
+    return row;
   });
-  const ws = XLSX.utils.json_to_sheet(data, {
-    header: ["市場", "股票代碼", "股份數量", "成本價", "現價", "原幣", "港幣市值", "港幣成本", "未實現盈虧"],
-  });
+  const ws = XLSX.utils.json_to_sheet(data, { header: headers });
   ws["!cols"] = [{ wch: 8 }, { wch: 10 }, { wch: 10 }, { wch: 10 }, { wch: 10 }, { wch: 6 }, { wch: 12 }, { wch: 12 }, { wch: 14 }];
   const wb = XLSX.utils.book_new();
-  XLSX.utils.book_append_sheet(wb, ws, "持倉總覽");
-  XLSX.writeFile(wb, `持倉總覽_${Date.now().toString(36)}.xlsx`);
+  XLSX.utils.book_append_sheet(wb, ws, I18N.t("pf.export.sheet"));
+  XLSX.writeFile(wb, `${I18N.t("pf.export.file")}_${Date.now().toString(36)}.xlsx`);
 }
 
 /* ---------- 列印 / PDF ---------- */
@@ -265,17 +265,19 @@ async function submitKline(e) {
   const market = $pf("h-market").value;
   const code = $pf("h-code").value.trim();
   $pf("h-msg").hidden = true;
-  if (!code) { $pf("h-msg").hidden = false; $pf("h-msg").innerHTML = `<span aria-hidden="true">⚠</span><div>請輸入股票代碼</div>`; return; }
+  if (!code) { $pf("h-msg").hidden = false; $pf("h-msg").innerHTML = `<span aria-hidden="true">⚠</span><div>${esc(I18N.t("pf.kline.errCode"))}</div>`; return; }
   const btn = $pf("h-submit");
-  btn.disabled = true; btn.textContent = "載入中…";
+  btn.disabled = true; btn.textContent = I18N.t("pf.kline.loading");
   try {
     const symbol = normalizeSymbol(code, market);
-    if (!symbol) throw new Error("無法識別的代碼");
+    if (!symbol) throw new Error(I18N.t("pf.kline.badCode"));
     const bars = market === "US" ? await fetchUsBars(symbol) : await fetchTencentBars(symbol);
-    if (!bars || !bars.length) throw new Error("查無歷史資料");
+    if (!bars || !bars.length) throw new Error(I18N.t("pf.kline.noData"));
     const names = await fetchNames(symbol);
     const dispCode = market === "HK" ? hkCanon(code) : code;
-    $pf("h-curve-title").textContent = `日 K 線 — ${names.cn || code}（${MARKET_LABEL[market]} ${dispCode}）`;
+    const titleArgs = { name: names.cn || code, market: MARKET_LABEL(market), code: dispCode };
+    window.__pfKlineTitle = titleArgs;
+    $pf("h-curve-title").textContent = I18N.t("pf.kline.title", titleArgs);
     $pf("h-curve-box").hidden = false;
     renderKline("chartKline", bars);
   } catch (err) {
@@ -283,7 +285,7 @@ async function submitKline(e) {
     $pf("h-msg").innerHTML = `<span aria-hidden="true">⚠</span><div>${esc(err.message)}</div>`;
     $pf("h-curve-box").hidden = true;
   } finally {
-    btn.disabled = false; btn.textContent = "查看 K 線";
+    btn.disabled = false; btn.textContent = I18N.t("history.btn");
   }
 }
 
@@ -298,6 +300,14 @@ function initPortfolio() {
   $pf("kline-form").addEventListener("submit", submitKline);
   // 預設自動計算一次（演示持倉）
   computePortfolio();
+
+  /* 語言切換時重渲染持倉表與 K 線標題 */
+  I18N.registerDynamic(function () {
+    renderTable();
+    if (window.__pfKlineTitle && !$pf("h-curve-box").hidden) {
+      $pf("h-curve-title").textContent = I18N.t("pf.kline.title", window.__pfKlineTitle);
+    }
+  });
 }
 
 if (document.readyState === "loading") {
