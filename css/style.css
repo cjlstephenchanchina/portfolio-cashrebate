@@ -50,6 +50,8 @@
 
 /* ---------- 基礎 ---------- */
 * { box-sizing: border-box; }
+/* 全站統一深底（極光層疊加其上）；hero 影片底部也溶解進同一背景，使影片與內容無縫銜接 */
+html { background: #06080E; }
 [hidden] { display: none !important; }   /* 修正 .error-box / .progress / .kpis 等 [hidden] 被 CSS display 屬性蓋掉的 bug（會在頁面顯示空紅色 bar） */
 html { scroll-behavior: smooth; }
 body {
@@ -57,7 +59,7 @@ body {
   font-family: var(--font-sans);
   font-weight: 400;
   color: var(--text);
-  background: var(--bg);
+  background: transparent;   /* 移除實心黑塊，讓固定的極光背景成為全站統一底色，影片與內容共享同一背景層 */
   line-height: 1.6;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
@@ -582,7 +584,7 @@ table.data .num { font-family: var(--font-mono); }
 .kline-controls #h-submit { border-color: transparent; justify-content: center; }
 
 /* ---------- 頁尾 ---------- */
-.site-footer { border-top: 1px solid var(--border); background: var(--bg-soft); padding: 30px 0; }
+.site-footer { border-top: 1px solid var(--border); background: transparent; padding: 30px 0; }
 .footer-row { display: flex; flex-direction: column; gap: 10px; }
 .footer-brand { font-weight: 600; font-size: 14px; display: inline-flex; align-items: center; gap: 8px; }
 .footer-logo { width: 22px; height: 22px; flex: none; filter: drop-shadow(0 1px 3px rgba(0,0,0,.5)); }

@@ -32,12 +32,14 @@
   .hero-cinema { min-height: 100svh; }
 }
 
-/* ── 媒體層（最底，黑底備用） ── */
+/* ── 媒體層（最底，黑底備用）；底部以 mask 溶解，讓影片直接透出與下方內容同一片極光＋深底背景，消除生硬分隔 ── */
 .hero-cinema__media {
   position: absolute;
   inset: 0;
   z-index: -1;
   background: #000;
+  -webkit-mask-image: linear-gradient(to bottom, #000 80%, transparent 100%);
+          mask-image: linear-gradient(to bottom, #000 80%, transparent 100%);
 }
 .hero-cinema__media video {
   position: absolute;
@@ -60,7 +62,8 @@
   .hero-cinema__scrim {
     background:
       linear-gradient(to left, transparent 0%, transparent 45%, rgba(0, 0, 0, 0.45) 72%, rgba(0, 0, 0, 0.72) 100%),
-      linear-gradient(to bottom, rgba(0, 0, 0, 0.55) 0%, transparent 22%, transparent 78%, rgba(0, 0, 0, 0.65) 100%);
+      /* 頂部 scrim 改為更長的柔和漸層，使 header 區與影片頂部連成一氣、無硬邊 */
+      linear-gradient(to bottom, rgba(0, 0, 0, 0.52) 0%, rgba(0, 0, 0, 0.18) 12%, transparent 32%, transparent 78%, rgba(0, 0, 0, 0.65) 100%);
   }
 }
 @media (max-width: 720px) {
@@ -69,20 +72,20 @@
   }
 }
 
-/* ── 底部淡出層：影片深色 → 全站底色（var(--bg)），消除 hero 與內容間的視覺斷層 ── */
+/* ── 底部溶解層：不再填實心黑塊，改為透明收尾的極輕微暗角，讓影片平滑融入下方（同一片極光＋深底）背景 ── */
 .hero-cinema__fade {
   position: absolute;
   left: 0;
   right: 0;
   bottom: 0;
   z-index: 1;            /* 高於 scrim(0)，低於內容(2)，故不會蓋住置中的 slogan */
-  height: clamp(140px, 28vh, 340px);
+  height: clamp(160px, 30vh, 380px);
   pointer-events: none;
   background: linear-gradient(
     to bottom,
     transparent 0%,
-    rgba(0, 0, 0, 0) 38%,
-    var(--bg) 100%
+    rgba(6, 8, 14, 0) 42%,
+    rgba(6, 8, 14, 0.42) 100%
   );
 }
 @media (max-height: 640px) {
