@@ -117,9 +117,10 @@ em { font-style: normal; color: var(--accent-hi); }
   overflow: hidden;
   font-size: 13.5px; font-weight: 500; color: rgba(255, 255, 255, 0.85);
   padding: 8px 12px; border-radius: var(--radius-sm);
-  transition: color .35s ease, background .35s ease;
+  transition: color .35s ease, background .35s ease, transform .18s ease;
   text-decoration: none;
 }
+.nav-links a:active { transform: scale(0.95); }
 .nav-link__txt { display: block; white-space: nowrap; transition: transform .5s cubic-bezier(.34, 1.56, .64, 1); }
 .nav-link__txt + .nav-link__txt { position: absolute; inset: 8px 12px; transform: translateY(120%); }
 .nav-links a:hover .nav-link__txt,
@@ -164,20 +165,22 @@ em { font-style: normal; color: var(--accent-hi); }
   100% { box-shadow: 0 0 0 0 rgba(31,199,155,0); }
 }
 
-/* ── 滾動後：Apple 風液態玻璃膠囊（只包住 logo→真實行情，非通欄白條） ── */
+/* ── 滾動後：Apple 液態玻璃膠囊（只包住 logo→真實行情，非通欄白條） ──
+   依 liquid-glass-design 原則：模糊背後內容、反射周圍光影、回應指針互動、
+   玻璃僅用於導航/控制層；玻璃上的文字必須保持可讀（本站深色主題 → 白字） */
 .site-nav.scrolled {
   /* 取消通欄白色半透明橫條；玻璃效果改由 .nav-row 膠囊呈現 */
   background: transparent;
   border-bottom-color: transparent;
   border-radius: 0;
   box-shadow: none;
-  color: #0B0E14;            /* 淺色玻璃上方文字用深色才清晰（同 iOS/macOS 工具列） */
+  color: rgba(255, 255, 255, 0.92);
 }
 /* 膠囊容器：抬升內容層、建立堆疊上下文 */
 .site-nav .nav-row { position: relative; isolation: isolate; }
 .site-nav .nav-row > * { position: relative; z-index: 1; }
 
-/* 液態玻璃膠囊：通透磨砂 + 頂光高光 + 柔邊光 + 柔和投影；預設隐藏，滾動後淡入 */
+/* 液態玻璃膠囊：預設隱藏並略縮上浮，滾動後以彈性緩動「凝結」成型（morph 感） */
 .site-nav .nav-row::before,
 .site-nav .nav-row::after {
   content: "";
@@ -186,30 +189,49 @@ em { font-style: normal; color: var(--accent-hi); }
   z-index: 0;
   border-radius: 999px;
   opacity: 0;
-  transition: opacity .4s var(--nav-ease);
+  transform: scale(0.97) translateY(-5px);
+  transition:
+    opacity .4s ease,
+    transform .55s var(--nav-ease),
+    background .3s ease;
   pointer-events: none;
 }
-/* 玻璃本體：低 alpha 白底 + 強模糊增飽和（背景透出並 frost）；1px 玻璃邊光 + 頂部內高光 + 柔和投影 */
+/* 玻璃本體：垂直漸層底（頂部聚光）+ 強模糊增飽和提亮（背景透出 frost）
+   + 折射邊光（頂部亮邊/底部微光）+ 環境投影 */
 .site-nav .nav-row::before {
-  background: rgba(255, 255, 255, 0.16);
-  backdrop-filter: blur(24px) saturate(190%);
-  -webkit-backdrop-filter: blur(24px) saturate(190%);
-  border: 1px solid rgba(255, 255, 255, 0.40);
+  background: linear-gradient(180deg,
+      rgba(255, 255, 255, 0.20) 0%,
+      rgba(255, 255, 255, 0.10) 46%,
+      rgba(255, 255, 255, 0.07) 100%);
+  backdrop-filter: blur(26px) saturate(180%) brightness(1.07);
+  -webkit-backdrop-filter: blur(26px) saturate(180%) brightness(1.07);
+  border: 0.5px solid rgba(255, 255, 255, 0.32);
   box-shadow:
-    0 10px 34px rgba(15, 23, 42, 0.16),
-    0 1px 0 rgba(255, 255, 255, 0.65) inset,
-    0 -1px 0 rgba(255, 255, 255, 0.10) inset;
+    0 12px 32px rgba(2, 8, 24, 0.38),
+    0 2px 8px rgba(2, 8, 24, 0.20),
+    inset 0 1px 0 rgba(255, 255, 255, 0.55),
+    inset 0 -0.5px 0 rgba(255, 255, 255, 0.16),
+    inset 0 10px 22px rgba(255, 255, 255, 0.05);
 }
-/* 表面鏡面光澤：自頂部向下漸隱的細微高光，強化液態質感 */
+/* 表面高光層：左上珠光 + 頂部漸隱鏡面光澤，強化液態質感 */
 .site-nav .nav-row::after {
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.32) 0%, rgba(255, 255, 255, 0) 44%);
+  background:
+    radial-gradient(130% 170% at 18% -30%, rgba(255, 255, 255, 0.20), rgba(255, 255, 255, 0) 48%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.26) 0%, rgba(255, 255, 255, 0) 42%);
 }
 .site-nav.scrolled .nav-row::before,
-.site-nav.scrolled .nav-row::after { opacity: 1; }
+.site-nav.scrolled .nav-row::after { opacity: 1; transform: none; }
 
-/* 膠囊內文字（淺色玻璃上方用深色，維持清晰） */
-.site-nav.scrolled .brand-logo { filter: none; }
-.site-nav.scrolled .nav-links a { color: rgba(255, 255, 255, 0.82); }
+/* 指針互動：懸停時玻璃微微提亮（對應 .interactive() 的觸覺回饋） */
+.site-nav.scrolled .nav-row:hover::before {
+  background: linear-gradient(180deg,
+      rgba(255, 255, 255, 0.24) 0%,
+      rgba(255, 255, 255, 0.13) 46%,
+      rgba(255, 255, 255, 0.09) 100%);
+}
+
+/* 膠囊內文字：深色頁面上的淺色玻璃 → 白字保持高對比可讀 */
+.site-nav.scrolled .nav-links a { color: rgba(255, 255, 255, 0.85); }
 .site-nav.scrolled .nav-links a:hover { color: #fff; background: rgba(255, 255, 255, 0.12); }
 .site-nav.scrolled .nav-links a.active {
   color: #fff;
@@ -220,7 +242,7 @@ em { font-style: normal; color: var(--accent-hi); }
   box-shadow: 0 1px 0 rgba(91, 141, 239, 0.18) inset;
 }
 .site-nav.scrolled .nav-live {
-  color: rgba(255, 255, 255, 0.82);
+  color: rgba(255, 255, 255, 0.85);
   border-color: rgba(255, 255, 255, 0.28);
   background: rgba(255, 255, 255, 0.06);
 }
