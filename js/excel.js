@@ -54,6 +54,8 @@ function downloadTemplate() {
     { "客戶編號": "C0002", "指定日期": "2025-03-14", "市場": "US", "股票代碼": "AAPL",  "股份數量": 50  },
     { "客戶編號": "",        "指定日期": "",              "市場": "HK", "股票代碼": "9988",  "股份數量": 200 },
   ];
+  /* 主工作表「持倉明細」：僅含實際上傳欄位（A–E），不含任何說明文字，
+     避免上傳解析時把說明當成資料列（parseExcel 只讀第一個工作表）。 */
   const ws = XLSX.utils.json_to_sheet(rows, { header: EXCEL_HEADERS });
   ws["!cols"] = [
     { wch: 14 }, // A 客戶編號
@@ -61,42 +63,37 @@ function downloadTemplate() {
     { wch: 8 },  // C 市場
     { wch: 12 }, // D 股票代碼
     { wch: 10 }, // E 股份數量
-    { wch: 3 },  // F 留空（上傳欄位僅到 E）
-    { wch: 14 }, // G 說明欄位名
-    { wch: 22 }, // H 說明文字
-    { wch: 22 }, // I
-    { wch: 22 }, // J
-    { wch: 22 }, // K
   ];
-  /* 在第 7 列（G 起）的「欄位說明」幫助使用者理解每個欄位要 input 什麼。
-     說明移到 G 列之後，A–F 僅保留實際上傳欄位（A–E），使用者上傳時無須手刪說明區。 */
-  const EXPLANATIONS = [
-    { col: "G", head: "客戶編號", body: "選填。例：C0001、C0002。可留空；全檔皆空時結果改依「股票代碼」排序。" },
-    { col: "G", head: "指定日期", body: "選填。例：2024-12-31。系統查詢此日收市價；若整列留空則退回頂部「批量日期」。" },
-    { col: "G", head: "市場",     body: "必填。HK=港股、A=A 股、US=美股（字母代碼，例如 AAPL）。" },
-    { col: "G", head: "股票代碼", body: "必填。港股輸入代碼數字即可，系統自動去前導零（例 700=0700、5=00005、1=00001）；A 股 6 位（例 600519）；美股字母（例 AAPL）。" },
-    { col: "G", head: "股份數量", body: "必填。正整數，例如 100、200。" },
+
+  /* 第二工作表「填寫說明」：欄位填寫說明集中於此，不污染主表 */
+  const guideWs = XLSX.utils.aoa_to_sheet([
+    ["📝 欄位填寫說明（此頁僅供參考，上傳時只需「持倉明細」工作表）"],
+    ["欄位", "說明"],
+    ["客戶編號", "選填。例：C0001、C0002。可留空；全檔皆空時結果改依「股票代碼」排序。"],
+    ["指定日期", "選填。例：2024-12-31。系統查詢此日收市價；若整列留空則退回頂部「批量日期」。"],
+    ["市場", "必填。HK=港股、A=A 股、US=美股（字母代碼，例如 AAPL）。"],
+    ["股票代碼", "必填。港股輸入代碼數字即可，系統自動去前導零（例 700=0700、5=00005、1=00001）；A 股 6 位（例 600519）；美股字母（例 AAPL）。"],
+    ["股份數量", "必填。正整數，例如 100、200。"],
+  ]);
+  guideWs["!cols"] = [{ wch: 14 }, { wch: 86 }];
+  guideWs["!merges"] = [{ s: { r: 0, c: 0 }, e: { r: 0, c: 1 } }]; // 標題跨 A:B
+  const guideHeadFill = { fill: { fgColor: { rgb: "FFF4C2" } }, font: { bold: true } };
+  const guideWrap = { alignment: { wrapText: true, vertical: "top" } };
+  // 標題列（第 2 列：欄位／說明）與欄位名列（A3:A7）黃底；說明列自動換行
+  ["A2", "B2"].forEach((a) => { if (guideWs[a]) guideWs[a].s = guideHeadFill; });
+  for (let r = 3; r <= 7; r++) {
+    const aCell = XLSX.utils.encode_cell({ r: r - 1, c: 0 });
+    if (guideWs[aCell]) guideWs[aCell].s = guideHeadFill;
+    const bCell = XLSX.utils.encode_cell({ r: r - 1, c: 1 });
+    if (guideWs[bCell]) guideWs[bCell].s = Object.assign({}, guideWs[bCell].s, guideWrap);
+  }
+  guideWs["!rows"] = [
+    { hpt: 22 }, { hpt: 20 }, { hpt: 42 }, { hpt: 42 }, { hpt: 42 }, { hpt: 42 }, { hpt: 42 },
   ];
-  // 在第 6 列加說明區的標題並把 G:K 合併為一格（A–F 不含說明）
-  XLSX.utils.sheet_add_aoa(ws, [["📝 欄位填寫說明（上傳前可刪除 G 列起此區）"]], { origin: "G6" });
-  const merges = [{ s: { r: 5, c: 6 }, e: { r: 5, c: 10 } }]; // G6 跨 G6:K6
-  // 從第 7 列起：每欄一條「欄位名 + 說明」，欄位名置於 G 列（黃底），說明文字橫跨 H:K
-  const guideStartRow = 7;
-  const headFill = { fill: { fgColor: { rgb: "FFF4C2" } }, font: { bold: true } };
-  EXPLANATIONS.forEach((exp, i) => {
-    const r = guideStartRow + i;
-    XLSX.utils.sheet_add_aoa(ws, [[exp.head, exp.body]], { origin: `G${r}` });
-    merges.push({ s: { r: r - 1, c: 7 }, e: { r: r - 1, c: 10 } }); // 說明文字橫跨 H:K（4 欄）
-    const headAddr = XLSX.utils.encode_cell({ r: r - 1, c: 6 });      // G 列欄位名（黃底）
-    if (ws[headAddr]) ws[headAddr].s = headFill;
-  });
-  ws["!merges"] = merges;
-  ws["!rows"] = [];
-  for (let i = 0; i < guideStartRow - 1 + EXPLANATIONS.length; i++) ws["!rows"][i] = { hpt: 18 };
-  ws["!rows"][5] = { hpt: 22 };                                     // 第 6 列：標題列稍高
-  EXPLANATIONS.forEach((_, i) => { ws["!rows"][guideStartRow - 1 + i] = { hpt: 36 }; });
+
   const wb = XLSX.utils.book_new();
   XLSX.utils.book_append_sheet(wb, ws, "持倉明細");
+  XLSX.utils.book_append_sheet(wb, guideWs, "填寫說明");
   XLSX.writeFile(wb, "持倉模板.xlsx");
 }
 
