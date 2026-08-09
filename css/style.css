@@ -115,7 +115,7 @@ em { font-style: normal; color: var(--accent-hi); }
   position: relative; z-index: 1;
   display: inline-flex; flex-direction: column;
   overflow: hidden;
-  font-size: 13.5px; font-weight: 500; color: rgba(255, 255, 255, 0.85);
+  font-size: 13.5px; font-weight: 500; color: rgba(255, 255, 255, 0.68);
   padding: 8px 12px; border-radius: var(--radius-sm);
   transition: color .35s ease, background .35s ease, transform .18s ease;
   text-decoration: none;
@@ -128,24 +128,10 @@ em { font-style: normal; color: var(--accent-hi); }
 .nav-links a:hover .nav-link__txt + .nav-link__txt,
 .nav-links a:focus-visible .nav-link__txt + .nav-link__txt { transform: translateY(0); }
 .nav-links a:hover { color: #fff; background: rgba(255, 255, 255, 0.10); }
-.nav-links a.active { color: #fff; background: rgba(255, 255, 255, 0.12); }
+.nav-links a.active { color: #fff; }
 
-/* 滑動指示條（底部 underline + 微弱背景，跟在 active link 後移動） */
-.nav-indicator {
-  position: absolute; z-index: 0;
-  top: 50%; transform: translateY(-50%);
-  height: 32px;
-  border-radius: var(--radius-sm);
-  background: rgba(255, 255, 255, 0.14);
-  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.08) inset;
-  transition:
-    left .45s var(--nav-ease),
-    width .45s var(--nav-ease),
-    background .35s ease,
-    box-shadow .35s ease,
-    height .35s ease;
-  pointer-events: none;
-}
+/* 滑動指示條：依用戶要求移除會跳動的色塊（已改用文字亮度標示目前章節） */
+.nav-indicator { display: none; }
 
 .nav-live {
   display: inline-flex; align-items: center; gap: 7px;
@@ -229,16 +215,9 @@ em { font-style: normal; color: var(--accent-hi); }
 }
 
 /* 膠囊內文字：深色頁面上的淺色玻璃 → 白字保持高對比可讀 */
-.site-nav.scrolled .nav-links a { color: rgba(255, 255, 255, 0.85); }
+.site-nav.scrolled .nav-links a { color: rgba(255, 255, 255, 0.68); }
 .site-nav.scrolled .nav-links a:hover { color: #fff; background: rgba(255, 255, 255, 0.12); }
-.site-nav.scrolled .nav-links a.active {
-  color: #fff;
-  background: rgba(255, 255, 255, 0.12);
-}
-.site-nav.scrolled .nav-indicator {
-  background: rgba(255, 255, 255, 0.10);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14);
-}
+.site-nav.scrolled .nav-links a.active { color: #fff; }
 .site-nav.scrolled .nav-live {
   color: rgba(255, 255, 255, 0.85);
   border-color: rgba(255, 255, 255, 0.28);
