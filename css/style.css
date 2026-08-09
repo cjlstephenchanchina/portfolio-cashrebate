@@ -269,22 +269,22 @@ em { font-style: normal; color: var(--accent-hi); }
   scroll-margin-top: calc(var(--nav-h) + 12px);
 }
 .section:last-child { border-bottom: none; }
-/* hero→第一內容區無縫銜接：#quote 頂端純黑，向下漸透明，與 hero 底部黑融為一體
+/* hero→第一內容區無縫銜接：#quote 頂端純黑（接 hero 底部全黑），向下平滑淡出至全透明，露出極光背景。
+   用純黑 rgba(0,0,0)（非深藍），且頂端不長時間維持高不透明，故只是一道小型漸變過渡而非色塊。
    （注意：不能用 .section:first-of-type —— 第一個 <section> 是 .hero-cinema，會落空，故直接用 #quote） */
 #quote::before {
   content: "";
   position: absolute; top: 0; left: 0; right: 0;
-  height: 46vh;
+  height: 30vh;
   z-index: 0;
   pointer-events: none;
   background: linear-gradient(to bottom,
-    rgba(6, 8, 14, 1)    0%,
-    rgba(6, 8, 14, 1)    12%,
-    rgba(6, 8, 14, 0.92) 28%,
-    rgba(6, 8, 14, 0.70) 46%,
-    rgba(6, 8, 14, 0.42) 64%,
-    rgba(6, 8, 14, 0.16) 82%,
-    rgba(6, 8, 14, 0)   100%);
+    rgba(0, 0, 0, 1)    0%,
+    rgba(0, 0, 0, 0.82) 18%,
+    rgba(0, 0, 0, 0.52) 38%,
+    rgba(0, 0, 0, 0.26) 56%,
+    rgba(0, 0, 0, 0.09) 74%,
+    rgba(0, 0, 0, 0)   100%);
 }
 .section > * { position: relative; z-index: 1; }
 .section-head { display: flex; align-items: flex-start; gap: 16px; margin-bottom: 22px; flex-wrap: wrap; }
