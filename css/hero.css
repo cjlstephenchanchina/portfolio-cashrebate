@@ -122,7 +122,7 @@
 }
 
 .hero-cinema__panel {
-  width: min(34vw, 620px);
+  width: min(44vw, 720px);
   min-width: 380px;
   display: flex;
   flex-direction: column;
@@ -152,6 +152,7 @@
   font-size: clamp(44px, 6.6vw, 116px);
   font-weight: 400;
   letter-spacing: -0.005em;
+  white-space: nowrap;               /* 強制每行不折行：避免 "Act precisely." 在寬屏被擠成兩行 */
 }
 .hc-slogan__line--italic {
   font-style: italic;
