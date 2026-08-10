@@ -135,10 +135,10 @@
   .hero-cinema__panel { width: 100%; align-items: stretch; }
 }
 
-/* ── Hero slogan：英文花體（Parisienne 斜體）+ 正體兩行品牌 Slogan；中文改用書法花體 Ma Shan Zheng ── */
+/* ── Hero slogan：英文沿用原 Playfair Display（斜體＋正體兩行）；中文改用書法花體 Ma Shan Zheng ── */
 .hc-slogan {
   margin-top: 0;                      /* slogan 為 panel 第一個元素，不再有上方大標題預留空間 */
-  font-family: "Parisienne", "Playfair Display", "Times New Roman", Georgia, serif;
+  font-family: "Playfair Display", "Times New Roman", Georgia, serif;
   color: var(--hc-text);
   display: flex;
   flex-direction: column;
