@@ -609,6 +609,20 @@ table.data .num { font-family: var(--font-mono); }
 .footer-row { display: flex; flex-direction: column; gap: 10px; }
 .footer-brand { font-weight: 600; font-size: 14px; display: inline-flex; align-items: center; gap: 8px; }
 .footer-logo { width: 22px; height: 22px; flex: none; filter: drop-shadow(0 1px 3px rgba(0,0,0,.5)); }
+/* 頁尾品牌標語：英文花體 Parisienne、中文書法 Ma Shan Zheng，與站體 sans 拉開字體層次 */
+.brand-slogan {
+  font-family: "Parisienne", "Playfair Display", Georgia, serif;
+  font-weight: 400;
+  font-size: 1.35em;
+  letter-spacing: 0.01em;
+  margin-left: 2px;
+}
+:lang(zh-Hans) .brand-slogan,
+:lang(zh-Hant) .brand-slogan {
+  font-family: "Ma Shan Zheng", "KaiTi", "STKaiti", "Kaiti SC", serif;
+  font-size: 1.5em;
+  letter-spacing: 0.04em;
+}
 .footer-note { color: var(--muted); font-size: 12.5px; line-height: 1.7; }
 .footer-copy { color: var(--faint); font-size: 12px; }
 

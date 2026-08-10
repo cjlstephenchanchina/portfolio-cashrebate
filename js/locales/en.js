@@ -18,6 +18,9 @@ window.I18N_DATA["en"] = {
 
   /* ---------- Hero ---------- */
   "hero.cta": "Get Started",
+  "brand.slogan1": "See clearly.",
+  "brand.slogan2": "Act precisely.",
+  "brand.sloganFull": "See clearly. Act precisely.",
 
   /* ---------- Quote ---------- */
   "quote.title": "Single Query",

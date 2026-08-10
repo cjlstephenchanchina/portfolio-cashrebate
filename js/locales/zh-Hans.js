@@ -18,6 +18,9 @@ window.I18N_DATA["zh-Hans"] = {
 
   /* ---------- 页头 / Hero ---------- */
   "hero.cta": "开始使用",
+  "brand.slogan1": "明察于心，",
+  "brand.slogan2": "笃行于精",
+  "brand.sloganFull": "明察于心，笃行于精",
 
   /* ---------- 单笔查询 / Quote ---------- */
   "quote.title": "单笔查询",
@@ -107,7 +110,7 @@ window.I18N_DATA["zh-Hans"] = {
   "meta.title": "Nora-AI Capital — 股票市值计算器",
   "meta.description": "Nora-AI Capital — 港股 / A股 / 美股持仓市值计算、批量作业与现金回赠统计",
   "meta.ogTitle": "Nora-AI Capital — 股票市值计算器",
-  "meta.ogDescription": "See clearly. Act precisely. 港股 / A股 / 美股持仓市值计算、批量作业与现金回赠统计。",
+  "meta.ogDescription": "明察于心，笃行于精。港股 / A股 / 美股持仓市值计算、批量作业与现金回赠统计。",
 
   /* ---------- 市场标签 / Market labels ---------- */
   "mk.hk": "港股",
