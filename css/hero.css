@@ -159,15 +159,15 @@
   letter-spacing: 0.005em;
 }
 
-/* 中文標語：書法花體 Ma Shan Zheng（楷書筆意），並做針對中文的排版修正 */
+/* 中文標語：書法花體 Ma Shan Zheng（楷書筆意），繁簡統一；尺寸接近英文以保持視覺重量 */
 :lang(zh-Hans) .hc-slogan,
 :lang(zh-Hant) .hc-slogan {
   font-family: "Ma Shan Zheng", "KaiTi", "STKaiti", "Kaiti SC", serif;
-  line-height: 1.18;                  /* 書法字偏高，行高放大避免兩行擠壓 */
+  line-height: 1.22;                  /* 書法字偏高，行高放大避免兩行擠壓 */
 }
 :lang(zh-Hans) .hc-slogan__line,
 :lang(zh-Hant) .hc-slogan__line {
-  font-size: clamp(34px, 5vw, 84px);  /* 中文全形字較寬，縮小尺寸防止窄屏溢出 */
+  font-size: clamp(46px, 6.4vw, 110px); /* 接近英文 clamp(44px,6.6vw,116px)，保持同等視覺衝擊力 */
 }
 :lang(zh-Hans) .hc-slogan__line--italic,
 :lang(zh-Hant) .hc-slogan__line--italic {
