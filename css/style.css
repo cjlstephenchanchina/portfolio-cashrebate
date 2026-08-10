@@ -417,17 +417,34 @@ input[type="file"]::file-selector-button {
   background: var(--surface-3); border: 1px solid var(--border-strong);
   border-radius: 6px; padding: 5px 11px; margin-right: 12px; cursor: pointer;
 }
-/* 批量：文件選擇虛線框與「上傳並計算」按鈕等高 */
-.b-file-row { display: flex; align-items: stretch; gap: 14px; grid-column: 1 / -1; }
-.b-file-row .field { margin: 0; }
-.b-file-row .field-action { justify-content: flex-start; }
+/* 批量：緊湊橫向佈局（日期 + 檔案 + 按鈕同一行，消除右側空白） */
+#batch-form.form-grid {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 14px 20px;
+}
+#batch-form > .field {
+  flex: 0 1 auto;
+  max-width: 220px;
+}
+#batch-form .b-file-row {
+  display: flex;
+  align-items: stretch;
+  gap: 12px;
+  grid-column: auto;            /* 不再佔滿整行 */
+  flex: 1 1 0;
+  min-width: 0;
+}
+#batch-form .b-file-row .field { margin: 0; flex: 1; max-width: none; }
+#batch-form .b-file-row .field-action { justify-content: flex-start; flex-shrink: 0; }
 .b-file-drop {
-  height: 56px; box-sizing: border-box;
+  height: 44px; box-sizing: border-box;
   border: 1.5px dashed var(--border-strong);
   display: flex; align-items: center;
 }
 .b-upload-btn {
-  height: 56px; box-sizing: border-box;
+  height: 44px; box-sizing: border-box;
   border: 1.5px solid transparent;
   display: flex; align-items: center; justify-content: center;
 }
@@ -681,16 +698,12 @@ table.data .num { font-family: var(--font-mono); }
 .footer-row { display: flex; flex-direction: column; gap: 10px; }
 .footer-brand { font-weight: 600; font-size: 14px; display: inline-flex; align-items: center; gap: 8px; }
 .footer-logo { width: 22px; height: 22px; flex: none; filter: drop-shadow(0 1px 3px rgba(0,0,0,.5)); }
-/* 頁尾品牌標語：英文沿用站體 footer-brand 字體（原樣）；中文由下方 :lang(zh-*) 覆寫為書法花體 Ma Shan Zheng */
+/* 頁尾品牌標語：統一使用站體 sans-serif（不套用 hero 區塊的特殊字體） */
 .brand-slogan {
   margin-left: 2px;
+  font-weight: 500;
 }
-:lang(zh-Hans) .brand-slogan,
-:lang(zh-Hant) .brand-slogan {
-  font-family: "Ma Shan Zheng", "KaiTi", "STKaiti", "Kaiti SC", serif;
-  font-size: 1.5em;
-  letter-spacing: 0.04em;
-}
+/* 中文不再覆寫為書法體，繼承 .footer-brand 的站體 sans-serif */
 .footer-note { color: var(--muted); font-size: 12.5px; line-height: 1.7; }
 .footer-copy { color: var(--faint); font-size: 12px; }
 
