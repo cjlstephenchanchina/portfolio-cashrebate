@@ -473,6 +473,78 @@ table.data .num { font-family: var(--font-mono); }
 
 /* ---------- 結果區 / 提示 ---------- */
 .result-area { margin-top: 20px; }
+/* ---------- 單筆查詢結果：緊湊「價格英雄」佈局（橫向 flex，收市價為視覺焦點） ---------- */
+.quote-result {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  border-radius: var(--radius);
+  padding: 20px 24px;
+  backdrop-filter: blur(20px) saturate(150%);
+  -webkit-backdrop-filter: blur(20px) saturate(150%);
+}
+.quote-result__hero {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+.quote-stock {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;                     /* 允許縮小 */
+  flex: 1;
+}
+.quote-stock__name {
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 1.25;
+}
+.quote-stock__code {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--muted);
+}
+.quote-stock__en {
+  font-size: 12.5px;
+  color: var(--muted);
+  opacity: 0.7;
+}
+/* ── 收市價：hero number（右側超大突出） ── */
+.quote-price {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+  flex-shrink: 0;
+  padding-left: 24px;
+  border-left: 1px solid rgba(255, 255, 255, 0.08);
+}
+.quote-price__label {
+  font-size: 12px;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.quote-price__value {
+  font-family: var(--font-mono);
+  font-size: clamp(32px, 5vw, 48px);
+  font-weight: 600;
+  color: var(--accent-hi);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+}
+/* ── 緊湊元數據行（日期／股數／市值） ── */
+.quote-result__detail {
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+/* ---------- 批量結果仍用 result-grid（保留） ---------- */
 .result-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px; }
 .r-cell { background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.12); border-radius: var(--radius); padding: 14px 16px; display: flex; flex-direction: column; gap: 6px; backdrop-filter: blur(16px) saturate(140%); -webkit-backdrop-filter: blur(16px) saturate(140%); }
 .r-k { font-size: 12px; color: var(--muted); }

@@ -78,20 +78,30 @@ function renderQuote(q) {
     noteParts.push(I18N.t("app.quote.note.fxSrc", { src: q.fx_source }));
   }
   const note = noteParts.filter(Boolean).join(I18N.t("app.quote.note.sep"));
+
+  /* 緊湊元數據行：日期 +（可選）股數/市值/HKD匯率/HKD市值 */
+  const detailItems = [I18N.t("app.quote.lbl.tradeDate") + " " + q.quote_date];
+  if (q.shares) detailItems.push(I18N.t("app.quote.lbl.shares") + " " + fmtInt(q.shares));
+  if (q.market_value !== null) {
+    detailItems.push(I18N.t("app.quote.lbl.mv", { cur: q.currency }) + " " + fmtMoney(q.market_value));
+    detailItems.push("FX " + q.fx_to_hkd.toFixed(4));
+    detailItems.push(I18N.t("app.quote.lbl.hkdMv") + " HK$" + fmtMoney(q.hkd_value));
+  }
+
   el.innerHTML = `
-    <div class="result-grid">
-      <div class="r-cell r-name-block">
-        <span class="r-k">${I18N.t("app.quote.lbl.stock")}</span>
-        <span class="r-name-cn">${esc(q.name_cn || q.code)}<small>${esc(q.code)} · ${mktLabel}</small></span>
-        ${q.name_en ? `<span class="r-name-en">${esc(q.name_en)}</span>` : ""}
+    <div class="quote-result">
+      <div class="quote-result__hero">
+        <div class="quote-stock">
+          <span class="quote-stock__name">${esc(q.name_cn || q.code)}</span>
+          <span class="quote-stock__code">${esc(q.code)} · ${mktLabel}</span>
+          ${q.name_en ? `<span class="quote-stock__en">${esc(q.name_en)}</span>` : ""}
+        </div>
+        <div class="quote-price">
+          <span class="quote-price__label">${I18N.t("app.quote.lbl.price", { cur: q.currency })}</span>
+          <span class="quote-price__value">${fmtMoney(q.price)}</span>
+        </div>
       </div>
-      <div class="r-cell"><span class="r-k">${I18N.t("app.quote.lbl.tradeDate")}</span><span class="r-v" style="font-size:16px">${q.quote_date}</span></div>
-      <div class="r-cell"><span class="r-k">${I18N.t("app.quote.lbl.price", { cur: q.currency })}</span><span class="r-v">${fmtMoney(q.price)}</span></div>
-      ${q.shares ? `<div class="r-cell"><span class="r-k">${I18N.t("app.quote.lbl.shares")}</span><span class="r-v" style="font-size:16px">${fmtInt(q.shares)}</span></div>` : ""}
-      ${q.market_value !== null ? `
-        <div class="r-cell"><span class="r-k">${I18N.t("app.quote.lbl.mv", { cur: q.currency })}</span><span class="r-v">${fmtMoney(q.market_value)}</span></div>
-        <div class="r-cell"><span class="r-k">${I18N.t("app.quote.lbl.fx")}</span><span class="r-v" style="font-size:16px">${q.fx_to_hkd.toFixed(4)}</span></div>
-        <div class="r-cell hl"><span class="r-k">${I18N.t("app.quote.lbl.hkdMv")}</span><span class="r-v">HK$${fmtMoney(q.hkd_value)}</span></div>` : ""}
+      <div class="quote-result__detail">${detailItems.join("  ·  ")}</div>
     </div>
     ${note ? `<p class="r-note">${esc(note)}${I18N.t("app.quote.note.end")}</p>` : ""}
   `;
