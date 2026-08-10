@@ -581,13 +581,27 @@ table.data .num { font-family: var(--font-mono); }
   background: rgba(255,255,255,0.04) !important; color: var(--muted) !important;
   border-color: rgba(255,211,42,0.4) !important;
 }
+/* 批量日期鎖定圖示：內嵌在輸入框右側，不獨佔一行 */
+.date-lock-wrap {
+  position: relative;
+  display: flex;
+  align-items: stretch;
+}
+.date-lock-wrap input {
+  padding-right: 38px;          /* 為鎖頭留空間 */
+}
 .b-date-hint {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
   display: inline-flex; align-items: center; justify-content: center;
-  margin-top: 6px; cursor: help; color: #d4af37; font-size: 15px; line-height: 1;
-  position: relative; align-self: flex-start;
+  cursor: help; color: #d4af37; font-size: 13px; line-height: 1;
+  z-index: 2;
+  width: 24px; height: 24px;
 }
 .tip-bubble {
-  position: absolute; bottom: calc(100% + 8px); left: 0;
+  position: absolute; bottom: calc(100% + 8px); right: 0;
   width: 268px; max-width: 78vw;
   background: #1B2130; color: var(--text);
   border: 1px solid var(--border-strong);

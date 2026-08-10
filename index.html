@@ -32,7 +32,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500&family=Inter:wght@200;300;400;500;600&family=Ma+Shan+Zheng&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/style.css?v=20260810m">
+<link rel="stylesheet" href="css/style.css?v=20260810n">
 <link rel="stylesheet" href="css/hero.css?v=20260810l">
 </head>
 <body>
@@ -149,10 +149,12 @@
     </div>
     <div class="card">
       <form id="batch-form" class="form-grid">
-        <div class="field">
+        <div class="field field--with-lock">
           <label for="b-date"><span data-i18n="batch.lbl.date">批量日期</span> <span class="opt" data-i18n="batch.lbl.dateHint">（缺省值：每列未指定日期時使用）</span></label>
-          <input id="b-date" type="date" required>
-          <span class="b-date-hint" id="bDateHint" tabindex="0" aria-label="說明" style="display:none">🔒<span class="tip-bubble">檔案含「指定日期」欄，批量日期已鎖定。各列以自己的指定日期查詢收市價。</span></span>
+          <div class="date-lock-wrap">
+            <input id="b-date" type="date" required>
+            <span class="b-date-hint" id="bDateHint" tabindex="0" aria-label="說明" style="display:none" title="">🔒<span class="tip-bubble">檔案含「指定日期」欄，批量日期已鎖定。各列以自己的指定日期查詢收市價。</span></span>
+          </div>
         </div>
         <div class="b-file-row">
           <div class="field field-file">
