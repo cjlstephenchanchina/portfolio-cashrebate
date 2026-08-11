@@ -10,6 +10,8 @@
   var DAYS = 30;
   var CONCURRENCY = 6;
   var CACHE_KEY = "nora-top30-avg-v1";
+  var lastItems = null;
+  var lastMeta = "更新中…";
 
   /* ---- 內建示範資料（離線／抓取失敗時的兜底；yi 單位：億港元） ---- */
   var FALLBACK = [
@@ -67,6 +69,36 @@
     "09988","09992","09999","00100"
   ];
 
+  /* ---- 語言感知：股票名稱顯示（zh-Hant 用繁體、zh-Hans 用簡體、en 用英文） ---- */
+  function currentLang() {
+    return (window.I18N && I18N.lang) || "zh-Hant";
+  }
+
+  function displayName(d) {
+    var lang = currentLang();
+    if (lang === "en") return d.en || d.zhHant || d.zhHans || d.cn || "";
+    if (lang === "zh-Hans") return d.zhHans || d.cn || d.zhHant || "";
+    return d.zhHant || d.cn || d.zhHans || "";
+  }
+
+  /* 補齊繁/簡/英文名（讀取自動生成的 TOP30_NAMES 對照表） */
+  function withNames(d) {
+    var m = (typeof TOP30_NAMES !== "undefined" && TOP30_NAMES[d.code]) || {};
+    if (!d.zhHant) d.zhHant = m.hant || d.cn || "";
+    if (!d.zhHans) d.zhHans = m.hans || d.cn || "";
+    if (!d.en) d.en = EN_EXTRA[d.code] || "";
+    return d;
+  }
+
+  /* 非示範名單內公司的英文名（簡短補充） */
+  var EN_EXTRA = {
+    "00148": "Kingboard Holdings",
+    "00939": "CCB",
+    "09999": "NetEase",
+    "01211": "BYD",
+    "02476": "VGT"
+  };
+
   function esc(s) {
     return String(s == null ? "" : s)
       .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
@@ -79,21 +111,33 @@
   }
 
   function renderList(items, metaText, box, metaEl) {
+    lastItems = items;
+    lastMeta = metaText;
+    var lang = currentLang();
     box.innerHTML = items.map(function (d, i) {
       var rank = i + 1;
-      var en = d.en ? "<small>" + esc(d.en) + "</small>" : "<small></small>";
+      withNames(d);
+      var main = esc(displayName(d));
+      var en = (lang !== "en" && d.en) ? "<small>" + esc(d.en) + "</small>" : "<small></small>";
       var yi = d.yi != null ? d.yi : d.avg / 1e8;
-      return '<div class="top30-item" title="' + esc(d.cn + " " + (d.en || "") + " · 日均 " + fmtYi(yi)) + '">' +
+      return '<div class="top30-item" title="' + esc(displayName(d) + " · 日均 " + fmtYi(yi)) + '">' +
         '<span class="top30-rank">' + rank + '</span>' +
         '<span class="top30-badge">' +
-        '<img class="top30-logo" src="img/logos/' + esc(d.code) + '.png" alt="' + esc(d.cn) + '" width="56" height="56" loading="lazy" decoding="async" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\'">' +
-        '<span class="top30-mono" style="display:none;background:' + esc(d.color || "#333") + '">' + esc(d.mono || d.cn.charAt(0)) + '</span>' +
+        '<img class="top30-logo" src="img/logos/' + esc(d.code) + '.png" alt="' + main + '" width="56" height="56" loading="lazy" decoding="async" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\'">' +
+        '<span class="top30-mono" style="display:none;background:' + esc(d.color || "#333") + '">' + esc(d.mono || (d.zhHant || d.cn || "?").charAt(0)) + '</span>' +
         '</span>' +
-        '<span class="top30-name">' + esc(d.cn) + en + '</span>' +
+        '<span class="top30-name">' + main + en + '</span>' +
         '<span class="top30-code">' + esc(d.code) + ' · 日均 ' + fmtYi(yi) + '</span>' +
         '</div>';
     }).join("");
     if (metaEl) metaEl.textContent = metaText;
+  }
+
+  /* 語言切換時重繪（I18N.setLang 會呼叫動態回呼） */
+  function renderLast() {
+    var box = document.getElementById("top30-grid");
+    if (!box || !lastItems) return;
+    renderList(lastItems, lastMeta, box, document.getElementById("top30-meta"));
   }
 
   /* 批次即時報價：回傳 code -> {name, amount(HKD)} */
@@ -159,7 +203,7 @@
       try { cached = JSON.parse(localStorage.getItem(CACHE_KEY) || "null"); } catch (e) { cached = null; }
       var today = new Date().toISOString().slice(0, 10);
       if (cached && cached.date === today && Array.isArray(cached.items) && cached.items.length) {
-        renderList(cached.items, "30 日平均成交額 · 快取 " + cached.time, box, metaEl);
+        renderList(cached.items.map(withNames), "30 日平均成交額 · 快取 " + cached.time, box, metaEl);
         return;
       }
 
@@ -177,8 +221,12 @@
 
       var enMap = {};
       FALLBACK.forEach(function (f) { enMap[f.code] = f.en; });
+      Object.keys(EN_EXTRA).forEach(function (c) { enMap[c] = EN_EXTRA[c]; });
       var items = cands.map(function (d, i) {
-        return { code: d.code, cn: d.cn, en: enMap[d.code] || "", avg: avgs[i], yi: avgs[i] / 1e8, color: null, mono: null };
+        return withNames({
+          code: d.code, cn: d.cn, avg: avgs[i], yi: avgs[i] / 1e8,
+          color: null, mono: null, en: enMap[d.code] || ""
+        });
       })
       .filter(function (d) { return d.avg > 0; })
       .sort(function (a, b) { return b.avg - a.avg; })
@@ -204,6 +252,8 @@
   } else {
     load();
   }
+
+  if (window.I18N && I18N.registerDynamic) I18N.registerDynamic(renderLast);
 
   /* 手動更新按鈕 */
   document.addEventListener("DOMContentLoaded", function () {
