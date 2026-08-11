@@ -1,7 +1,10 @@
 /* HERO 背景影片：正放 → 倒放 → 正放…無縫來回循環（ping-pong loop）
- * - 優先使用瀏覽器原生倒放（playbackRate = -1，Chrome/Safari/Edge 支援）
- * - 不支援負速率的瀏覽器自動切換為「逐幀倒退」模式（requestAnimationFrame 驅動 currentTime）
- * - 保留 HTML 上的 loop 屬性作最後兜底：JS 一旦成功接管就移除 loop，避免「播完跳回開頭」
+ *
+ * 設計重點（避免干擾首次播放）：
+ * 1. 初始階段完全不寫入影片（只讀 currentTime），保持與原本 autoplay/loop 完全相同的播放行為。
+ * 2. 偵測到第一次「播完跳回開頭」的瞬間才接管：移除 loop、改為倒放。
+ * 3. 優先使用瀏覽器原生負速率（Chrome/Safari/Edge 支援 playbackRate = -1）；
+ *    若倒退卡住超過約 0.7 秒，自動切換為「逐幀倒退」模式（rAF 驅動 currentTime）。
  */
 "use strict";
 
@@ -9,19 +12,32 @@
   var v = document.querySelector(".hero-cinema__media video");
   if (!v) return;
 
-  var SPEED = 1;          // 播放速率（1 = 正常）
+  var SPEED = 1;
   var dir = 1;            // 1 = 正放, -1 = 倒放
-  var manual = false;     // 是否使用逐幀倒退（原生負速率不可用時）
-  var started = false;
+  var flipped = false;    // 是否已接管（第一次播完後）
+  var manual = false;     // 是否使用逐幀倒退
   var raf = 0;
   var last = 0;
+  var lastT = -1;
+  var stallCount = 0;
+  var prepared = false;
+
+  /* 影片已可播放：移除 loop，讓第一輪自然播完（不會有「跳回開頭」的瞬間） */
+  function prepare() {
+    if (prepared) return;
+    prepared = true;
+    try {
+      v.removeAttribute("loop");
+      v.loop = false;
+    } catch (e) { /* ignore */ }
+  }
 
   function supportsNegativeRate() {
     try {
       var prev = v.playbackRate;
       v.playbackRate = -1;
       var ok = v.playbackRate === -1;
-      v.playbackRate = prev;
+      v.playbackRate = prev || 1;
       return ok;
     } catch (e) {
       return false;
@@ -41,53 +57,109 @@
     if (p && p.catch) p.catch(function () { /* 忽略自動播放被拒 */ });
   }
 
+  /* 接管：第一次播完時呼叫 */
+  function takeover() {
+    if (flipped) return;
+    flipped = true;
+    prepare();
+    manual = !supportsNegativeRate();
+    if (manual) {
+      try { v.pause(); } catch (e) { /* ignore */ }
+      last = 0;
+      raf = requestAnimationFrame(step);
+    } else {
+      v.playbackRate = SPEED;
+      raf = requestAnimationFrame(watchdog);
+    }
+  }
+
+  /* 逐幀倒退模式：暫停原生播放，由 rAF 每幀推進 currentTime */
   function step(ts) {
     if (!last) last = ts;
     var dt = Math.min(0.05, (ts - last) / 1000);
     last = ts;
     var dur = v.duration || 0;
-
     if (dur && isFinite(dur) && dur > 0) {
-      // 邊界偵測：到結尾倒放、到開頭正放
-      if (dir > 0 && v.currentTime >= dur - 0.06) flip(-1);
-      else if (dir < 0 && v.currentTime <= 0.06) flip(1);
-
-      if (manual) {
-        var t = v.currentTime + dir * SPEED * dt;
-        if (t >= dur) { t = dur; dir = -1; }
-        else if (t <= 0) { t = 0; dir = 1; }
-        try { v.currentTime = t; } catch (e) { /* ignore */ }
-      }
-
-      // 兜底：倒放到開頭或正放到結尾後瀏覽器可能自行暫停，偵測後繼續播放
-      if (v.paused && v.readyState >= 2 && document.visibilityState === "visible") {
-        var atBoundary = v.currentTime <= 0.06 || v.currentTime >= dur - 0.06;
-        if (atBoundary) playSafe();
-      }
+      var t = v.currentTime + dir * SPEED * dt;
+      if (t >= dur) { t = dur; dir = -1; }
+      else if (t <= 0) { t = 0; dir = 1; }
+      try { v.currentTime = t; } catch (e) { /* ignore */ }
     }
     raf = requestAnimationFrame(step);
   }
 
-  function start() {
-    if (started) return;
-    started = true;
-    try {
-      manual = !supportsNegativeRate();
-      v.removeAttribute("loop");       // 接管循環，避免「播完跳回開頭」
-      v.loop = false;
-      v.playbackRate = SPEED;
-      raf = requestAnimationFrame(step); // 邊界偵測／暫停偵測（兩種模式都需要）
-      playSafe();
-    } catch (e) {
-      // 接管失敗：回復瀏覽器原生 loop，確保至少會自動循環
-      try { v.loop = true; } catch (e2) { /* ignore */ }
+  /* 原生負速率模式：邊界翻轉 + 卡住偵測（倒退逾時 → 改逐幀） */
+  function watchdog(ts) {
+    var dur = v.duration || 0;
+    if (dur && isFinite(dur) && dur > 0) {
+      if (dir > 0 && v.currentTime >= dur - 0.06) flip(-1);
+      else if (dir < 0 && v.currentTime <= 0.06) flip(1);
+
+      if (!v.paused) {
+        if (Math.abs(v.currentTime - lastT) < 1e-4) {
+          stallCount++;
+          if (stallCount > 40) {          // 約 0.7 秒沒有前進 → 卡住，切逐幀
+            enterManual();
+            return;
+          }
+        } else {
+          stallCount = 0;
+          lastT = v.currentTime;
+        }
+      } else {
+        var atBoundary = v.currentTime <= 0.06 || v.currentTime >= dur - 0.06;
+        if (atBoundary) {
+          flip(dir === -1 ? 1 : -1);
+          playSafe();
+        }
+      }
     }
+    raf = requestAnimationFrame(watchdog);
   }
 
+  function enterManual() {
+    if (manual) return;
+    manual = true;
+    try { v.pause(); } catch (e) { /* ignore */ }
+    last = 0;
+    raf = requestAnimationFrame(step);
+  }
+
+  /* 初始階段：只讀不寫，偵測第一次 loop 跳回開頭 */
+  var preT = -1;
+  function detectFirstLoop(ts) {
+    if (!flipped) {
+      var dur = v.duration || 0;
+      if (dur && isFinite(dur) && dur > 0 && preT >= 0 && dir === 1) {
+        if (v.currentTime < preT - 0.5) {
+          takeover();
+          flip(-1);
+          playSafe();
+          return;
+        }
+      }
+      preT = v.currentTime;
+      raf = requestAnimationFrame(detectFirstLoop);
+    }
+  }
+  raf = requestAnimationFrame(detectFirstLoop);
+
+  /* 保險：正放自然播完（非 loop）或暫停在端點時，翻轉並繼續 */
   v.addEventListener("ended", function () {
-    // 正放到結尾（理論上 rAF 已先攔截；此為保險）
-    if (dir > 0) flip(-1);
+    if (!flipped) takeover();
+    flip(-1);
     playSafe();
   });
-  start();
+  v.addEventListener("canplay", prepare);
+  v.addEventListener("loadeddata", prepare);
+  v.addEventListener("pause", function () {
+    if (!flipped) return;
+    var dur = v.duration || 0;
+    if (!dur || !isFinite(dur) || dur <= 0) return;
+    var atBoundary = v.currentTime <= 0.06 || v.currentTime >= dur - 0.06;
+    if (atBoundary) {
+      flip(dir === -1 ? 1 : -1);
+      playSafe();
+    }
+  });
 })();
