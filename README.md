@@ -2,6 +2,8 @@
 
 港股 / A股 / 美股持倉市值查詢、批量作業與現金回贈統計 — **純前端靜態站點，無後端依賴**。
 
+🔗 **線上網址：** <https://cjlstephenchanchina.github.io/portfolio-cashrebate/>
+
 ## ✨ 功能
 - **單筆查詢**：輸入股票代碼與日期（可選股數）→ 返回真實收市價、原幣市值與港幣市值
 - **批量作業**：上傳 Excel（客戶編號／市場／股票代碼／股份數量）→ 自動查價、計算並寫入港幣市值，一鍵匯出
@@ -18,11 +20,11 @@
 ## 🚀 部署（GitHub Pages）
 ```bash
 git init && git add . && git commit -m "initial"
-git remote add origin https://github.com/<你的帳號>/<倉庫名>.git
+git remote add origin https://github.com/cjlstephenchanchina/portfolio-cashrebate.git
 git push -u origin main
 ```
 然後在 GitHub 倉庫 Settings → Pages → Source 選 `main` 分支根目錄 → Save，等待 1-2 分鐘即可訪問：
-`https://<你的帳號>.github.io/<倉庫名>/`
+`https://cjlstephenchanchina.github.io/portfolio-cashrebate/`
 
 ## 🛠 本地運行
 任意靜態伺服器即可，例如：
