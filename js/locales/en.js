@@ -63,6 +63,8 @@ window.I18N_DATA["en"] = {
   "stats.chart.top3sub": "Company ID",
   "stats.chart.market": "Market Distribution",
   "stats.chart.rebate": "Rebate by Client",
+  "stats.top30.title": "Top 30 by Turnover (HKEX)",
+  "stats.top30.desc": "As of 2026-08-11 close · ranked by turnover (companies only, ETFs excluded)",
 
   /* ---------- Overview ---------- */
   "overview.title": "Holdings Overview",

@@ -63,6 +63,8 @@ window.I18N_DATA["zh-Hant"] = {
   "stats.chart.top3sub": "公司識別",
   "stats.chart.market": "市場分佈",
   "stats.chart.rebate": "各客戶回贈",
+  "stats.top30.title": "港交所成交額 Top 30",
+  "stats.top30.desc": "2026-08-11 收市 · 按成交金額排行（僅上市公司，不含 ETF）",
 
   /* ---------- 持倉總覽 / Overview ---------- */
   "overview.title": "持倉總覽",
