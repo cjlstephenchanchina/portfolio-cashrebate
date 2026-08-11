@@ -64,7 +64,8 @@ window.I18N_DATA["zh-Hans"] = {
   "stats.chart.market": "市场分布",
   "stats.chart.rebate": "各客户回赠",
   "stats.top30.title": "港交所成交额 Top 30",
-  "stats.top30.desc": "2026-08-11 收盘 · 按成交金额排行（仅上市公司，不含 ETF）",
+  "stats.top30.desc": "按最近 30 日平均成交额排行 · 进站自动更新（仅上市公司）",
+  "stats.top30.refresh": "⟳ 更新",
 
   /* ---------- 持仓总览 / Overview ---------- */
   "overview.title": "持仓总览",
