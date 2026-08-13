@@ -10,6 +10,7 @@ window.I18N_DATA["zh-Hans"] = {
   "nav.stats": "回赠统计",
   "nav.overview": "持仓总览",
   "nav.history": "走势",
+  "nav.about": "关于",
   "nav.live": "真实行情",
   "nav.aria": "主导航",
   "nav.menu": "开启菜单",
@@ -219,5 +220,21 @@ window.I18N_DATA["zh-Hans"] = {
   "excel.rowShares": "第 {i} 列「股份数量」无效或为 0",
   "excel.rowMarket": "第 {i} 列「市场」为空",
   "excel.rowCode": "第 {i} 列「股票代码」为空",
-  "excel.noDataRows": "Excel 中没有数据行"
+  "excel.noDataRows": "Excel 中没有数据行",
+
+  /* ---------- 关于页 ---------- */
+  "about.title": "关于 Nora-AI Capital",
+  "about.intro": "这是一个 100% 在浏览器内运行的港股 / A股 / 美股持仓市值、批量作业与现金回赠计算工具——无后台服务器，所有计算都在你的本地浏览器完成。",
+  "about.arch.title": "架构",
+  "about.arch.body": "纯静态前端：HTML + CSS + 原生 JavaScript，无框架、无后端。整站部署于 GitHub Pages，通过 GitHub Actions 自动发布。",
+  "about.stack.title": "技术栈",
+  "about.stack.body": "原生 JavaScript（Vanilla JS）；ECharts 绘制统计图、K 线与净值走势；SheetJS（xlsx）解析 Excel 批量文件；hls.js 播放 hero 背景视频流；i18n 支持繁体 / 简体 / 英文；localStorage 存储语言、持仓清单与行情缓存。",
+  "about.data.title": "数据来源",
+  "about.data.body": "港股 / A股：腾讯公开行情接口（实时报价与日 K）；美股：stockanalysis.com（5 年日线收盘数据）；汇率：frankfurter.dev（欧洲央行 ECB 官方参考汇率）。全部由浏览器直连（CORS），不经过任何服务器转发。",
+  "about.calc.title": "计算逻辑",
+  "about.calc.body": "单笔查询：指定日期的真实收盘价与市值；批量作业：上传 Excel → 逐笔查价 → 港币市值导出；回赠统计：按门槛、金额与上限计算每人回赠，并统计合资格受惠客户；持仓总览：市值、未实现盈亏与组合净值走势；另有港交所成交额 Top 30 看板。",
+  "about.privacy.title": "隐私",
+  "about.privacy.body": "所有输入数据只存在你的本地浏览器（localStorage），不会上传到任何服务器；持仓清单、语言偏好与行情缓存都在本地。",
+  "about.disclaimer.title": "免责声明",
+  "about.disclaimer.body": "数据来自公开第三方接口，可能有延迟或错误；查无数据时系统会明确提示。所有计算结果仅供参考，不构成任何投资建议。"
 };

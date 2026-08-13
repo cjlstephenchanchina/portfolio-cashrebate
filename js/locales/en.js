@@ -10,6 +10,7 @@ window.I18N_DATA["en"] = {
   "nav.stats": "Rebate Stats",
   "nav.overview": "Holdings",
   "nav.history": "Trends",
+  "nav.about": "About",
   "nav.live": "Live Quotes",
   "nav.aria": "Main navigation",
   "nav.menu": "Open menu",
@@ -219,5 +220,21 @@ window.I18N_DATA["en"] = {
   "excel.rowShares": "Row {i}: “Shares” is invalid or 0",
   "excel.rowMarket": "Row {i}: “Market” is empty",
   "excel.rowCode": "Row {i}: “Stock Code” is empty",
-  "excel.noDataRows": "The Excel file has no data rows"
+  "excel.noDataRows": "The Excel file has no data rows",
+
+  /* ---------- About page ---------- */
+  "about.title": "About Nora-AI Capital",
+  "about.intro": "A 100% in-browser tool for HK / A-share / US holdings valuation, batch processing and cashback rebate statistics — no backend server; every calculation runs locally in your browser.",
+  "about.arch.title": "Architecture",
+  "about.arch.body": "Pure static frontend: HTML + CSS + vanilla JavaScript, no framework, no backend. Deployed on GitHub Pages and published automatically via GitHub Actions.",
+  "about.stack.title": "Tech Stack",
+  "about.stack.body": "Vanilla JavaScript; ECharts for charts, K-lines and portfolio curves; SheetJS (xlsx) for Excel batch parsing; hls.js for the hero background video stream; i18n with Traditional / Simplified Chinese and English; localStorage for language, holdings and quote cache.",
+  "about.data.title": "Data Sources",
+  "about.data.body": "HK / A-shares: Tencent public quote API (real-time quotes and daily K-line); US: stockanalysis.com (5-year daily closes); FX: frankfurter.dev (ECB official reference rates). All fetched directly from the browser (CORS), with no server relay.",
+  "about.calc.title": "Calculation Logic",
+  "about.calc.body": "Single query: real closing price and market value for a chosen date; batch: upload Excel → quote each row → export HKD values; rebate stats: per-client rebate by threshold, amount and cap, plus qualified beneficiaries; portfolio overview: market value, unrealized P/L and portfolio curve; plus the HKEX Top 30 turnover board.",
+  "about.privacy.title": "Privacy",
+  "about.privacy.body": "All input data stays in your local browser (localStorage) and is never uploaded to any server — holdings, language preference and quote cache are all local.",
+  "about.disclaimer.title": "Disclaimer",
+  "about.disclaimer.body": "Data comes from public third-party APIs and may be delayed or contain errors; the system clearly flags missing data. All results are for reference only and do not constitute investment advice."
 };

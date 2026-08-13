@@ -10,6 +10,7 @@ window.I18N_DATA["zh-Hant"] = {
   "nav.stats": "回贈統計",
   "nav.overview": "持倉總覽",
   "nav.history": "走勢",
+  "nav.about": "關於",
   "nav.live": "真實行情",
   "nav.aria": "主導覽",
   "nav.menu": "開啟選單",
@@ -219,5 +220,21 @@ window.I18N_DATA["zh-Hant"] = {
   "excel.rowShares": "第 {i} 列「股份數量」無效或為 0",
   "excel.rowMarket": "第 {i} 列「市場」為空",
   "excel.rowCode": "第 {i} 列「股票代碼」為空",
-  "excel.noDataRows": "Excel 中沒有數據行"
+  "excel.noDataRows": "Excel 中沒有數據行",
+
+  /* ---------- 關於頁 ---------- */
+  "about.title": "關於 Nora-AI Capital",
+  "about.intro": "這是一個 100% 在瀏覽器內運行的港股 / A股 / 美股持倉市值、批量作業與現金回贈計算工具——無後台伺服器，所有計算都在你的本機瀏覽器完成。",
+  "about.arch.title": "架構",
+  "about.arch.body": "純靜態前端：HTML + CSS + 原生 JavaScript，無框架、無後端。整站部署於 GitHub Pages，透過 GitHub Actions 自動發布。",
+  "about.stack.title": "技術棧",
+  "about.stack.body": "原生 JavaScript（Vanilla JS）；ECharts 繪製統計圖、K 線與淨值走勢；SheetJS（xlsx）解析 Excel 批量檔；hls.js 播放 hero 背景影片串流；i18n 支援繁中 / 簡中 / 英文；localStorage 儲存語言、持倉清單與行情快取。",
+  "about.data.title": "數據來源",
+  "about.data.body": "港股 / A股：騰訊公開行情接口（即時報價與日 K）；美股：stockanalysis.com（5 年日線收市數據）；匯率：frankfurter.dev（歐洲央行 ECB 官方參考匯率）。全部由瀏覽器直連（CORS），不經任何伺服器轉發。",
+  "about.calc.title": "計算邏輯",
+  "about.calc.body": "單筆查詢：指定日期的真實收市價與市值；批量作業：上傳 Excel → 逐筆查價 → 港幣市值匯出；回贈統計：依門檻、金額與上限計算每人回贈，並統計合資格受惠客戶；持倉總覽：市值、未實現盈虧與組合淨值走勢；另有港交所成交額 Top 30 看板。",
+  "about.privacy.title": "隱私",
+  "about.privacy.body": "所有輸入資料只存在你的本機瀏覽器（localStorage），不會上傳到任何伺服器；持倉清單、語言偏好與行情快取都在本機。",
+  "about.disclaimer.title": "免責聲明",
+  "about.disclaimer.body": "數據來自公開第三方接口，可能有延遲或錯誤；查無數據時系統會明確提示。所有計算結果僅供參考，不構成任何投資建議。"
 };
