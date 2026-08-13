@@ -59,15 +59,15 @@ function renderTable() {
   body.innerHTML = pfHoldings.map((h, i) => {
     const r = pfResults[i];
     const priceCell = r && r.ok
-      ? `${fmtMoney(r.price)} <span class="pf-muted">${r.currency}</span>`
+      ? `${fmtMoneyHtml(r.price)} <span class="pf-muted">${r.currency}</span>`
       : (r ? `<span class="up">${I18N.t("pf.noData")}</span>` : `—`);
-    const mvCell = r && r.ok ? `HK$${fmtMoney(r.hkd)}` : (r ? `<span class="up">—</span>` : `—`);
+    const mvCell = r && r.ok ? `HK$${fmtMoneyHtml(r.hkd)}` : (r ? `<span class="up">—</span>` : `—`);
     let plCell = `—`;
     if (r && r.ok && r.pl !== null) {
       const sign = r.pl >= 0 ? "+" : "";
       const cls = r.pl >= 0 ? "up" : "down";
       const pct = r.plPct !== null ? ` (${sign}${r.plPct.toFixed(2)}%)` : "";
-      plCell = `<span class="${cls}">${sign}HK$${fmtMoney(r.pl)}${pct}</span>`;
+      plCell = `<span class="${cls}">${sign}HK$${fmtMoneyHtml(r.pl)}${pct}</span>`;
     } else if (r && r.ok) {
       plCell = `<span class="pf-muted">${I18N.t("pf.noCost")}</span>`;
     } else if (r) {
@@ -152,10 +152,10 @@ async function computePortfolio() {
     const totalHkd = pfRound2(ok.reduce((s, r) => s + r.hkd, 0));
     const totalCost = pfRound2(ok.reduce((s, r) => s + (r.costHkd || 0), 0));
     const totalPl = pfRound2(ok.reduce((s, r) => s + (r.pl || 0), 0));
-    $pf("k-pf-total").textContent = "HK$" + fmtMoney(totalHkd);
-    $pf("k-pf-cost").textContent = "HK$" + fmtMoney(totalCost);
+    $pf("k-pf-total").innerHTML = "HK$" + fmtMoneyHtml(totalHkd);
+    $pf("k-pf-cost").innerHTML = "HK$" + fmtMoneyHtml(totalCost);
     const plEl = $pf("k-pf-pl");
-    plEl.textContent = (totalPl >= 0 ? "+" : "") + "HK$" + fmtMoney(totalPl);
+    plEl.innerHTML = (totalPl >= 0 ? "+" : "") + "HK$" + fmtMoneyHtml(totalPl);
     plEl.className = "kpi-value " + (totalPl >= 0 ? "up" : "down");
     $pf("k-pf-count").textContent = ok.length;
     $pf("pf-kpis").hidden = false;

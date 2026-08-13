@@ -83,9 +83,9 @@ function renderQuote(q) {
   const detailItems = [I18N.t("app.quote.lbl.tradeDate") + " " + q.quote_date];
   if (q.shares) detailItems.push(I18N.t("app.quote.lbl.shares") + " " + fmtInt(q.shares));
   if (q.market_value !== null) {
-    detailItems.push(I18N.t("app.quote.lbl.mv", { cur: q.currency }) + " " + fmtMoney(q.market_value));
+    detailItems.push(I18N.t("app.quote.lbl.mv", { cur: q.currency }) + " " + fmtMoneyHtml(q.market_value));
     detailItems.push("FX " + q.fx_to_hkd.toFixed(4));
-    detailItems.push(I18N.t("app.quote.lbl.hkdMv") + " HK$" + fmtMoney(q.hkd_value));
+    detailItems.push(I18N.t("app.quote.lbl.hkdMv") + " HK$" + fmtMoneyHtml(q.hkd_value));
   }
 
   el.innerHTML = `
@@ -98,7 +98,7 @@ function renderQuote(q) {
         </div>
         <div class="quote-price">
           <span class="quote-price__label">${I18N.t("app.quote.lbl.price", { cur: q.currency })}</span>
-          <span class="quote-price__value">${fmtMoney(q.price)}</span>
+          <span class="quote-price__value">${fmtMoneyHtml(q.price)}</span>
         </div>
       </div>
       <div class="quote-result__detail">${detailItems.join("  ·  ")}</div>
@@ -227,7 +227,7 @@ function renderBatch(rows, fallbackDate) {
       if (k === "market") v = `<span class="tag tag-mkt">${MARKET_LABEL(v) || v}</span>`;
       if (k === "status") v = isOk ? `<span class="tag tag-ok">${I18N.t("app.batch.status.ok")}</span>` : `<span class="tag tag-fail">${I18N.t("app.batch.status.fail")}</span>`;
       if (k === "stock") v = `<div class="stock-cell"><span class="code">${esc(row.code)}</span>${row.name_cn ? `<span class="name-cn">${esc(row.name_cn)}</span>` : ""}${row.name_en ? `<span class="name-en">${esc(row.name_en)}</span>` : ""}</div>`;
-      if (k === "price" || k === "market_value" || k === "hkd_value") v = v !== null && v !== undefined ? fmtMoney(v) : "—";
+      if (k === "price" || k === "market_value" || k === "hkd_value") v = v !== null && v !== undefined ? fmtMoneyHtml(v) : "—";
       if (k === "fx_to_hkd") v = v !== null && v !== undefined ? Number(v).toFixed(4) : "—";
       if (k === "shares") v = fmtInt(v);
       if (k === "date") v = v ? esc(v) : `<span class="pf-muted">—（${I18N.t("batch.lbl.date")} ${esc(fallbackDate)}）</span>`;
@@ -243,7 +243,7 @@ function renderBatch(rows, fallbackDate) {
       <div class="kpi"><span class="kpi-label">${I18N.t("app.batch.kpi.total")}</span><span class="kpi-value" style="font-size:24px">${rows.length}</span></div>
       <div class="kpi"><span class="kpi-label">${I18N.t("app.batch.kpi.ok")}</span><span class="kpi-value" style="font-size:24px;color:var(--green)">${ok.length}</span></div>
       <div class="kpi"><span class="kpi-label">${I18N.t("app.batch.kpi.fail")}</span><span class="kpi-value" style="font-size:24px;color:${failed ? "var(--red)" : "var(--text)"}">${failed}</span></div>
-      <div class="kpi kpi-hl"><span class="kpi-label">${I18N.t("app.batch.kpi.totalMv")}</span><span class="kpi-value" style="font-size:24px">HK$${fmtMoney(totalHkd)}</span></div>
+      <div class="kpi kpi-hl"><span class="kpi-label">${I18N.t("app.batch.kpi.totalMv")}</span><span class="kpi-value" style="font-size:24px">HK$${fmtMoneyHtml(totalHkd)}</span></div>
     </div>
     <div class="table-wrap"><table class="data">
       <thead><tr><th>${I18N.t("app.batch.col.client")}</th><th>${I18N.t("app.batch.col.date")}</th><th>${I18N.t("app.batch.col.market")}</th><th>${I18N.t("app.batch.col.stock")}</th><th>${I18N.t("app.batch.col.shares")}</th><th>${I18N.t("app.batch.col.price")}</th><th>${I18N.t("app.batch.col.mv")}</th><th>${I18N.t("app.batch.col.fx")}</th><th>${I18N.t("app.batch.col.hkdMv")}</th><th>${I18N.t("app.batch.col.status")}</th><th>${I18N.t("app.batch.col.reason")}</th></tr></thead>
@@ -341,10 +341,10 @@ async function computeStats() {
 function renderStats(st, rows) {
   $("s-kpis").hidden = false;
   $("s-charts").hidden = false;
-  $("k-total").textContent = "HK$" + fmtMoney(st.total_rebate);
+  $("k-total").innerHTML = "HK$" + fmtMoneyHtml(st.total_rebate);
   $("k-clients").textContent = fmtInt(st.client_count);
-  $("k-avg").textContent = "HK$" + fmtMoney(st.avg_mv_hkd);
-  $("k-total-mv").textContent = "HK$" + fmtMoney(st.total_mv_hkd);
+  $("k-avg").innerHTML = "HK$" + fmtMoneyHtml(st.avg_mv_hkd);
+  $("k-total-mv").innerHTML = "HK$" + fmtMoneyHtml(st.total_mv_hkd);
 
   renderTop3("chartTop3", st.stock_top3);
   renderTop3Cards(st.stock_top3, st.total_mv_hkd);

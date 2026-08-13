@@ -120,6 +120,7 @@ p { margin: 0; }
 a { color: inherit; text-decoration: none; }
 em { font-style: italic; font-family: var(--font-serif); font-weight: 400; color: var(--accent-hi); }
 .num { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+.dec { font-size: 0.78em; opacity: 0.85; letter-spacing: 0; }   /* 金額小數位縮小 */
 
 .container { width: 100%; max-width: var(--maxw); margin: 0 auto; padding: 0 24px; }
 .up   { color: var(--up); }

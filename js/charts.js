@@ -33,6 +33,12 @@ const fmtMoney = (v) => {
   if (v === null || v === undefined || isNaN(v)) return "—";
   return Number(v).toLocaleString("zh-HK", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 };
+/* 金額 HTML 版：小數點後兩位用小一號字（<span class="dec">） */
+const fmtMoneyHtml = (v) => {
+  const s = fmtMoney(v);
+  const i = s.lastIndexOf(".");
+  return i >= 0 ? `${s.slice(0, i)}<span class="dec">${s.slice(i)}</span>` : s;
+};
 const fmtInt = (v) => Number(v || 0).toLocaleString("zh-HK");
 
 /* 窄屏偵測：ECharts 在 ≤640px 時縮小字號 / 旋轉軸標籤 / 加大柱寬以避免標籤擠壓重疊 */
@@ -134,7 +140,7 @@ function renderMarket(id, data) {
     ...chartBase(),
     tooltip: {
       ...chartBase().tooltip,
-      formatter: (p) => `${p.name}<br/><b>HK$${fmtMoney(p.value)}</b>（${p.percent}%）`,
+      formatter: (p) => `${p.name}<br/><b>HK$${fmtMoneyHtml(p.value)}</b>（${p.percent}%）`,
     },
     series: [{
       type: "pie", radius: ["52%", "76%"], center: ["50%", "52%"],
@@ -179,7 +185,7 @@ function renderRebate(id, data) {
       label: {
         show: true, position: "top", color: CHART_COLORS.accentHi, fontWeight: 500,
         fontSize: IS_MOBILE() ? 10 : 12,
-        formatter: (p) => "HK$" + fmtMoney(p.value),
+        formatter: (p) => "HK$" + fmtMoneyHtml(p.value),
       },
     }],
   }, true);
@@ -199,7 +205,7 @@ function renderPortfolioCurve(id, series) {
       ...chartBase().tooltip, trigger: "axis",
       formatter: (ps) => {
         const p = ps[0];
-        return `${p.axisValue}<br/><b>HK$${fmtMoney(p.value)}</b>`;
+        return `${p.axisValue}<br/><b>HK$${fmtMoneyHtml(p.value)}</b>`;
       },
     },
     xAxis: {
