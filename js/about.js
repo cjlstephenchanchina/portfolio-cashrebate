@@ -181,5 +181,11 @@
       initReveal();
     });
   }
-  initReveal();
+  /* 等 DOMContentLoaded 之後再切詞：i18n 會在最末再跑一次 applyStatic，
+     若先切詞會被 textContent 覆蓋掉 .aw span */
+  if (document.readyState === "complete") {
+    initReveal();
+  } else {
+    document.addEventListener("DOMContentLoaded", initReveal);
+  }
 })();
