@@ -82,9 +82,13 @@ function renderTop3(id, data) {
   const values = (data || []).map((d) => d.value);
   chart.setOption({
     ...chartBase(),
+    grid: { left: 10, right: 104, top: 22, bottom: 6, containLabel: true },
     xAxis: {
       type: "value",
-      axisLabel: { color: CHART_COLORS.muted, formatter: (v) => (v >= 1e6 ? (v / 1e6) + "M" : v >= 1e4 ? (v / 1e4) + "萬" : v) },
+      axisLabel: {
+        color: CHART_COLORS.muted,
+        formatter: (v) => v >= 1e12 ? (v / 1e12) + "萬億" : v >= 1e8 ? (v / 1e8) + "億" : v >= 1e4 ? (v / 1e4) + "萬" : v,
+      },
       splitLine: { lineStyle: { color: CHART_COLORS.grid } },
     },
     yAxis: {
@@ -103,7 +107,13 @@ function renderTop3(id, data) {
       label: {
         show: true, position: "right", color: CHART_COLORS.accentHi, fontWeight: 500,
         fontSize: IS_MOBILE() ? 10 : 12,
-        formatter: (p) => "HK$" + fmtMoney(p.value),
+        formatter: (p) => {
+          const v = p.value;
+          if (v >= 1e12) return "HK$" + (v / 1e12).toFixed(2) + "萬億";
+          if (v >= 1e8) return "HK$" + (v / 1e8).toFixed(2) + "億";
+          if (v >= 1e4) return "HK$" + (v / 1e4).toFixed(2) + "萬";
+          return "HK$" + fmtMoney(v);
+        },
       },
     }],
   }, true);
