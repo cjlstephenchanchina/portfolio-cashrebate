@@ -15,7 +15,6 @@
     var ctx = canvas.getContext("2d");
     var MIN = 20;
     var beams = [];
-    var rafId = 0;
     var lastT = 0;
 
     function createBeam(w, h) {
@@ -86,12 +85,14 @@
         if (b.y + b.length < -100) resetBeam(b, i, beams.length);
         drawBeam(b);
       });
-      rafId = requestAnimationFrame(animate);
     }
 
     window.addEventListener("resize", resize);
     resize();
+    /* 定時器＋時間驅動：不再依賴 rAF（iOS 按住手指時會暫停 rAF，放開才繼續），
+       因此動畫與手指完全無關，載入後自顧自跑 */
     animate();
+    setInterval(animate, 33);
   }
 
   /* ---------- 捲動整段浮現（段落文字整段淡入＋上浮） ---------- */
