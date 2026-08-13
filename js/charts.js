@@ -92,7 +92,7 @@ function renderTop3(id, data) {
       splitLine: { lineStyle: { color: CHART_COLORS.grid } },
     },
     yAxis: {
-      type: "category", data: labels,
+      type: "category", data: labels, inverse: true,   /* 最大市值排最上方（第一個） */
       axisLabel: { color: CHART_COLORS.text, fontSize: 13, fontWeight: 500 },
       axisLine: { show: false }, axisTick: { show: false },
     },
