@@ -31,6 +31,7 @@
     "uniform float u_time;",
     "uniform vec2  u_mouse;",   // 歸一化 -1..1
     "uniform float u_scroll;",  // 滾動進度（已平滑）
+    "uniform float u_theme;",   // 0=深夜（黑底） / 1=白天（近白底）
 
     // ---- Ashima Simplex Noise 3D ----
     "vec3 mod289(vec3 x){return x - floor(x*(1.0/289.0))*289.0;}",
@@ -106,29 +107,31 @@
 
     // 眩光點：noise 峰值觸發
     "  float glow = pow(max(0.0, n - 0.15), 3.5) * 2.5;",
+    // 白天時降低眩光強度，避免過曝
+    "  glow *= mix(1.0, 0.45, u_theme);",
 
     // 眩光顏色：藍青為主，偶爾暖色
     "  float colorVar = fbm(vec3(p*3.0, t*0.2));",
-    "  vec3  glowCool = vec3(0.35, 0.65, 1.0);",            // 藍青
-    "  vec3  glowWarm = vec3(1.0, 0.68, 0.25);",            // 琥珀
+    "  vec3  glowCool = mix(vec3(0.35, 0.65, 1.0), vec3(0.72, 0.84, 1.0), u_theme);",   // 藍青（白天→柔和淺藍）
+    "  vec3  glowWarm = mix(vec3(1.0, 0.68, 0.25), vec3(0.98, 0.87, 0.60), u_theme);", // 琥珀（白天→柔和淺暖）
     "  vec3  glowColor = mix(glowCool, glowWarm, smoothstep(0.5, 0.8, colorVar));",
 
     // 眩光柔暈
     "  float halo = exp(-glow * 1.2) * glow * 0.8;",
-    "  vec3  col = glowColor * (glow + halo);",
+    "  vec3  glowCol = glowColor * (glow + halo);",
 
     // 極慢呼吸
-    "  col *= 0.90 + 0.10 * sin(t * 0.25);",
+    "  glowCol *= 0.90 + 0.10 * sin(t * 0.25);",
 
     // tonemap（降低分母讓暗部也有一點光）
-    "  col = col / (col + 0.55);",
+    "  glowCol = glowCol / (glowCol + 0.55);",
 
-    // 基底：純黑
-    "  vec3 base = vec3(0.0, 0.0, 0.0);",
+    // 基底：深夜純黑 / 白天近白
+    "  vec3 base = mix(vec3(0.0, 0.0, 0.0), vec3(0.963, 0.975, 0.996), u_theme);",
 
     // 各處皆自然可見：滾動略增強（0.7→1.0），但不依賴滾動才出現
     "  float vis = 0.7 + 0.3 * smoothstep(0.0, 1.5, u_scroll);",
-    "  col = base + col * vis;",
+    "  vec3 col = base + glowCol * vis;",
 
     // 極淡暗角
     "  float vig = smoothstep(1.3, 0.2, length(uv - 0.5));",
@@ -176,6 +179,7 @@
   var uTime  = gl.getUniformLocation(prog, "u_time");
   var uMouse = gl.getUniformLocation(prog, "u_mouse");
   var uScroll= gl.getUniformLocation(prog, "u_scroll");
+  var uTheme = gl.getUniformLocation(prog, "u_theme");
 
   // ── 尺寸 / 降採樣（極光本就朦朧，低內部分辨率看不出差別，卻大幅省 GPU） ──
   function resize() {
@@ -205,6 +209,18 @@
   window.addEventListener("scroll", onScroll, { passive: true });
   onScroll();
 
+  /* ── 主題（0=深夜 / 1=白天）：全站已僅保留深夜模式，固定為 0 ── */
+  function readTheme() {
+    return document.documentElement.getAttribute("data-theme") === "day" ? 1 : 0;
+  }
+  var curTheme = readTheme();
+  var targetTheme = curTheme;
+  window.AuroraBG = {
+    setTheme: function (theme) {
+      targetTheme = theme === "day" ? 1 : 0;
+    }
+  };
+
   window.addEventListener("mousemove", function (e) {
     targetMouse[0] = (e.clientX / window.innerWidth) * 2 - 1;
     targetMouse[1] = -((e.clientY / window.innerHeight) * 2 - 1);
@@ -222,6 +238,7 @@
     curScroll += (targetScroll - curScroll) * 0.08;
     curMouse[0] += (targetMouse[0] - curMouse[0]) * 0.05;
     curMouse[1] += (targetMouse[1] - curMouse[1]) * 0.05;
+    curTheme += (targetTheme - curTheme) * 0.04;
 
     var t = (now - start) * 0.001 * timeScale;
 
@@ -229,6 +246,7 @@
     gl.uniform1f(uTime, t);
     gl.uniform2f(uMouse, curMouse[0], curMouse[1]);
     gl.uniform1f(uScroll, curScroll);
+    gl.uniform1f(uTheme, curTheme);
 
     gl.drawArrays(gl.TRIANGLES, 0, 6);
     rafId = requestAnimationFrame(frame);

@@ -1,19 +1,19 @@
 /* =====================================================================
  * Nora-AI Capital · Cinematic hero (整合自 ECHOID hero 機制，重皮膚為本站風格)
  * 命名空間：所有類名以 .hero-cinema 或獨立前綴，絕不覆寫站體 .btn / .legal 等。
- * 字體沿用本站 --font-sans(Inter) / --font-mono(IBM Plex Mono)；
- * 互動強調色沿用 --accent(#5B8DEF)，影片上維持白玻璃質感。
+ * CodeNest 風格：深色底、HLS 影片背景（60% 不透明度）、青綠強調 #5ED29C、
+ * 三條網格線、中央光暈、liquid-glass 卡片、Inter Extra Bold 大標題。
  * ===================================================================== */
 
 .hero-cinema {
-  --hc-text: #ffffff;
-  --hc-dim: rgba(255, 255, 255, 0.62);
-  --hc-dimmer: rgba(255, 255, 255, 0.42);
+  --hc-text: #FFFFFF;
+  --hc-dim: rgba(255, 255, 255, 0.70);
+  --hc-dimmer: rgba(255, 255, 255, 0.45);
   --hc-line: rgba(255, 255, 255, 0.14);
   --hc-line-strong: rgba(255, 255, 255, 0.26);
   --hc-fill-ghost: rgba(255, 255, 255, 0.05);
   --hc-fill-solid: rgba(255, 255, 255, 0.10);
-  --hc-accent: var(--accent);        /* #5B8DEF — 與站體一致 */
+  --hc-accent: var(--accent);        /* 與站體一致 */
   --hc-accent-hi: var(--accent-hi);
   --hc-gutter: clamp(20px, 5vw, 100px);
   --hc-ease: cubic-bezier(0.16, 1, 0.3, 1);
@@ -24,6 +24,7 @@
   height: 100svh;
   min-height: 640px;
   overflow: hidden;
+  background: #070B0A;
   display: grid;
   grid-template-rows: 1fr;          /* body 佔滿（legal 已移除，導覽由站體 site-nav 負責） */
   isolation: isolate;
@@ -32,14 +33,12 @@
   .hero-cinema { min-height: 100svh; }
 }
 
-/* ── 媒體層（最底，黑底備用）；底部以 mask 溶解，讓影片直接透出與下方內容同一片極光＋深底背景，消除生硬分隔 ── */
+/* ── 媒體層：全屏影片，60% 不透明度 ── */
 .hero-cinema__media {
   position: absolute;
   inset: 0;
   z-index: -1;
-  background: #000;
-  -webkit-mask-image: linear-gradient(to bottom, #000 80%, transparent 100%);
-          mask-image: linear-gradient(to bottom, #000 80%, transparent 100%);
+  background: #070B0A;
 }
 .hero-cinema__media video {
   position: absolute;
@@ -48,60 +47,42 @@
   height: 100%;
   object-fit: cover;
   object-position: center;
-  transform: scaleX(-1);          /* 視訊鏡像反轉 */
+  transform: none;
+  opacity: 1;                        /* 依用戶要求：不加蒙層，影片全不透明顯示 */
 }
 
-/* ── 雙漸變 scrim（覆蓋影片、低於內容） ── */
+/* ── 蒙層：依用戶要求全部移除，影片原樣顯示 ── */
 .hero-cinema__scrim {
   position: absolute;
   inset: 0;
   z-index: 0;
   pointer-events: none;
+  background: transparent;
 }
 @media (min-width: 721px) {
   .hero-cinema__scrim {
-    background:
-      linear-gradient(to left, transparent 0%, transparent 45%, rgba(0, 0, 0, 0.45) 72%, rgba(0, 0, 0, 0.72) 100%),
-      /* 頂部柔和黑→透明漸層：header 现已 fixed 疊在影片上，此漸層在其後方由黑平滑淡入影片（不生硬）；
-         中段 transparent 後再由底部轉黑以接 #quote 黑邊 */
-      linear-gradient(to bottom,
-        rgba(0, 0, 0, 0.55) 0%,
-        rgba(0, 0, 0, 0.30) 18%,
-        rgba(0, 0, 0, 0.10) 34%,
-        transparent 52%,
-        transparent 70%,
-        rgba(0, 0, 0, 0.65) 100%);
+    background: transparent;
   }
 }
 @media (max-width: 720px) {
   .hero-cinema__scrim {
-    background: linear-gradient(to bottom,
-      rgba(0, 0, 0, 0.42) 0%,
-      rgba(0, 0, 0, 0.18) 22%,
-      rgba(0, 0, 0, 0.80) 100%);
+    background: transparent;
   }
 }
 
-/* ── 底部溶解層：收尾為「純黑」（rgba(0,0,0,1)），使 hero 底邊與 #quote 頂端純黑無縫相接；
-   上方保持透明，保留影片向下溶解的感覺，極光從內容區（#quote 黑帶之下）才透出 ── */
+/* ── 底部溶解層：依用戶要求移除 ── */
 .hero-cinema__fade {
   position: absolute;
   left: 0;
   right: 0;
   bottom: 0;
   z-index: 1;            /* 高於 scrim(0)，低於內容(2)，故不會蓋住置中的 slogan */
-  height: clamp(200px, 36vh, 440px);
+  height: clamp(90px, 14vh, 180px);
   pointer-events: none;
-  background: linear-gradient(
-    to bottom,
-    transparent 0%,
-    rgba(0, 0, 0, 0) 52%,
-    rgba(0, 0, 0, 0.5) 80%,
-    rgba(0, 0, 0, 1) 100%
-  );
+  background: transparent;
 }
 @media (max-height: 640px) {
-  .hero-cinema__fade { height: clamp(90px, 18vh, 160px); }
+  .hero-cinema__fade { height: clamp(60px, 10vh, 110px); }
 }
 
 /* ── 右側面板容器 ── */
@@ -109,117 +90,226 @@
   position: relative;
   z-index: 2;
   display: flex;
-  align-items: center;
-  /* 左側 padding 與站體 .container 內容左緣對齊：當 viewport > 1140px，
-     為 (vpW-1140)/2 + 24（=container 的 24px 內 padding + 自身居中留白）；
-     較小視口直接取 24px 或安全區。右側保留較寬 gutter 維持呼吸感。 */
-  padding: 0 var(--hc-gutter) 0 max(24px, calc((100vw - var(--maxw)) / 2 + 24px), env(safe-area-inset-left));
+  align-items: flex-end;             /* 左下對齊：垂直靠底 */
+  justify-content: flex-start;       /* 左下對齊：水平靠左 */
+  padding-top: clamp(96px, 12vh, 150px);
+  padding-right: max(40px, 6vw);
+  padding-bottom: clamp(120px, 16vh, 200px);
+  /* 與導覽容器（logo）左緣對齊：(100vw-1140)/2 + 24px */
+  padding-left: max(24px, calc((100vw - var(--maxw)) / 2 + 24px), env(safe-area-inset-left));
   min-height: 0;
   overflow-y: auto;
 }
 @media (max-width: 720px) {
-  .hero-cinema__body { padding: 0 max(20px, env(safe-area-inset-left)) max(20px, env(safe-area-inset-bottom)) max(20px, env(safe-area-inset-right)); justify-content: center; }
+  .hero-cinema__body {
+    padding-top: clamp(64px, 9vh, 96px);
+    padding-right: max(20px, env(safe-area-inset-right));
+    padding-bottom: clamp(90px, 12vh, 140px);
+    padding-left: max(24px, env(safe-area-inset-left));
+    justify-content: flex-start;
+  }
 }
 
 .hero-cinema__panel {
-  width: min(44vw, 720px);
-  min-width: 380px;
+  width: min(58vw, 780px);
+  min-width: 0;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  text-align: left;
 }
 @media (max-width: 1100px) {
-  .hero-cinema__panel { width: min(70vw, 520px); min-width: 0; }
+  .hero-cinema__panel { width: min(84vw, 720px); min-width: 0; }
 }
 @media (max-width: 720px) {
-  .hero-cinema__panel { width: 100%; align-items: stretch; }
+  .hero-cinema__panel { width: 100%; align-items: flex-start; text-align: left; }
 }
 
-/* ── Hero slogan：英文沿用原 Playfair Display（斜體＋正體兩行）；中文改用書法花體 Ma Shan Zheng ── */
-.hc-slogan {
-  margin-top: 0;                      /* slogan 為 panel 第一個元素，不再有上方大標題預留空間 */
-  font-family: "Playfair Display", "Times New Roman", Georgia, serif;
-  color: var(--hc-text);
+/* ── Liquid Glass 卡片（200×200，上移 50px） ── */
+.hc-card {
+  width: 200px;
+  height: 200px;
+  margin-bottom: 26px;
+  transform: translateY(-50px);      /* spec：上移 50px */
+  align-self: flex-start;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;            /* slogan 文字左對齊（與左側面板一致） */
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  text-align: center;
+  padding: 18px 16px;
+  border-radius: 24px;               /* 圓角磨砂玻璃（效果圖樣式） */
+  background: rgba(255, 255, 255, 0.06);
+  background-blend-mode: luminosity;
+  backdrop-filter: blur(12px) saturate(150%);
+  -webkit-backdrop-filter: blur(12px) saturate(150%);
+  border: none;
+  box-shadow:
+    inset 0 1px 1px rgba(255, 255, 255, 0.20),
+    inset 0 -14px 28px rgba(255, 255, 255, 0.04),
+    0 14px 34px rgba(0, 0, 0, 0.28);
+  position: relative;
+  overflow: hidden;
+}
+.hc-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1.4px;
+  background: linear-gradient(180deg,
+    rgba(255, 255, 255, 0.70) 0%, rgba(255, 255, 255, 0.28) 20%,
+    rgba(255, 255, 255, 0.06) 40%, rgba(255, 255, 255, 0.06) 60%,
+    rgba(255, 255, 255, 0.28) 80%, rgba(255, 255, 255, 0.70) 100%);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+/* FT 風格引言：隨語言切換（中文顯示中文、英文顯示英文）；重點詞用綠色斜體 */
+.hc-card__quote {
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.90);
+}
+:lang(en) .hc-card__quote {
+  font-family: var(--font-serif), "Alibaba PuHuiTi", "PingFang TC", sans-serif;
+  font-style: italic;
+  letter-spacing: 0.01em;
+}
+:lang(zh-Hans) .hc-card__quote,
+:lang(zh-Hant) .hc-card__quote {
+  font-family: "Alibaba PuHuiTi", "PingFang TC", "Microsoft JhengHei", sans-serif;
+  font-style: normal;
+  color: rgba(255, 255, 255, 0.85);
+}
+.hc-card__quote em {
+  color: #86E3B8;                   /* 重點詞：原本的青綠斜體襯線字 */
+  font-style: italic;
+  font-family: var(--font-serif), "Alibaba PuHuiTi", "PingFang TC", sans-serif;
+  font-weight: 400;
+}
+
+/* ── Eyebrow（Plus Jakarta Sans 粗體 11px，青綠） ── */
+.hc-eyebrow {
+  margin: 0 0 18px;
   text-align: left;
-  line-height: 0.98;
-  text-shadow: 0 2px 16px rgba(0, 0, 0, 0.55);
+  font-family: "Plus Jakarta Sans", var(--font-sans);
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #5ED29C;
+}
+
+/* ── Hero slogan：Playfair Display（用戶最喜歡的字體），首行斜體、最後句號青綠 ── */
+.hc-slogan {
+  margin-top: 0;
+  font-family: "Playfair Display", "Instrument Serif", "Times New Roman", Georgia, serif;
+  color: var(--hc-text);
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 0.22em;
+  text-align: left;
+  line-height: 1.04;
+  letter-spacing: -0.01em;
+  text-transform: none;
+  text-shadow: none;
+  animation: heroFadeRise 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 .hc-slogan__line {
-  display: block;
-  font-size: clamp(44px, 6.6vw, 116px);
-  font-weight: 400;
-  letter-spacing: -0.005em;
-  white-space: nowrap;               /* 強制每行不折行：避免 "Act precisely." 在寬屏被擠成兩行 */
+  display: inline-block;
+  font-size: clamp(40px, 6vw, 72px);
+  font-weight: 500;
+  white-space: nowrap;
 }
 .hc-slogan__line--italic {
   font-style: italic;
-  font-weight: 500;
-  letter-spacing: 0.005em;
+  color: inherit;
+}
+.hc-dot {
+  color: #5ED29C;
 }
 
-/* 中文標語：書法花體 Ma Shan Zheng（楷書筆意），繁簡統一；尺寸接近英文以保持視覺重量 */
+/* 中文標語：阿里巴巴普惠體（Alibaba PuHuiTi），繁簡統一；同一行顯示 */
 :lang(zh-Hans) .hc-slogan,
 :lang(zh-Hant) .hc-slogan {
-  font-family: "Ma Shan Zheng", "KaiTi", "STKaiti", "Kaiti SC", serif;
-  line-height: 1.22;                  /* 書法字偏高，行高放大避免兩行擠壓 */
+  font-family: "Alibaba PuHuiTi", "PingFang TC", "Microsoft JhengHei", sans-serif;
+  font-weight: 600;
+  line-height: 1.08;
+  text-transform: none;
+  letter-spacing: 0.01em;
 }
 :lang(zh-Hans) .hc-slogan__line,
 :lang(zh-Hant) .hc-slogan__line {
-  font-size: clamp(46px, 6.4vw, 110px); /* 接近英文 clamp(44px,6.6vw,116px)，保持同等視覺衝擊力 */
+  font-size: clamp(36px, 5.4vw, 66px);
+  font-weight: 600;
 }
 :lang(zh-Hans) .hc-slogan__line--italic,
 :lang(zh-Hant) .hc-slogan__line--italic {
-  font-style: normal;                 /* 中文禁用假斜體（書法字斜體會變形難看） */
-  font-weight: 400;
+  font-style: normal;
+  color: inherit;
 }
-@media (max-width: 380px) {
-  .hc-slogan__line { font-size: clamp(36px, 12vw, 56px); }
+:lang(zh-Hans) .hc-dot,
+:lang(zh-Hant) .hc-dot {
+  display: none;
+}
+@media (max-width: 420px) {
+  .hc-slogan__line { font-size: clamp(24px, 6.6vw, 34px); }
+  :lang(zh-Hans) .hc-slogan__line,
+  :lang(zh-Hant) .hc-slogan__line { font-size: clamp(24px, 6.6vw, 36px); }
 }
 
-/* ── "powered by Nora-AI"：slogan 下方一行小字，弱化處理 ── */
+/* ── 描述文字：14px、70% 白、max-width 512px ── */
 .hc-powered {
-  margin-top: clamp(14px, 1.4vw, 22px);
+  margin-top: clamp(16px, 1.8vw, 24px);
   font-family: var(--font-sans);
   font-weight: 400;
-  font-size: clamp(12px, 0.95vw, 15px);
-  color: var(--hc-dim);
-  letter-spacing: 0.04em;
-  line-height: 1.4;
-  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.5);
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.70);
+  line-height: 1.6;
+  max-width: 512px;
+  text-align: left;
+  text-shadow: none;
+  animation: heroFadeRise 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.2s both;
 }
 .hc-powered b {
-  color: var(--hc-text);
-  font-weight: 500;
-  letter-spacing: 0.06em;
+  color: #FFFFFF;
+  font-weight: 600;
 }
 
-/* ── Get Started 圓角按鈕（白底深字、pill 形，類似 Apple/Linear 風格） ── */
+/* ── Get Started 圓角按鈕：青綠底深字、大寫粗體（CodeNest 風格） ── */
 .hc-cta {
-  align-self: flex-start;             /* 與 panel 左緣對齊，不撐滿 */
+  align-self: flex-start;
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  margin-top: clamp(28px, 2.6vw, 44px);
-  padding: clamp(12px, 1.1vw, 16px) clamp(26px, 2.4vw, 38px);
-  background: #ffffff;
-  color: #0B0E14;
+  margin-top: clamp(26px, 3vw, 40px);
+  padding: clamp(14px, 1.4vw, 18px) clamp(38px, 3.6vw, 56px);
+  background: #5ED29C;
+  color: #070B0A;
   font-family: var(--font-sans);
-  font-weight: 500;
-  font-size: clamp(14px, 0.95vw, 16px);
-  letter-spacing: 0.005em;
+  font-weight: 700;
+  font-size: clamp(13px, 1vw, 14px);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
   text-decoration: none;
   border-radius: 999px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.28), 0 1px 0 rgba(255, 255, 255, 0.06) inset;
-  transition: transform 0.18s ease, background 0.2s ease, box-shadow 0.25s ease;
+  box-shadow: 0 10px 30px rgba(94, 210, 156, 0.22);
+  transition: transform 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
   cursor: pointer;
+  animation: heroFadeRise 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.4s both;
 }
 .hc-cta:hover {
-  background: #E7EAF0;
-  transform: translateY(-1px);
-  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.4), 0 1px 0 rgba(255, 255, 255, 0.08) inset;
+  background: #86E3B8;
+  transform: scale(1.03);
+  box-shadow: 0 14px 36px rgba(94, 210, 156, 0.30);
 }
 .hc-cta:active { transform: translateY(0); }
 .hc-cta:focus-visible {
@@ -264,7 +354,7 @@
   text-transform: uppercase;
   font-size: clamp(20px, 5.5vw, 28px);
   letter-spacing: 0.14em;
-  color: #fff;
+  color: var(--nav-ink);
   text-decoration: none;
   opacity: 0;
   transform: translateY(16px);
@@ -276,7 +366,7 @@
   text-transform: uppercase;
   font-size: clamp(14px, 3.5vw, 18px);
   letter-spacing: 0.22em;
-  color: #fff;
+  color: var(--nav-ink);
   text-decoration: none;
   padding: 16px 40px;
   border: 1px solid var(--hc-line-strong);
@@ -308,7 +398,7 @@
   left: 50%;
   width: 22px;
   height: 1px;
-  background: #fff;
+  background: var(--nav-ink);
   transform: translateX(-50%);
   transition: transform 0.45s var(--hc-ease), opacity 0.25s ease;
 }
@@ -334,11 +424,17 @@
   outline-offset: 3px;
 }
 
+/* ── 淡入上升動畫（fade-rise 家族） ── */
+@keyframes heroFadeRise {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: none; }
+}
+
 /* ── 減少動態：隱藏影片、改以 poster 作 cover 背景、壓縮動畫 ── */
 @media (prefers-reduced-motion: reduce) {
   .hero-cinema__media video { display: none; }
   .hero-cinema__media {
-    background: #000 url("https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260806_132328_5f9029c8-218f-4489-82b6-29ff2849920e.png") center / cover no-repeat;
+    background: #070B0A url("video/hero-codenest-poster.jpg") center / cover no-repeat;
   }
   .hero-cinema *, .hero-cinema *::before, .hero-cinema *::after,
   .mobile-menu, .mobile-menu * {
@@ -351,6 +447,13 @@
 /* ── 短高度壓縮（max-height:640px） ── */
 @media (max-height: 640px) {
   .hc-title { font-size: clamp(36px, 7vw, 64px); }
-  .hc-slogan__line { font-size: clamp(28px, 6vw, 64px); }
+  .hc-slogan__line { font-size: clamp(24px, 4.2vw, 44px); }
+  :lang(zh-Hans) .hc-slogan__line,
+  :lang(zh-Hant) .hc-slogan__line { font-size: clamp(24px, 4.4vw, 46px); }
   .m-link { font-size: clamp(18px, 4.5vw, 24px); }
+}
+/* 較矮螢幕：隱藏玻璃卡片，避免左下內容擠爆 */
+@media (max-height: 720px) {
+  .hc-card { display: none; }
+  .hero-cinema__body { padding-bottom: clamp(28px, 5vh, 48px); }
 }

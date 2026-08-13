@@ -22,7 +22,7 @@
 <link rel="icon" type="image/png" sizes="32x32" href="img/logo-mark-32.png">
 <link rel="icon" type="image/png" sizes="192x192" href="img/logo-mark-192.png">
 <link rel="apple-touch-icon" sizes="180x180" href="img/apple-touch-icon.png">
-<meta name="theme-color" content="#0B0E14">
+<meta name="theme-color" content="#070B0A">
 <meta property="og:title" content="Nora-AI Capital — 股票市值計算器">
 <meta property="og:description" content="See clearly. Act precisely. 港股 / A股 / 美股持倉市值計算、批量作業與現金回贈統計。">
 <meta property="og:image" content="img/logo-mark-512.png">
@@ -31,9 +31,9 @@
 <meta name="twitter:image" content="img/logo-mark-512.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500&family=Inter:wght@200;300;400;500;600&family=Ma+Shan+Zheng&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/style.css?v=20260811b">
-<link rel="stylesheet" href="css/hero.css?v=20260810l">
+<link href="https://fonts.googleapis.com/css2?family=Alibaba+PuHuiTi:wght@300;400;500;600&family=IBM+Plex+Mono:wght@300;400;500&family=Inter:wght@200;300;400;500;600;800&family=Instrument+Serif:ital@0;1&family=Ma+Shan+Zheng&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css?v=20260814n">
+<link rel="stylesheet" href="css/hero.css?v=20260814o">
 </head>
 <body>
 
@@ -77,8 +77,8 @@
 <section class="hero-cinema" id="top">
   <div class="hero-cinema__media">
     <video autoplay muted loop playsinline preload="auto"
-      poster="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260806_132328_5f9029c8-218f-4489-82b6-29ff2849920e.png">
-      <source src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260806_133255_956f653f-5d80-4b06-abd5-0f46c98b60fa.mp4" type="video/mp4">
+      poster="video/hero-codenest-poster.jpg">
+      <source src="https://stream.mux.com/tLkHO1qZoaaQOUeVWo8hEBeGQfySP02EPS02BmnNFyXys.m3u8" type="application/x-mpegURL">
     </video>
   </div>
   <div class="hero-cinema__scrim" aria-hidden="true"></div>
@@ -86,9 +86,13 @@
 
   <div class="hero-cinema__body">
     <div class="hero-cinema__panel">
+      <div class="hc-card">
+        <p class="hc-card__quote" data-i18n-html="hero.cardQuoteHtml">“From <em>position sizing</em> to <em>rebate projection</em> — guidance for the <em>Equity Team</em> of the Investment Products Division.”</p>
+      </div>
+      <p class="hc-eyebrow" data-i18n="hero.eyebrow">Real-time market intelligence</p>
       <div class="hc-slogan" data-i18n-aria="brand.sloganFull" aria-label="See clearly. Act precisely.">
         <span class="hc-slogan__line hc-slogan__line--italic" data-i18n="brand.slogan1">See&nbsp;clearly.</span>
-        <span class="hc-slogan__line" data-i18n="brand.slogan2">Act&nbsp;precisely.</span>
+        <span class="hc-slogan__line" data-i18n-html="brand.slogan2Html">Act&nbsp;precisely<span class="hc-dot">.</span></span>
       </div>
       <p class="hc-powered">powered by <b>Nora-AI</b></p>
       <a class="hc-cta" href="#quote"><span data-i18n="hero.cta">Get started</span> <span class="arrow" aria-hidden="true">→</span></a>
@@ -372,18 +376,20 @@
 
 <script src="vendor/echarts.min.js?v=20260809p"></script>
 <script src="vendor/xlsx.full.min.js?v=20260809p"></script>
-<script src="js/locales/zh-Hant.js?v=20260810j"></script>
-<script src="js/locales/zh-Hans.js?v=20260810j"></script>
-<script src="js/locales/en.js?v=20260810j"></script>
-<script src="js/i18n.js?v=20260810i"></script>
+<script src="js/locales/zh-Hant.js?v=20260814m"></script>
+<script src="js/locales/zh-Hans.js?v=20260814m"></script>
+<script src="js/locales/en.js?v=20260814m"></script>
+<script src="js/i18n.js?v=20260814a"></script>
 <script src="js/data.js?v=20260810i"></script>
 <script src="js/hk-logos.js?v=20260809p"></script>
 <script src="js/top30-names.js?v=20260812a"></script>
 <script src="js/top30.js?v=20260812a"></script>
-<script src="js/charts.js?v=20260810i"></script>
+<script src="js/charts.js?v=20260814e"></script>
 <script src="js/excel.js?v=20260810i"></script>
 <script src="js/portfolio.js?v=20260810i"></script>
 <script src="js/app.js?v=20260810j"></script>
+<script src="vendor/hls.min.js?v=1.5.13"></script>
+<script src="js/hero-hls.js?v=20260814e"></script>
 <script src="js/hero-menu.js?v=20260809p"></script>
 </body>
 </html>

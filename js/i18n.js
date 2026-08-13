@@ -87,25 +87,13 @@ function MARKET_LABEL(m) {
   return (window.I18N && I18N.t("mk." + String(m).toLowerCase())) || m;
 }
 
-/* ---------- 初始化：判斷語言（localStorage > 瀏覽器語言 > 繁體） ---------- */
+/* ---------- 初始化：判斷語言（localStorage > 預設英文） ---------- */
 (function initLang() {
-  var lang = "zh-Hant";
+  var lang = "en";
   try {
     var stored = localStorage.getItem("site_lang");
     if (stored && I18N_DATA && I18N_DATA[stored]) {
       lang = stored;
-    } else {
-      var nav = (navigator.language || "zh-Hant").toLowerCase();
-      if (nav.indexOf("zh") === 0) {
-        if (["zh-hans", "zh-cn", "zh-sg", "zh-my"].indexOf(nav) >= 0) lang = "zh-Hans";
-        else lang = "zh-Hant"; // tw / hk / mo 或未明示 → 繁體
-      } else if (nav.indexOf("en") === 0) {
-        lang = "en";
-      } else if (I18N_DATA && I18N_DATA[nav]) {
-        lang = nav;
-      } else {
-        lang = "zh-Hant";
-      }
     }
   } catch (e) { /* ignore */ }
   I18N.lang = lang;

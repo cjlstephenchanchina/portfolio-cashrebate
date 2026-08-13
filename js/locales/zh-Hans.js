@@ -15,11 +15,20 @@ window.I18N_DATA["zh-Hans"] = {
   "nav.menu": "开启菜单",
   "nav.close": "关闭菜单",
   "menu.cta": "开始使用",
+  "theme.aria": "切换主题",
+  "theme.option.day": "白天",
+  "theme.option.night": "深夜",
+  "theme.option.auto": "自动（跟随时间段）",
 
   /* ---------- 页头 / Hero ---------- */
   "hero.cta": "开始使用",
+  "hero.cardTitleHtml": "投资专业人士打造",
+  "hero.cardDesc": "从仓位规模核算到回赠预估 — 为投资产品处股票组提供指引。",
+  "hero.cardQuoteHtml": "“从<em>仓位规模核算</em>到<em>回赠预估</em> — 为投资产品处<em>股票组</em>提供指引。”",
+  "hero.eyebrow": "实时市场情报",
   "brand.slogan1": "明察于心，",
   "brand.slogan2": "笃行于精",
+  "brand.slogan2Html": "笃行于精",
   "brand.sloganFull": "明察于心，笃行于精",
 
   /* ---------- 单笔查询 / Quote ---------- */

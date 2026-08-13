@@ -15,11 +15,20 @@ window.I18N_DATA["en"] = {
   "nav.menu": "Open menu",
   "nav.close": "Close menu",
   "menu.cta": "Get Started",
+  "theme.aria": "Switch theme",
+  "theme.option.day": "Day",
+  "theme.option.night": "Night",
+  "theme.option.auto": "Auto (time-based)",
 
   /* ---------- Hero ---------- */
   "hero.cta": "Get Started",
+  "hero.cardTitleHtml": "Crafted by <i>Investment</i> Professionals",
+  "hero.cardDesc": "From position sizing to rebate projection — guidance for the Equity Desk of the Investment Products Division.",
+  "hero.cardQuoteHtml": "“From <em>position sizing</em> to <em>rebate projection</em> — guidance for the <em>Equity Team</em> of the Investment Products Division.”",
+  "hero.eyebrow": "Real-time market intelligence",
   "brand.slogan1": "See clearly.",
   "brand.slogan2": "Act precisely.",
+  "brand.slogan2Html": "Act&nbsp;precisely<span class=\"hc-dot\">.</span>",
   "brand.sloganFull": "See clearly. Act precisely.",
 
   /* ---------- Quote ---------- */
