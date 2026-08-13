@@ -25,7 +25,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Alibaba+PuHuiTi:wght@300;400;500;600&family=IBM+Plex+Mono:wght@300;400;500&family=Inter:wght@200;300;400;500;600;800&family=Instrument+Serif:ital@0;1&family=Ma+Shan+Zheng&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/style.css?v=20260814aa">
+<link rel="stylesheet" href="css/style.css?v=20260814an">
 <link rel="stylesheet" href="css/hero.css?v=20260814am">
 <style>
   /* 關於頁：光束動效背景＋大字報式滾動逐段顯現（無卡片） */
@@ -54,24 +54,6 @@
   }
   .about-wrap, .site-footer { position: relative; z-index: 1; }
 
-  /* 頁面載入期間暫停 header 過渡，避免「一動一動」；穩定後再啟用 */
-  .site-nav { transition: none !important; }
-  body.nav-ready .site-nav {
-    transition:
-      background .45s var(--nav-ease),
-      border-color .45s var(--nav-ease),
-      backdrop-filter .45s var(--nav-ease),
-      box-shadow .45s var(--nav-ease),
-      color .35s ease;
-  }
-  /* header 固定用系統字型：不依賴晚載入的 webfont，杜絕字型置換造成的文字跳動 */
-  .site-nav,
-  .site-nav .brand,
-  .site-nav .nav-links a,
-  .site-nav .nav-live,
-  .site-nav .lang-btn {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang TC", "Microsoft JhengHei", sans-serif;
-  }
 
   .about-hero {
     min-height: 100vh; min-height: 100svh;
@@ -234,6 +216,6 @@
 <script src="js/locales/en.js?v=20260814ai"></script>
 <script src="js/i18n.js?v=20260814ai"></script>
 <script src="js/about.js?v=20260814ag"></script>
-<script src="js/hero-menu.js?v=20260809p"></script>
+<script src="js/hero-menu.js?v=20260814an"></script>
 </body>
 </html>

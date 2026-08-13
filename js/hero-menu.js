@@ -6,6 +6,13 @@
  * - 站體導覽滾動後切換到 .scrolled（毛玻璃）狀態
  */
 (function () {
+  /* 頁面載入完成後啟用 header 過渡（消除整頁跳轉時的一動一動） */
+  function enableNavTransitions() {
+    document.body.classList.add("nav-ready");
+  }
+  window.addEventListener("load", enableNavTransitions);
+  if (document.readyState === "complete") enableNavTransitions();
+
   var toggle = document.getElementById('menuToggle');
   var menu = document.getElementById('mobileMenu');
   if (toggle && menu) {

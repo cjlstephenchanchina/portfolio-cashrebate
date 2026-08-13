@@ -85,7 +85,7 @@
 
 /* ---------- 基礎 ---------- */
 * { box-sizing: border-box; }
-html { background: #070B0A; }
+html { background: #070B0A; scrollbar-gutter: stable; }
 [hidden] { display: none !important; }   /* 修正 .error-box / .progress / .kpis 等 [hidden] 被 CSS display 屬性蓋掉的 bug（會在頁面顯示空紅色 bar） */
 html { scroll-behavior: smooth; }
 body {
@@ -146,6 +146,25 @@ em { font-style: italic; font-family: var(--font-serif); font-weight: 400; color
     -webkit-backdrop-filter .45s var(--nav-ease),
     box-shadow .45s var(--nav-ease),
     color .35s ease;
+}
+/* 頁面載入完成前暫停 header 過渡，避免整頁跳轉時一動一動 */
+.site-nav { transition: none; }
+body.nav-ready .site-nav {
+  transition:
+    background .45s var(--nav-ease),
+    border-color .45s var(--nav-ease),
+    backdrop-filter .45s var(--nav-ease),
+    -webkit-backdrop-filter .45s var(--nav-ease),
+    box-shadow .45s var(--nav-ease),
+    color .35s ease;
+}
+/* header 統一系統字型：整頁跳轉時不會因 webfont swap 造成文字跳動 */
+.site-nav,
+.site-nav .brand,
+.site-nav .nav-links a,
+.site-nav .nav-live,
+.site-nav .lang-btn {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang TC", "Microsoft JhengHei", sans-serif;
 }
 .nav-row { display: flex; align-items: center; gap: 24px; height: var(--nav-h); }
 .brand {
