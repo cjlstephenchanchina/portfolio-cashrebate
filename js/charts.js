@@ -185,7 +185,7 @@ function renderRebate(id, data) {
       label: {
         show: true, position: "top", color: CHART_COLORS.accentHi, fontWeight: 500,
         fontSize: IS_MOBILE() ? 10 : 12,
-        formatter: (p) => "HK$" + fmtMoneyHtml(p.value),
+        formatter: (p) => "HK$" + fmtMoney(p.value),   /* Canvas 標籤：純文字，不可含 HTML */
       },
     }],
   }, true);
