@@ -86,10 +86,16 @@
     min-height: 74vh; min-height: 74svh;
     display: flex; flex-direction: column; justify-content: center;
     padding: 10vh 0;
-    opacity: 0; transform: translateY(56px);
-    transition: opacity .9s cubic-bezier(0.22, 1, 0.36, 1), transform .9s cubic-bezier(0.22, 1, 0.36, 1);
   }
-  .about-block.in-view { opacity: 1; transform: none; }
+  .about-block .ab-num,
+  .about-block h2 {
+    opacity: 0; transform: translateY(26px);
+    transition: opacity .8s cubic-bezier(0.22, 1, 0.36, 1), transform .8s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .about-block.in-view .ab-num,
+  .about-block.in-view h2 { opacity: 1; transform: none; }
+  /* 段落文字：捲動時逐字亮起（opacity 0.12 → 1） */
+  .about-block p .aw { opacity: .12; transition: opacity .25s ease; }
   .ab-num {
     font-family: var(--font-mono); color: var(--accent);
     font-size: 14px; letter-spacing: .24em; margin-bottom: 26px;
@@ -109,6 +115,13 @@
   @media (max-width: 720px) {
     .about-hero { padding-top: 88px; }
     .about-block { min-height: auto; padding: 13vh 0; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .about-block .ab-num,
+    .about-block h2,
+    .about-block p .aw {
+      opacity: 1 !important; transform: none !important; transition: none !important;
+    }
   }
 </style>
 </head>
@@ -215,7 +228,7 @@
 <script src="js/locales/zh-Hans.js?v=20260814ai"></script>
 <script src="js/locales/en.js?v=20260814ai"></script>
 <script src="js/i18n.js?v=20260814ai"></script>
-<script src="js/about.js?v=20260814ag"></script>
+<script src="js/about.js?v=20260814ao"></script>
 <script src="js/hero-menu.js?v=20260814an"></script>
 </body>
 </html>
