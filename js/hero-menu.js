@@ -44,9 +44,10 @@
     else openMenu();
   });
 
-  // 點背景（非連結/CTA）關閉
+  // 點連結：關閉選單並讓瀏覽器正常跳轉；點背景（非連結）關閉
   menu.addEventListener('click', function (e) {
-    if (e.target === menu) closeMenu(true);
+    if (e.target.closest('a')) closeMenu(false);
+    else if (e.target === menu) closeMenu(true);
   });
 
   // Esc 關閉

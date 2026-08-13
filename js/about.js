@@ -18,10 +18,11 @@
     var rafId = 0;
 
     function createBeam(w, h) {
+      var scale = w / 390;            /* 光束寬度以 390px 為基準縮放，避免小畫布被放大後變粗 */
       return {
         x: Math.random() * w * 1.5 - w * 0.25,
         y: Math.random() * h * 1.5 - h * 0.25,
-        width: 36 + Math.random() * 48,
+        width: (30 + Math.random() * 60) * scale,
         length: h * 2.5,
         angle: -35 + Math.random() * 10,
         speed: 0.6 + Math.random() * 1.2,
@@ -48,7 +49,7 @@
       var spacing = w / 3;
       b.y = canvas.height + 100;
       b.x = col * spacing + spacing / 2 + (Math.random() - 0.5) * spacing * 0.5;
-      b.width = 100 + Math.random() * 100;
+      b.width = (100 + Math.random() * 100) * (w / 390);
       b.speed = 0.5 + Math.random() * 0.4;
       b.hue = 190 + (i * 70) / total;
       b.opacity = 0.2 + Math.random() * 0.1;
