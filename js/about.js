@@ -87,66 +87,38 @@
     animate();
   }
 
-  /* ---------- 滾動逐字浮現（捲動時文字一顆一顆亮起） ---------- */
+  /* ---------- 捲動整段浮現（段落文字整段淡入＋上浮） ---------- */
   var blocks = Array.prototype.slice.call(document.querySelectorAll(".about-block"));
-  var lastActive = {};
 
-  /* 把段落文字切成單字 <span class="aw">，保留空白以維持排版 */
-  function prepareWords() {
-    blocks.forEach(function (b) {
-      var p = b.querySelector("p");
-      if (!p || p.getAttribute("data-prepared")) return;
-      var txt = p.textContent;
-      p.setAttribute("data-prepared", "1");
-      p.innerHTML = "";
-      var re = /(\S+\s*)/g, m;
-      while ((m = re.exec(txt)) !== null) {
-        var s = document.createElement("span");
-        s.className = "aw";
-        s.textContent = m[1];
-        p.appendChild(s);
-      }
-    });
-  }
-
-  function setWords(b, active) {
-    var p = b.querySelector("p");
-    if (!p) return;
-    var ws = p.querySelectorAll(".aw");
-    for (var i = 0; i < ws.length; i++) {
-      ws[i].style.opacity = i < active ? "1" : "0.12";
-    }
-  }
-
-  function updateWords() {
+  function updateParagraphs() {
     if (reduced) return;
     var vh = window.innerHeight || 1;
     blocks.forEach(function (b) {
       var p = b.querySelector("p");
       if (!p) return;
-      var ws = p.querySelectorAll(".aw");
-      var n = ws.length;
-      if (!n) return;
       var r = b.getBoundingClientRect();
       var start = vh * 0.95;               // 段落頂部進入畫面底部
       var end = vh * 0.32;                 // 段落頂部到達畫面約 1/3
       var prog = Math.min(1, Math.max(0, (start - r.top) / (start - end)));
-      var active = Math.round(prog * n);
-      if (lastActive[b.id] !== active) {
-        lastActive[b.id] = active;
-        for (var i = 0; i < n; i++) ws[i].style.opacity = i < active ? "1" : "0.12";
-      }
+      p.style.opacity = String(prog);
+      p.style.transform = "translateY(" + (26 * (1 - prog)).toFixed(1) + "px)";
     });
   }
 
   function initReveal() {
-    prepareWords();
     if (reduced) {
-      blocks.forEach(function (b) { setWords(b, 1e9); b.classList.add("in-view"); });
+      blocks.forEach(function (b) {
+        b.classList.add("in-view");
+        var p = b.querySelector("p");
+        if (p) { p.style.opacity = "1"; p.style.transform = "none"; }
+      });
       return;
     }
-    blocks.forEach(function (b) { setWords(b, 0); });
-    /* 標題／編號：進入視口時淡入（段落文字由捲動逐字驅動） */
+    blocks.forEach(function (b) {
+      var p = b.querySelector("p");
+      if (p) { p.style.opacity = "0"; p.style.transform = "translateY(26px)"; }
+    });
+    /* 標題／編號：進入視口時淡入（段落文字由捲動進度驅動） */
     if ("IntersectionObserver" in window) {
       var io = new IntersectionObserver(function (entries) {
         entries.forEach(function (en) {
@@ -158,31 +130,25 @@
       }, { threshold: 0.2 });
       blocks.forEach(function (b) { io.observe(b); });
     } else {
-      blocks.forEach(function (b) { b.classList.add("in-view"); setWords(b, 1e9); });
+      blocks.forEach(function (b) { b.classList.add("in-view"); });
     }
     var ticking = false;
     function onScroll() {
       if (ticking) return;
       ticking = true;
-      requestAnimationFrame(function () { updateWords(); ticking = false; });
+      requestAnimationFrame(function () { updateParagraphs(); ticking = false; });
     }
     window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("resize", onScroll);
-    updateWords();
+    updateParagraphs();
   }
 
   if (typeof I18N !== "undefined" && I18N.registerDynamic) {
     I18N.registerDynamic(function () {
-      /* 語言切換後 i18n 已重置文字：重新切詞並重跑 */
-      blocks.forEach(function (b) {
-        var p = b.querySelector("p");
-        if (p) p.removeAttribute("data-prepared");
-      });
+      /* 語言切換後 i18n 已重置文字：重跑捲動浮現 */
       initReveal();
     });
   }
-  /* 等 DOMContentLoaded 之後再切詞：i18n 會在最末再跑一次 applyStatic，
-     若先切詞會被 textContent 覆蓋掉 .aw span */
   if (document.readyState === "complete") {
     initReveal();
   } else {
