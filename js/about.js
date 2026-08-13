@@ -102,4 +102,10 @@
   } else {
     blocks.forEach(function (b) { b.classList.add("in-view"); });
   }
+
+  /* 頁面穩定後再啟用 header 過渡（消除載入時的抖動） */
+  window.addEventListener("load", function () {
+    document.body.classList.add("nav-ready");
+  });
+  if (document.readyState === "complete") document.body.classList.add("nav-ready");
 })();

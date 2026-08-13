@@ -6,6 +6,19 @@
 <title>關於 — Nora-AI Capital</title>
 <meta name="theme-color" content="#070B0A">
 <meta name="description" content="Nora-AI Capital 關於頁 — 無後台、純前端瀏覽器運算的技術說明與數據來源。">
+<script>
+  /* 防止瀏覽器恢復捲動位置造成 header 玻璃化過渡抖動：載入即回頂部 */
+  (function () {
+    try { if ('scrollRestoration' in history) history.scrollRestoration = 'manual'; } catch (e) {}
+    function toTop() {
+      try { window.scrollTo({ top: 0, left: 0, behavior: 'instant' }); }
+      catch (e) { window.scrollTo(0, 0); }
+    }
+    toTop();
+    document.addEventListener('DOMContentLoaded', toTop);
+    window.addEventListener('load', toTop);
+  })();
+</script>
 <link rel="icon" type="image/png" sizes="32x32" href="img/logo-mark-32.png">
 <link rel="icon" type="image/png" sizes="192x192" href="img/logo-mark-192.png">
 <link rel="apple-touch-icon" sizes="180x180" href="img/apple-touch-icon.png">
@@ -40,6 +53,17 @@
       linear-gradient(to bottom, rgba(7, 11, 10, 0.28), rgba(7, 11, 10, 0) 22%, rgba(7, 11, 10, 0) 70%, rgba(7, 11, 10, 0.55));
   }
   .about-wrap, .site-footer { position: relative; z-index: 1; }
+
+  /* 頁面載入期間暫停 header 過渡，避免「一動一動」；穩定後再啟用 */
+  .site-nav { transition: none !important; }
+  body.nav-ready .site-nav {
+    transition:
+      background .45s var(--nav-ease),
+      border-color .45s var(--nav-ease),
+      backdrop-filter .45s var(--nav-ease),
+      box-shadow .45s var(--nav-ease),
+      color .35s ease;
+  }
 
   .about-hero {
     min-height: 100vh; min-height: 100svh;
@@ -201,7 +225,7 @@
 <script src="js/locales/zh-Hans.js?v=20260814ac"></script>
 <script src="js/locales/en.js?v=20260814ac"></script>
 <script src="js/i18n.js?v=20260814ac"></script>
-<script src="js/about.js?v=20260814af"></script>
+<script src="js/about.js?v=20260814ag"></script>
 <script src="js/hero-menu.js?v=20260809p"></script>
 </body>
 </html>
