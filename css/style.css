@@ -473,7 +473,7 @@ input[type="file"]::file-selector-button {
   min-width: 0;
 }
 #batch-form .b-file-row .field { margin: 0; flex: 1; max-width: none; }
-#batch-form .b-file-row .field-action { justify-content: flex-start; flex-shrink: 0; }
+#batch-form .b-file-row .field-action { justify-content: flex-start; flex: none; }
 .b-file-drop {
   height: 44px; box-sizing: border-box;
   border: 1.5px dashed var(--border-strong);
@@ -483,6 +483,14 @@ input[type="file"]::file-selector-button {
   height: 44px; box-sizing: border-box;
   border: 1.5px solid transparent;
   display: flex; align-items: center; justify-content: center;
+  white-space: nowrap;
+}
+.field-action .btn { flex: none; white-space: nowrap; }
+
+/* 手機版：上傳列改為換行，按鈕獨立整行，避免被裁切 */
+@media (max-width: 720px) {
+  #batch-form .b-file-row { flex: 1 1 100%; flex-wrap: wrap; }
+  #batch-form .b-file-row .field-action { width: 100%; }
 }
 
 /* ---------- KPI ---------- */
