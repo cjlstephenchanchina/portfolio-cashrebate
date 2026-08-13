@@ -65,6 +65,7 @@ window.I18N_DATA["en"] = {
   "stats.loading": "Loading real quotes and statistics…",
   "stats.kpi.totalRebate": "Total Rebate",
   "stats.kpi.clients": "Clients Covered",
+  "stats.kpi.qualified": "Qualified Beneficiaries",
   "stats.kpi.avg": "Avg MV / Client",
   "stats.kpi.totalMv": "Total Holdings MV",
   "stats.unit.clients": "clients",

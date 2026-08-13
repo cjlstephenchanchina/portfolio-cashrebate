@@ -294,6 +294,7 @@ function computeRebates(rows, cap, threshold, amount) {
   return {
     total_rebate: totalRebate,
     client_count: clientCount,
+    qualified_count: clientList.filter((c) => c.rebate > 0).length,
     total_mv_hkd: totalMV,
     avg_mv_hkd: avgMV,
     top3: clientList.slice(0, 3).map((c) => ({ client: c.client, market_value: c.market_value })),
@@ -343,6 +344,7 @@ function renderStats(st, rows) {
   $("s-charts").hidden = false;
   $("k-total").innerHTML = "HK$" + fmtMoneyHtml(st.total_rebate);
   $("k-clients").textContent = fmtInt(st.client_count);
+  $("k-qualified").textContent = fmtInt(st.qualified_count);
   $("k-avg").innerHTML = "HK$" + fmtMoneyHtml(st.avg_mv_hkd);
   $("k-total-mv").innerHTML = "HK$" + fmtMoneyHtml(st.total_mv_hkd);
 

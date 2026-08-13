@@ -65,6 +65,7 @@ window.I18N_DATA["zh-Hans"] = {
   "stats.loading": "正在载入真实行情与统计…",
   "stats.kpi.totalRebate": "总回赠金额",
   "stats.kpi.clients": "涉及客户人数",
+  "stats.kpi.qualified": "合资格受惠客户",
   "stats.kpi.avg": "单一客户平均市值",
   "stats.kpi.totalMv": "持仓总市值",
   "stats.unit.clients": "位",

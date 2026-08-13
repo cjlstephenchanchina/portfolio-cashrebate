@@ -65,6 +65,7 @@ window.I18N_DATA["zh-Hant"] = {
   "stats.loading": "正在載入真實行情與統計…",
   "stats.kpi.totalRebate": "總回贈金額",
   "stats.kpi.clients": "涉及客戶人數",
+  "stats.kpi.qualified": "合資格受惠客戶",
   "stats.kpi.avg": "單一客戶平均市值",
   "stats.kpi.totalMv": "持倉總市值",
   "stats.unit.clients": "位",
