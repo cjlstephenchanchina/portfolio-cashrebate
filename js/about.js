@@ -33,23 +33,20 @@
     }
 
     function resize() {
-      var dpr = window.devicePixelRatio || 1;
       var w = window.innerWidth;
       var h = window.innerHeight;
-      canvas.width = w * dpr;
-      canvas.height = h * dpr;
-      canvas.style.width = w + "px";
-      canvas.style.height = h + "px";
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      /* 低解析度小畫布（1/3）+ CSS 放大：大幅降低每幀繪製與 blur 成本 */
+      canvas.width = Math.max(1, Math.floor(w / 3));
+      canvas.height = Math.max(1, Math.floor(h / 3));
       beams = [];
-      for (var i = 0; i < MIN * 1.5; i++) beams.push(createBeam(w, h));
+      for (var i = 0; i < MIN; i++) beams.push(createBeam(canvas.width, canvas.height));
     }
 
     function resetBeam(b, i, total) {
-      var w = window.innerWidth;
+      var w = canvas.width;
       var col = i % 3;
       var spacing = w / 3;
-      b.y = window.innerHeight + 100;
+      b.y = canvas.height + 100;
       b.x = col * spacing + spacing / 2 + (Math.random() - 0.5) * spacing * 0.5;
       b.width = 100 + Math.random() * 100;
       b.speed = 0.5 + Math.random() * 0.4;
@@ -76,7 +73,6 @@
 
     function animate() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      ctx.filter = "blur(35px)";
       beams.forEach(function (b, i) {
         b.y -= b.speed;
         b.pulse += b.pulseSpeed;
