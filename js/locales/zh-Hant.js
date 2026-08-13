@@ -25,7 +25,7 @@ window.I18N_DATA["zh-Hant"] = {
   "hero.cardTitleHtml": "投資專業人士打造",
   "hero.cardDesc": "從倉位規模核算到回贈預估 — 為投資產品處股票組提供指引。",
   "hero.cardQuoteHtml": "“從<em>倉位規模核算</em>到<em>回贈預估</em> — 為投資產品處<em>股票組</em>提供指引。”",
-  "hero.eyebrow": "即時市場情報",
+  "hero.eyebrow": "即時市場情報 · 無後台 · 純前端本地瀏覽器運算",
   "brand.slogan1": "明察於心，",
   "brand.slogan2": "篤行於精",
   "brand.slogan2Html": "篤行於精",

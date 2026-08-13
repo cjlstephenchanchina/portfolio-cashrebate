@@ -25,7 +25,7 @@ window.I18N_DATA["en"] = {
   "hero.cardTitleHtml": "Crafted by <i>Investment</i> Professionals",
   "hero.cardDesc": "From position sizing to rebate projection — guidance for the Equity Desk of the Investment Products Division.",
   "hero.cardQuoteHtml": "“From <em>position sizing</em> to <em>rebate projection</em> — guidance for the <em>Equity Team</em> of the Investment Products Division.”",
-  "hero.eyebrow": "Real-time market intelligence",
+  "hero.eyebrow": "Real-time Market Intelligence · No Backend · In-Browser Computation",
   "brand.slogan1": "See clearly.",
   "brand.slogan2": "Act precisely.",
   "brand.slogan2Html": "Act&nbsp;precisely<span class=\"hc-dot\">.</span>",

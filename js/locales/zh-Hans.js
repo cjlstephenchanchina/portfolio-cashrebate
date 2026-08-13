@@ -25,7 +25,7 @@ window.I18N_DATA["zh-Hans"] = {
   "hero.cardTitleHtml": "投资专业人士打造",
   "hero.cardDesc": "从仓位规模核算到回赠预估 — 为投资产品处股票组提供指引。",
   "hero.cardQuoteHtml": "“从<em>仓位规模核算</em>到<em>回赠预估</em> — 为投资产品处<em>股票组</em>提供指引。”",
-  "hero.eyebrow": "实时市场情报",
+  "hero.eyebrow": "实时市场情报 · 无后台 · 纯前端本地浏览器运算",
   "brand.slogan1": "明察于心，",
   "brand.slogan2": "笃行于精",
   "brand.slogan2Html": "笃行于精",
