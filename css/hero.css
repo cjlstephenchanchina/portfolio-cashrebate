@@ -170,8 +170,8 @@
 /* FT 風格引言：隨語言切換（中文顯示中文、英文顯示英文）；重點詞用綠色斜體 */
 .hc-card__quote {
   margin: 0;
-  font-size: 16px;
-  line-height: 1.5;
+  font-size: 22px;
+  line-height: 1.45;
   color: rgba(255, 255, 255, 0.90);
 }
 :lang(en) .hc-card__quote {
@@ -183,6 +183,7 @@
 :lang(zh-Hant) .hc-card__quote {
   font-family: "Alibaba PuHuiTi", "PingFang TC", "Microsoft JhengHei", sans-serif;
   font-style: normal;
+  font-size: 28px;
   color: rgba(255, 255, 255, 0.85);
 }
 .hc-card__quote em {
