@@ -36,9 +36,7 @@
   #about-beams {
     position: fixed; inset: 0; z-index: 0;
     width: 100vw; height: 100vh; display: block;
-    pointer-events: none; filter: blur(15px); opacity: 1;
-    transform: translateZ(0);          /* 獨立合成圖層：捲動時不重繪、動畫不卡 */
-    will-change: transform;
+    pointer-events: none; touch-action: none; opacity: 1;
   }
   /* 靜態暗色覆蓋層：改用純色、不加 backdrop-filter（避免手機捲動整屏重繪卡頓） */
   #about-frost {
@@ -219,7 +217,7 @@
 <script src="js/locales/zh-Hans.js?v=20260814ai"></script>
 <script src="js/locales/en.js?v=20260814ai"></script>
 <script src="js/i18n.js?v=20260814ai"></script>
-<script src="js/about.js?v=20260814at"></script>
+<script src="js/about.js?v=20260814au"></script>
 <script src="js/hero-menu.js?v=20260814as"></script>
 </body>
 </html>

@@ -16,6 +16,7 @@
     var MIN = 20;
     var beams = [];
     var rafId = 0;
+    var lastT = 0;
 
     function createBeam(w, h) {
       var scale = w / 390;            /* 光束寬度以 390px 為基準縮放，避免小畫布被放大後變粗 */
@@ -73,11 +74,15 @@
     }
 
     function animate() {
+      var now = performance.now();
+      var dt = lastT ? Math.min(0.1, (now - lastT) / 1000) : 1 / 60;
+      lastT = now;
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       ctx.filter = "blur(35px)";
       beams.forEach(function (b, i) {
-        b.y -= b.speed;
-        b.pulse += b.pulseSpeed;
+        /* 時間驅動：幀率或觸摸卡頓不影響速度，線不會跳格 */
+        b.y -= b.speed * dt * 60;
+        b.pulse += b.pulseSpeed * dt * 60;
         if (b.y + b.length < -100) resetBeam(b, i, beams.length);
         drawBeam(b);
       });
