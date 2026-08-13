@@ -182,7 +182,7 @@
 :lang(zh-Hans) .hc-card__quote,
 :lang(zh-Hant) .hc-card__quote {
   font-family: "Alibaba PuHuiTi", "PingFang TC", "Microsoft JhengHei", sans-serif;
-  font-style: normal;
+  font-style: italic;
   color: rgba(255, 255, 255, 0.85);
 }
 .hc-card__quote em {
