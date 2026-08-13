@@ -152,6 +152,8 @@
 
   /* ---------- 滾動後切 .scrolled（hero 之上透明，滾下毛玻璃） ---------- */
   function updateScrolled() {
+    /* 頁面載入完成前不切玻璃化，避免整頁跳轉時 header 抽動 */
+    if (!document.body.classList.contains('nav-ready')) return;
     var st = window.pageYOffset || document.documentElement.scrollTop || 0;
     /* 過了 hero 後切換；用 hero 高度比較更精準；此處用 80px 當門檻與 hero 頂部區隔 */
     if (st > 80) nav.classList.add('scrolled');
@@ -163,5 +165,6 @@
     /* resize 後重新定位指示條（避免字寬變動） */
     var active = navLinks.querySelector('a.active') || linkEls[0];
     if (active) moveIndicator(active, false);
+    updateScrolled();
   });
 })();
