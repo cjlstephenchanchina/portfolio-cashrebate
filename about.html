@@ -37,19 +37,14 @@
     position: fixed; inset: 0; z-index: 0;
     width: 100vw; height: 100vh; display: block;
     pointer-events: none; filter: blur(15px); opacity: 1;
+    transform: translateZ(0);          /* 獨立合成圖層：捲動時不重繪、動畫不卡 */
+    will-change: transform;
   }
-  /* 脈動磨砂覆蓋層（原始 BeamsBackground 效果） */
+  /* 靜態暗色覆蓋層：改用純色、不加 backdrop-filter（避免手機捲動整屏重繪卡頓） */
   #about-frost {
     position: fixed; inset: 0; z-index: 0;
     pointer-events: none;
-    background: rgba(10, 10, 10, 0.05);
-    backdrop-filter: blur(50px);
-    -webkit-backdrop-filter: blur(50px);
-    animation: aboutFrost 10s ease-in-out infinite;
-  }
-  @keyframes aboutFrost {
-    0%, 100% { opacity: 0.05; }
-    50% { opacity: 0.15; }
+    background: rgba(10, 10, 10, 0.12);
   }
   .about-wrap, .site-footer { position: relative; z-index: 1; }
 
