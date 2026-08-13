@@ -52,6 +52,21 @@ function hkCanon(code) {
   return c || "";
 }
 
+/* 顯示用代碼：700 → 700.HK、AAPL → AAPL.US、600519 → 600519.SH（去重複後綴） */
+function displaySymbol(market, code) {
+  const m = String(market || "").trim().toUpperCase();
+  const c = String(code || "").trim().toUpperCase().replace(/\s+/g, "");
+  if (m === "HK") return hkCanon(c) + ".HK";
+  if (m === "US") return c.replace(/\.US$/, "") + ".US";
+  if (m === "A") {
+    const base = c.replace(/\.(SH|SZ|BJ)$/, "");
+    if (/^(600|601|603|605|688|689)/.test(base)) return base + ".SH";
+    if (/^(4|8)/.test(base)) return base + ".BJ";
+    return base + ".SZ";
+  }
+  return c;
+}
+
 /* ---------- 騰訊日 K（港股/A股，無復權） ---------- */
 async function fetchTencentBars(symbol) {
   if (cache.bars.has(symbol)) return cache.bars.get(symbol);

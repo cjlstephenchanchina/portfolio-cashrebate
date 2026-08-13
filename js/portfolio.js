@@ -274,7 +274,7 @@ async function submitKline(e) {
     const bars = market === "US" ? await fetchUsBars(symbol) : await fetchTencentBars(symbol);
     if (!bars || !bars.length) throw new Error(I18N.t("pf.kline.noData"));
     const names = await fetchNames(symbol);
-    const dispCode = market === "HK" ? hkCanon(code) : code;
+    const dispCode = displaySymbol(market, code);
     const titleArgs = { name: names.cn || code, market: MARKET_LABEL(market), code: dispCode };
     window.__pfKlineTitle = titleArgs;
     $pf("h-curve-title").textContent = I18N.t("pf.kline.title", titleArgs);

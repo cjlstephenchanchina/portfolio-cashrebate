@@ -93,7 +93,7 @@ function renderQuote(q) {
       <div class="quote-result__hero">
         <div class="quote-stock">
           <span class="quote-stock__name">${esc(q.name_cn || q.code)}</span>
-          <span class="quote-stock__code">${esc(q.code)} · ${mktLabel}</span>
+          <span class="quote-stock__code">${esc(displaySymbol(q.market, q.code))} · ${mktLabel}</span>
           ${q.name_en ? `<span class="quote-stock__en">${esc(q.name_en)}</span>` : ""}
         </div>
         <div class="quote-price">
@@ -389,7 +389,7 @@ function renderTop3Cards(list, totalMv) {
         </span>
         <div class="top3-info">
           <div class="top3-name">${esc(cn)}${en ? ` <span class="top3-en">${esc(en)}</span>` : ""}</div>
-          <div class="top3-sub">${(MARKET_LABEL(d.market) || d.market)} · ${esc(d.code)}</div>
+          <div class="top3-sub">${(MARKET_LABEL(d.market) || d.market)} · ${esc(displaySymbol(d.market, d.code))}</div>
         </div>
         <div class="top3-weight">
           <span class="top3-w-val">${wPct}%</span>
