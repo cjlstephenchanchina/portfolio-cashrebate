@@ -77,7 +77,7 @@
       var dt = lastT ? Math.min(0.1, (now - lastT) / 1000) : 1 / 60;
       lastT = now;
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      ctx.filter = "blur(35px)";
+      ctx.filter = "blur(12px)";     /* 烘焙模糊（小畫布放大後等效 ~36px），無需 CSS blur */
       beams.forEach(function (b, i) {
         /* 時間驅動：幀率或觸摸卡頓不影響速度，線不會跳格 */
         b.y -= b.speed * dt * 60;

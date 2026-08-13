@@ -37,7 +37,8 @@
     position: fixed; inset: 0; z-index: 0;
     width: 100vw; height: 100vh; display: block;
     pointer-events: none; touch-action: none; opacity: 1;
-    filter: blur(15px);             /* 還原原本的雙層模糊視覺 */
+    transform: translateZ(0);        /* 固定為獨立合成圖層：捲動時快取、不重繪 */
+    will-change: transform;
   }
   /* 呼吸感覆蓋層：純 opacity 脈動（不加 backdrop-filter，避免觸碰重繪卡頓） */
   #about-frost {
@@ -223,7 +224,7 @@
 <script src="js/locales/zh-Hans.js?v=20260814ai"></script>
 <script src="js/locales/en.js?v=20260814ai"></script>
 <script src="js/i18n.js?v=20260814ai"></script>
-<script src="js/about.js?v=20260814av"></script>
+<script src="js/about.js?v=20260814aw"></script>
 <script src="js/hero-menu.js?v=20260814as"></script>
 </body>
 </html>
