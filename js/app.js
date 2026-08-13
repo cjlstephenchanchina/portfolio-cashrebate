@@ -427,3 +427,35 @@ function init() {
 }
 
 document.addEventListener("DOMContentLoaded", init);
+
+/* ---------- 數值自動縮字（防止極端長度溢出卡片邊框） ---------- */
+function fitValue(el) {
+  if (!el || !el.isConnected) return;
+  el.style.fontSize = "";
+  el.style.whiteSpace = "nowrap";
+  el.style.overflowWrap = "normal";
+  const base = parseFloat(getComputedStyle(el).fontSize) || 16;
+  let fs = base;
+  const min = 10;
+  while (fs > min && el.scrollWidth > el.clientWidth + 1) {
+    fs -= 0.5;
+    el.style.fontSize = fs + "px";
+  }
+  if (el.scrollWidth > el.clientWidth + 1) {
+    /* 已到最小字號仍超寬：允許換行兜底，絕不溢出邊框 */
+    el.style.whiteSpace = "normal";
+    el.style.overflowWrap = "anywhere";
+  }
+}
+function fitValueAll() {
+  document.querySelectorAll(".kpi-value, .quote-price__value, .r-v").forEach(fitValue);
+}
+window.fitValueAll = fitValueAll;
+if (window.MutationObserver) {
+  new MutationObserver(function () { fitValueAll(); }).observe(
+    document.body,
+    { subtree: true, childList: true, characterData: true }
+  );
+}
+window.addEventListener("resize", fitValueAll);
+document.addEventListener("DOMContentLoaded", fitValueAll);
