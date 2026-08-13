@@ -25,7 +25,7 @@
         length: h * 2.5,
         angle: -35 + Math.random() * 10,
         speed: 0.6 + Math.random() * 1.2,
-        opacity: 0.20 + Math.random() * 0.18,
+        opacity: 0.12 + Math.random() * 0.16,
         hue: 190 + Math.random() * 70,
         pulse: Math.random() * Math.PI * 2,
         pulseSpeed: 0.02 + Math.random() * 0.03,
@@ -39,7 +39,7 @@
       canvas.width = Math.max(1, Math.floor(w / 3));
       canvas.height = Math.max(1, Math.floor(h / 3));
       beams = [];
-      for (var i = 0; i < MIN; i++) beams.push(createBeam(canvas.width, canvas.height));
+      for (var i = 0; i < MIN * 1.5; i++) beams.push(createBeam(canvas.width, canvas.height));
     }
 
     function resetBeam(b, i, total) {
@@ -51,7 +51,7 @@
       b.width = 100 + Math.random() * 100;
       b.speed = 0.5 + Math.random() * 0.4;
       b.hue = 190 + (i * 70) / total;
-      b.opacity = 0.30 + Math.random() * 0.12;
+      b.opacity = 0.2 + Math.random() * 0.1;
     }
 
     function drawBeam(b) {
@@ -73,6 +73,7 @@
 
     function animate() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.filter = "blur(35px)";
       beams.forEach(function (b, i) {
         b.y -= b.speed;
         b.pulse += b.pulseSpeed;
