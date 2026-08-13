@@ -64,6 +64,14 @@
       box-shadow .45s var(--nav-ease),
       color .35s ease;
   }
+  /* header 固定用系統字型：不依賴晚載入的 webfont，杜絕字型置換造成的文字跳動 */
+  .site-nav,
+  .site-nav .brand,
+  .site-nav .nav-links a,
+  .site-nav .nav-live,
+  .site-nav .lang-btn {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang TC", "Microsoft JhengHei", sans-serif;
+  }
 
   .about-hero {
     min-height: 100vh; min-height: 100svh;
