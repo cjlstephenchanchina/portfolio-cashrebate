@@ -372,43 +372,32 @@ em { font-style: italic; font-family: var(--font-serif); font-weight: 400; color
 /* ---------- 卡片（全站統一毛玻璃：各章節 box 皆與 #quote 對話框同質感） ---------- */
 .card {
   position: relative;
-  background: var(--glass);
-  backdrop-filter: blur(22px) saturate(150%);
-  -webkit-backdrop-filter: blur(22px) saturate(150%);
-  border: 1px solid var(--glass-border);
-  border-radius: var(--radius-lg);
-  padding: 26px;
-  box-shadow: var(--card-shadow);
-}
-
-/* 單筆查詢：磨砂半透明對話框（受 Google Stitch hero 對話框啟發） */
-#quote .card {
-  position: relative;
   overflow: hidden;
   background: var(--glass);
   backdrop-filter: blur(24px) saturate(150%);
   -webkit-backdrop-filter: blur(24px) saturate(150%);
   border: 1px solid var(--glass-border);
   border-radius: 20px;
+  padding: 26px;
   box-shadow: var(--card-shadow);
 }
-/* 頂部微高光，強化磨砂玻璃的立體感 */
-#quote .card::before {
+/* 頂部微高光：全站卡片統一，強化磨砂玻璃立體感 */
+.card::before {
   content: "";
   position: absolute; inset: 0;
   background: var(--card-sheen);
   pointer-events: none;
 }
-/* 對話框內的輸入/選擇框也轉為半透明，與磨砂質感一致 */
-#quote .card input[type="text"],
-#quote .card input[type="number"],
-#quote .card input[type="date"],
-#quote .card select {
+/* 卡片內的輸入/選擇框統一轉為半透明，與磨砂質感一致 */
+.card input[type="text"],
+.card input[type="number"],
+.card input[type="date"],
+.card select {
   background: var(--glass);
   border-color: var(--glass-border-input);
 }
-#quote .card input:focus,
-#quote .card select:focus {
+.card input:focus,
+.card select:focus {
   border-color: var(--focus-border);
   box-shadow: 0 0 0 3px var(--focus-ring);
 }
@@ -490,7 +479,7 @@ input[type="file"]::file-selector-button {
 .kpi-hl .kpi-value { color: var(--accent-hi); }
 
 /* ---------- 表格 ---------- */
-.table-wrap { overflow-x: auto; background: var(--glass-subtle); border: 1px solid var(--glass-border-2); border-radius: var(--radius); margin-top: 4px; backdrop-filter: blur(14px) saturate(140%); -webkit-backdrop-filter: blur(14px) saturate(140%); }
+.table-wrap { overflow-x: auto; background: var(--glass-subtle); border: 1px solid var(--glass-border-2); border-radius: 20px; margin-top: 4px; backdrop-filter: blur(14px) saturate(140%); -webkit-backdrop-filter: blur(14px) saturate(140%); }
 table.data { width: 100%; border-collapse: collapse; font-size: 13.5px; min-width: 720px; }
 table.data thead th {
   position: sticky; top: 0; background: var(--surface-3); color: var(--muted);
@@ -685,11 +674,11 @@ table.data .num { font-family: var(--font-mono); }
 
 /* ---------- 圖表 ---------- */
 .charts { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 20px; }
-.chart-box { background: var(--glass-soft); border: 1px solid var(--glass-border-2); border-radius: var(--radius); padding: 18px; backdrop-filter: blur(16px) saturate(140%); -webkit-backdrop-filter: blur(16px) saturate(140%); }
+.chart-box { background: var(--glass-soft); border: 1px solid var(--glass-border-2); border-radius: 20px; padding: 18px; backdrop-filter: blur(16px) saturate(140%); -webkit-backdrop-filter: blur(16px) saturate(140%); }
 .chart-title { font-size: 14px; color: var(--text); margin-bottom: 12px; font-weight: 500; }
 .chart { width: 100%; height: 280px; }
 #pf-curve, #chartKline { width: 100%; height: 320px; }
-.curve-box { background: var(--glass-soft); border: 1px solid var(--glass-border-2); border-radius: var(--radius); padding: 18px; margin-top: 20px; backdrop-filter: blur(16px) saturate(140%); -webkit-backdrop-filter: blur(16px) saturate(140%); }
+.curve-box { background: var(--glass-soft); border: 1px solid var(--glass-border-2); border-radius: 20px; padding: 18px; margin-top: 20px; backdrop-filter: blur(16px) saturate(140%); -webkit-backdrop-filter: blur(16px) saturate(140%); }
 
 /* ---------- 持倉市值 Top 3 卡片（Logo + 公司名 + 排名 + 比重） ---------- */
 .chart-top3 { grid-column: 1 / -1; }
@@ -700,7 +689,7 @@ table.data .num { font-family: var(--font-mono); }
   padding: 8px 10px;
   background: var(--glass);
   border: 1px solid var(--glass-border-2);
-  border-radius: var(--radius);
+  border-radius: 20px;
   backdrop-filter: blur(14px) saturate(140%); -webkit-backdrop-filter: blur(14px) saturate(140%);
   transition: border-color .2s ease, transform .2s ease, background-color .35s ease, color .35s ease;
 }
