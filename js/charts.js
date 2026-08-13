@@ -124,8 +124,12 @@ function renderMarket(id, data) {
   const chart = initChart(id);
   if (!chart) return;
   chartCache.market = { id, data };
-  const palette = [CHART_COLORS.accent, CHART_COLORS.down, CHART_COLORS.up,
-                   CHART_COLORS.accentHi, "#9AA6C0"];
+  /* 按市場指定語義色：港股綠、A股紅、美股藍 */
+  const mktColor = (m) => {
+    if (m === "US") return "#3B82F6";       // 美股藍色
+    if (m === "A") return CHART_COLORS.up;  // A股紅
+    return CHART_COLORS.down;               // 港股綠（預設）
+  };
   chart.setOption({
     ...chartBase(),
     tooltip: {
@@ -137,9 +141,9 @@ function renderMarket(id, data) {
       avoidLabelOverlap: true, itemStyle: { borderRadius: 4, borderColor: CHART_COLORS.pieBorder, borderWidth: 2 },
       label: { color: CHART_COLORS.text, fontSize: 12.5, formatter: "{b}\n{c}" },
       labelLine: { lineStyle: { color: CHART_COLORS.muted } },
-      data: (data || []).map((d, i) => ({
+      data: (data || []).map((d) => ({
         name: MARKET_LABEL(d.market) || d.market, value: d.value,
-        itemStyle: { color: palette[i % palette.length] },
+        itemStyle: { color: mktColor((d.market || "").toUpperCase()) },
       })),
     }],
   }, true);
