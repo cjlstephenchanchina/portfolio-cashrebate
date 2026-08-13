@@ -393,7 +393,7 @@ em { font-style: italic; font-family: var(--font-serif); font-weight: 400; color
 .card input[type="number"],
 .card input[type="date"],
 .card select {
-  background: var(--glass);
+  background-color: var(--glass);   /* 只改底色，保留全域 select 的下拉箭頭 background-image */
   border-color: var(--glass-border-input);
 }
 .card input:focus,
