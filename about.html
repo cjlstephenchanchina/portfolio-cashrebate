@@ -15,13 +15,70 @@
 <link rel="stylesheet" href="css/style.css?v=20260814aa">
 <link rel="stylesheet" href="css/hero.css?v=20260814o">
 <style>
-  /* 關於頁：避開 fixed 導覽列 */
-  .about-main { padding-top: 104px; padding-bottom: 60px; }
-  .about-main .card h3 { font-size: 16px; margin-bottom: 10px; color: var(--text); }
-  .about-main .card h3::before { content: ""; display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--accent); margin-right: 9px; vertical-align: 1px; }
-  .about-main .card p { color: var(--muted); font-size: 14px; line-height: 1.8; }
-  .about-main .card + .card { margin-top: 14px; }
-  .about-intro { color: var(--muted); font-size: 14.5px; line-height: 1.9; max-width: 760px; }
+  /* 關於頁：光束動效背景＋大字報式滾動逐段顯現（無卡片） */
+  body { background: #070B0A; }
+  #about-beams {
+    position: fixed; inset: 0; z-index: 0;
+    width: 100vw; height: 100vh; display: block;
+    pointer-events: none; filter: blur(15px); opacity: .9;
+  }
+  .about-wrap, .site-footer { position: relative; z-index: 1; }
+
+  .about-hero {
+    min-height: 100vh; min-height: 100svh;
+    display: flex; flex-direction: column; align-items: flex-start; justify-content: center;
+    max-width: 1320px; margin: 0 auto;
+    padding: 104px max(24px, 6vw) 0;
+  }
+  .about-kicker {
+    font-family: "Plus Jakarta Sans", var(--font-sans);
+    font-weight: 600; font-size: 12px; letter-spacing: .34em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 30px;
+  }
+  .about-hero h1 {
+    font-family: "Playfair Display", Georgia, serif;
+    font-weight: 500; letter-spacing: -0.02em; line-height: 1.02;
+    font-size: clamp(48px, 8vw, 132px); color: #FFFFFF;
+    max-width: 11ch;
+  }
+  .about-hero p {
+    margin-top: 34px; max-width: 640px;
+    color: rgba(255, 255, 255, 0.68);
+    font-size: clamp(16px, 1.4vw, 21px); line-height: 1.95;
+  }
+
+  .about-blocks {
+    max-width: 1320px; margin: 0 auto;
+    padding: 6vh max(24px, 6vw) 18vh;
+  }
+  .about-block {
+    min-height: 74vh; min-height: 74svh;
+    display: flex; flex-direction: column; justify-content: center;
+    padding: 10vh 0;
+    opacity: 0; transform: translateY(56px);
+    transition: opacity .9s cubic-bezier(0.22, 1, 0.36, 1), transform .9s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .about-block.in-view { opacity: 1; transform: none; }
+  .ab-num {
+    font-family: var(--font-mono); color: var(--accent);
+    font-size: 14px; letter-spacing: .24em; margin-bottom: 26px;
+  }
+  .about-block h2 {
+    font-family: "Playfair Display", Georgia, serif;
+    font-weight: 500; letter-spacing: -0.02em; line-height: 1.08;
+    font-size: clamp(36px, 5vw, 78px); color: #FFFFFF; margin-bottom: 30px;
+  }
+  .about-block p {
+    color: rgba(255, 255, 255, 0.70);
+    font-size: clamp(16px, 1.3vw, 20px); line-height: 2.05;
+    max-width: 780px;
+  }
+  .about-block.about-disclaimer p { color: rgba(255, 255, 255, 0.50); font-size: 14px; }
+
+  @media (max-width: 720px) {
+    .about-hero { padding-top: 88px; }
+    .about-block { min-height: auto; padding: 13vh 0; }
+  }
 </style>
 </head>
 <body>
@@ -60,44 +117,50 @@
   <a class="m-cta" href="index.html#quote" style="--i:6" data-i18n="menu.cta">開始使用</a>
 </nav>
 
-<!-- ================= 關於內容 ================= -->
-<main class="container main about-main">
-  <section class="section" id="about">
-    <div class="section-head">
-      <span class="sec-no">i</span>
-      <div>
-        <h2 data-i18n="about.title">關於 Nora-AI Capital</h2>
-        <p class="about-intro" data-i18n="about.intro">這是一個 100% 在瀏覽器內運行的港股 / A股 / 美股持倉市值、批量作業與現金回贈計算工具——無後台伺服器，所有計算都在你的本機瀏覽器完成。</p>
-      </div>
-    </div>
+<!-- ================= 關於內容（光束動效背景＋滾動逐段顯現） ================= -->
+<canvas id="about-beams" aria-hidden="true"></canvas>
 
-    <div class="card">
-      <h3 data-i18n="about.arch.title">架構</h3>
+<main class="about-wrap">
+  <section class="about-hero">
+    <span class="about-kicker">Nora-AI Capital — About</span>
+    <h1 data-i18n="about.title">關於 Nora-AI Capital</h1>
+    <p data-i18n="about.intro">這是一個 100% 在瀏覽器內運行的港股 / A股 / 美股持倉市值、批量作業與現金回贈計算工具——無後台伺服器，所有計算都在你的本機瀏覽器完成。</p>
+  </section>
+
+  <section class="about-blocks">
+    <div class="about-block" id="b-arch">
+      <span class="ab-num">01 —</span>
+      <h2 data-i18n="about.arch.title">架構</h2>
       <p data-i18n="about.arch.body">純靜態前端：HTML + CSS + 原生 JavaScript，無框架、無後端。整站部署於 GitHub Pages，透過 GitHub Actions 自動發布。</p>
     </div>
 
-    <div class="card">
-      <h3 data-i18n="about.stack.title">技術棧</h3>
+    <div class="about-block" id="b-stack">
+      <span class="ab-num">02 —</span>
+      <h2 data-i18n="about.stack.title">技術棧</h2>
       <p data-i18n="about.stack.body">原生 JavaScript（Vanilla JS）；ECharts 繪製統計圖、K 線與淨值走勢；SheetJS（xlsx）解析 Excel 批量檔；hls.js 播放 hero 背景影片串流；i18n 支援繁中 / 簡中 / 英文；localStorage 儲存語言、持倉清單與行情快取。</p>
     </div>
 
-    <div class="card">
-      <h3 data-i18n="about.data.title">數據來源</h3>
+    <div class="about-block" id="b-data">
+      <span class="ab-num">03 —</span>
+      <h2 data-i18n="about.data.title">數據來源</h2>
       <p data-i18n="about.data.body">港股 / A股：騰訊公開行情接口（即時報價與日 K）；美股：stockanalysis.com（5 年日線收市數據）；匯率：frankfurter.dev（歐洲央行 ECB 官方參考匯率）。全部由瀏覽器直連（CORS），不經任何伺服器轉發。</p>
     </div>
 
-    <div class="card">
-      <h3 data-i18n="about.calc.title">計算邏輯</h3>
+    <div class="about-block" id="b-calc">
+      <span class="ab-num">04 —</span>
+      <h2 data-i18n="about.calc.title">計算邏輯</h2>
       <p data-i18n="about.calc.body">單筆查詢：指定日期的真實收市價與市值；批量作業：上傳 Excel → 逐筆查價 → 港幣市值匯出；回贈統計：依門檻、金額與上限計算每人回贈，並統計合資格受惠客戶；持倉總覽：市值、未實現盈虧與組合淨值走勢；另有港交所成交額 Top 30 看板。</p>
     </div>
 
-    <div class="card">
-      <h3 data-i18n="about.privacy.title">隱私</h3>
+    <div class="about-block" id="b-privacy">
+      <span class="ab-num">05 —</span>
+      <h2 data-i18n="about.privacy.title">隱私</h2>
       <p data-i18n="about.privacy.body">所有輸入資料只存在你的本機瀏覽器（localStorage），不會上傳到任何伺服器；持倉清單、語言偏好與行情快取都在本機。</p>
     </div>
 
-    <div class="card">
-      <h3 data-i18n="about.disclaimer.title">免責聲明</h3>
+    <div class="about-block about-disclaimer" id="b-disclaimer">
+      <span class="ab-num">06 —</span>
+      <h2 data-i18n="about.disclaimer.title">免責聲明</h2>
       <p data-i18n="about.disclaimer.body">數據來自公開第三方接口，可能有延遲或錯誤；查無數據時系統會明確提示。所有計算結果僅供參考，不構成任何投資建議。</p>
     </div>
   </section>
@@ -119,6 +182,7 @@
 <script src="js/locales/zh-Hans.js?v=20260814ac"></script>
 <script src="js/locales/en.js?v=20260814ac"></script>
 <script src="js/i18n.js?v=20260814ac"></script>
+<script src="js/about.js?v=20260814ad"></script>
 <script src="js/hero-menu.js?v=20260809p"></script>
 </body>
 </html>
