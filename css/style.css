@@ -55,7 +55,7 @@
   --nav-text-strong: rgba(255, 255, 255, 0.92);
   --nav-border: rgba(255, 255, 255, 0.28);
   --nav-border-hi: rgba(255, 255, 255, 0.45);
-  --nav-text-shadow: 0 1px 4px rgba(0, 0, 0, 0.55);
+  --nav-text-shadow: none;           /* 移除 header 文字下方的黑色陰影 */
   --nav-glass: linear-gradient(180deg,
       rgba(18, 18, 18, 0.72) 0%,
       rgba(10, 10, 10, 0.60) 100%);
