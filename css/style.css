@@ -493,6 +493,7 @@ input[type="file"]::file-selector-button {
   border: 1.5px solid transparent;
   display: flex; align-items: center; justify-content: center;
   white-space: nowrap;
+  min-width: 200px;              /* 按鈕拉長一些 */
 }
 .field-action .btn { flex: none; white-space: nowrap; }
 
