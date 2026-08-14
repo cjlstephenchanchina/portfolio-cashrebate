@@ -47,7 +47,6 @@
     position: fixed; inset: 0; z-index: 0;
     pointer-events: none; touch-action: none;
     background-repeat: repeat;
-    animation: grainJitter 0.9s steps(2) infinite;
   }
   #about-grain {
     opacity: .22; mix-blend-mode: overlay; filter: contrast(1.9) brightness(1.05);
@@ -56,12 +55,6 @@
   #about-grain-fine {
     opacity: .14; mix-blend-mode: overlay; filter: contrast(2.2);
     background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='130' height='130'><filter id='gf'><feTurbulence type='fractalNoise' baseFrequency='1.8' numOctaves='2' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='100%25' height='100%25' filter='url(%23gf)'/></svg>");
-  }
-  @keyframes grainJitter {
-    0%, 100% { transform: translate(0, 0); }
-    25% { transform: translate(-2%, 1%); }
-    50% { transform: translate(1%, -2%); }
-    75% { transform: translate(-1%, 2%); }
   }
   /* 呼吸感覆蓋層：純 opacity 脈動（不加 backdrop-filter，避免觸碰重繪卡頓） */
   #about-frost {
@@ -142,7 +135,6 @@
     .about-block h2 {
       opacity: 1 !important; transform: none !important; transition: none !important;
     }
-    #about-grain, #about-grain-fine { animation: none; }
   }
 </style>
 </head>
