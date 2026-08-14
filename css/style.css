@@ -380,8 +380,8 @@ body.nav-ready .site-nav {
 .section-head h2 { font-size: 22px; }
 .section-head p { color: var(--muted); font-size: 14px; max-width: 64ch; margin-top: 6px; }
 .sec-no {
-  font-family: var(--font-mono); font-size: 13px; color: var(--accent-hi);
-  border: 1px solid var(--accent-line); border-radius: 8px; padding: 4px 9px; line-height: 1; flex-shrink: 0;
+  font-family: var(--font-mono); font-size: 18px; color: var(--accent);
+  border: none; padding: 0; line-height: 1.1; flex-shrink: 0;
 }
 .link-btn {
   margin-left: auto; background: none; border: none; color: var(--accent-hi);
