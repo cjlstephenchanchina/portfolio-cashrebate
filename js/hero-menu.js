@@ -6,6 +6,19 @@
  * - 站體導覽滾動後切換到 .scrolled（毛玻璃）狀態
  */
 (function () {
+  /* 帶章節錨點載入（如 index.html#overview）：內容（Top 30 等）載入後自動重新捲到正確位置 */
+  function jumpToHash() {
+    var h = location.hash;
+    if (!h) return;
+    var el = document.getElementById(h.slice(1));
+    if (el && el.scrollIntoView) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+  if (location.hash) {
+    window.addEventListener('load', function () { setTimeout(jumpToHash, 60); });
+    setTimeout(jumpToHash, 800);
+    setTimeout(jumpToHash, 1500);
+  }
+
   /* 頁面載入完成後啟用 header 過渡（消除整頁跳轉時的一動一動） */
   function enableNavTransitions() {
     document.body.classList.add("nav-ready");
