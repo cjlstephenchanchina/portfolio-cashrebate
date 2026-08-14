@@ -387,6 +387,5 @@
 }
 /* 較矮螢幕：隱藏玻璃卡片，避免左下內容擠爆 */
 @media (max-height: 720px) {
-  .hc-card { display: none; }
   .hero-cinema__body { padding-bottom: clamp(28px, 5vh, 48px); }
 }
