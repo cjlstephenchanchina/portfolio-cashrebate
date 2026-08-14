@@ -39,6 +39,29 @@
     pointer-events: none; touch-action: none; opacity: 1;
     transform: translateZ(0);        /* 固定為獨立合成圖層：捲動時快取、不重繪 */
     will-change: transform;
+    filter: blur(15px);              /* 還原很模糊的柔焦感（雙層模糊） */
+  }
+  /* 沙粒粗糲感：粗細兩層膠片顆粒＋微微抖動 */
+  #about-grain,
+  #about-grain-fine {
+    position: fixed; inset: 0; z-index: 0;
+    pointer-events: none; touch-action: none;
+    background-repeat: repeat;
+    animation: grainJitter 0.9s steps(2) infinite;
+  }
+  #about-grain {
+    opacity: .22; mix-blend-mode: overlay; filter: contrast(1.9) brightness(1.05);
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='g'><feTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='2' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='100%25' height='100%25' filter='url(%23g)'/></svg>");
+  }
+  #about-grain-fine {
+    opacity: .14; mix-blend-mode: overlay; filter: contrast(2.2);
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='130' height='130'><filter id='gf'><feTurbulence type='fractalNoise' baseFrequency='1.8' numOctaves='2' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='100%25' height='100%25' filter='url(%23gf)'/></svg>");
+  }
+  @keyframes grainJitter {
+    0%, 100% { transform: translate(0, 0); }
+    25% { transform: translate(-2%, 1%); }
+    50% { transform: translate(1%, -2%); }
+    75% { transform: translate(-1%, 2%); }
   }
   /* 呼吸感覆蓋層：純 opacity 脈動（不加 backdrop-filter，避免觸碰重繪卡頓） */
   #about-frost {
@@ -119,6 +142,7 @@
     .about-block h2 {
       opacity: 1 !important; transform: none !important; transition: none !important;
     }
+    #about-grain, #about-grain-fine { animation: none; }
   }
 </style>
 </head>
@@ -160,6 +184,8 @@
 
 <!-- ================= 關於內容（光束動效背景＋滾動逐段顯現） ================= -->
 <canvas id="about-beams" aria-hidden="true"></canvas>
+<div id="about-grain" aria-hidden="true"></div>
+<div id="about-grain-fine" aria-hidden="true"></div>
 <div id="about-frost" aria-hidden="true"></div>
 
 <main class="about-wrap">
