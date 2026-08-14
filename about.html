@@ -10,6 +10,7 @@
   /* 防止瀏覽器恢復捲動位置造成 header 玻璃化過渡抖動：載入即回頂部 */
   (function () {
     try { if ('scrollRestoration' in history) history.scrollRestoration = 'manual'; } catch (e) {}
+    if (location.hash) return;   /* 帶錨點時不強制回頂部，讓瀏覽器正常跳到對應位置 */
     function toTop() {
       try { window.scrollTo({ top: 0, left: 0, behavior: 'instant' }); }
       catch (e) { window.scrollTo(0, 0); }

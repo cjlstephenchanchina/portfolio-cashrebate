@@ -9,6 +9,8 @@
      設為 manual 可關掉瀏覽器自帶的 scroll restoration，並在載入時瞬間回到頂部。 */
   (function () {
     try { if ('scrollRestoration' in history) history.scrollRestoration = 'manual'; } catch (e) {}
+    /* 帶錨點跳轉（如 index.html#quote）時讓瀏覽器正常跳到章節；僅無錨點才回頂部 */
+    if (location.hash) return;
     function toTop() {
       try { window.scrollTo({ top: 0, left: 0, behavior: 'instant' }); }
       catch (e) { window.scrollTo(0, 0); }
