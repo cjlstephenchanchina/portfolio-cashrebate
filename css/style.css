@@ -376,12 +376,12 @@ body.nav-ready .site-nav {
     rgba(0, 0, 0, 0)   100%);
 }
 .section > * { position: relative; z-index: 1; }
-.section-head { display: flex; align-items: flex-start; gap: 16px; margin-bottom: 22px; flex-wrap: wrap; }
+.section-head { display: flex; align-items: baseline; gap: 16px; margin-bottom: 22px; flex-wrap: wrap; }
 .section-head h2 { font-size: 22px; }
 .section-head p { color: var(--muted); font-size: 14px; max-width: 64ch; margin-top: 6px; }
 .sec-no {
-  font-family: var(--font-mono); font-size: 18px; color: var(--accent);
-  border: none; padding: 0; line-height: 1.1; flex-shrink: 0;
+  font-family: var(--font-mono); font-size: 22px; color: var(--accent);
+  border: none; padding: 0; line-height: 1.2; flex-shrink: 0;
 }
 .link-btn {
   margin-left: auto; background: none; border: none; color: var(--accent-hi);
