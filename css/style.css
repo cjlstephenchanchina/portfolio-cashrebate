@@ -421,6 +421,15 @@ body.nav-ready .site-nav {
   border-color: var(--focus-border);
   box-shadow: 0 0 0 3px var(--focus-ring);
 }
+/* 表單控制項統一高度：同排 box 高度一致（單筆查詢/批量/統計/走勢） */
+.card form input[type="text"],
+.card form input[type="number"],
+.card form input[type="date"],
+.card form select,
+.card form .btn {
+  height: 44px;
+  box-sizing: border-box;
+}
 
 /* ---------- 表單 ---------- */
 .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 16px 18px; align-items: end; }
