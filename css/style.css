@@ -1133,9 +1133,12 @@ html[data-theme="day"] #aurora-canvas { display: none; }
   border-radius: 50%;
   opacity: 0;
   filter: blur(16px);              /* 霧塊感 */
+  background-repeat: no-repeat;
+  background-size: 100% 200%;      /* 上層綠、下層淡藍，交叉淡變（慢且柔） */
   animation:
     dsBlobFade  var(--fadeDur, 12s)   ease-in-out var(--fadeDelay, 0s) infinite,
-    dsBlobDrift var(--driftDur, 55s)  ease-in-out infinite;
+    dsBlobDrift var(--driftDur, 55s)  ease-in-out infinite,
+    dsBlobColor var(--colorDur, 38s)  ease-in-out var(--colorDelay, 0s) infinite;
   will-change: opacity, transform;
 }
 @keyframes dsBlobFade {
@@ -1148,6 +1151,11 @@ html[data-theme="day"] #aurora-canvas { display: none; }
   25%      { transform: translate(var(--dx, 8vw), var(--dy, 8vh)); }
   50%      { transform: translate(calc(var(--dx, 8vw) * -0.6), calc(var(--dy, 8vh) * 0.7)); }
   75%      { transform: translate(calc(var(--dx, 8vw) * 0.5), calc(var(--dy, 8vh) * -0.8)); }
+}
+/* 綠 ↔ 淡藍：慢速、柔和的交叉淡變 */
+@keyframes dsBlobColor {
+  0%, 100% { background-position: 0 0, 0 100%; }
+  50%      { background-position: 0 -100%, 0 0; }
 }
 
 /* 白天輸入框/選擇框：近乎不透明的白底，避免毛玻璃父層的合成深色帶
