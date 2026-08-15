@@ -79,6 +79,8 @@
     function render() {
       var y = view.getFullYear(), m = view.getMonth();
       var title = tag === "en" ? months[m] + " " + y : y + " 年 " + months[m];
+      var prevEl = pop.querySelector(".dp-title-txt");
+      var prevTitle = prevEl ? prevEl.textContent : null;
       var startDow = new Date(y, m, 1).getDay();
       var daysInMonth = new Date(y, m + 1, 0).getDate();
       var now = new Date();
@@ -86,7 +88,10 @@
       var html =
         '<div class="dp-head">' +
           '<button type="button" class="dp-nav" data-nav="-1" aria-label="Prev">‹</button>' +
-          '<span class="dp-title"></span>' +
+          '<div class="dp-title">' +
+            (prevTitle ? '<span class="dp-title-txt dp-title-out">' + prevTitle + "</span>" : "") +
+            '<span class="dp-title-txt dp-title-in">' + title + "</span>" +
+          "</div>" +
           '<button type="button" class="dp-nav" data-nav="1" aria-label="Next">›</button>' +
         '</div>' +
         '<div class="dp-week">' + weeks.map(function (w) { return "<span>" + w + "</span>"; }).join("") + "</div>" +
@@ -106,7 +111,6 @@
           '<button type="button" class="dp-action" data-act="clear">' + clearLabel + "</button>" +
         "</div>";
       pop.innerHTML = html;
-      pop.querySelector(".dp-title").textContent = title;
     }
     render();
 

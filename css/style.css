@@ -1209,7 +1209,38 @@ html[data-theme="day"] option { background: #FFFFFF; color: #1B2434; }
   justify-content: space-between;
   margin-bottom: 8px;
 }
-.date-pop .dp-title { font-size: 13px; font-weight: 600; color: var(--text); }
+.date-pop .dp-title {
+  position: relative;
+  height: 18px;
+  min-width: 0;
+  overflow: hidden;
+  font-size: 13px; font-weight: 600; color: var(--text);
+}
+.date-pop .dp-title-txt {
+  position: absolute;
+  left: 0; right: 0; top: 0;
+  display: block;
+  white-space: nowrap;
+}
+/* 與 header 章節跳動同款：舊標題上滑離開、新標題從下方彈簧進場 */
+.date-pop .dp-title-in {
+  transform: translateY(120%);
+  animation: dpTitleIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+.date-pop .dp-title-out {
+  animation: dpTitleOut 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+@keyframes dpTitleIn {
+  from { transform: translateY(120%); }
+  to   { transform: translateY(0); }
+}
+@keyframes dpTitleOut {
+  from { transform: translateY(0); }
+  to   { transform: translateY(-120%); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .date-pop .dp-title-txt { animation: none !important; transform: none !important; }
+}
 .date-pop .dp-nav {
   width: 26px; height: 26px;
   border-radius: 8px;
