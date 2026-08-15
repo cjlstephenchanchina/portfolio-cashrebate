@@ -50,6 +50,9 @@ window.I18N_DATA["zh-Hant"] = {
   "batch.lbl.date": "批量日期",
   "batch.lbl.dateHint": "（缺省值：每列未指定日期時使用）",
   "batch.lbl.file": "Excel 檔案",
+  "batch.fileText": "上傳 Excel 檔案",
+  "batch.fileHint": "或拖曳至此",
+  "batch.aria.file": "上傳 Excel 檔案（.xlsx）",
   "batch.btn": "上傳並計算",
 
   /* ---------- 回贈與統計 / Stats ---------- */

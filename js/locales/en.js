@@ -50,6 +50,9 @@ window.I18N_DATA["en"] = {
   "batch.lbl.date": "Batch Date",
   "batch.lbl.dateHint": "(default: used when a row has no assigned date)",
   "batch.lbl.file": "Excel File",
+  "batch.fileText": "Upload Excel file",
+  "batch.fileHint": "or drag & drop",
+  "batch.aria.file": "Upload Excel file (.xlsx)",
   "batch.btn": "Upload & Calculate",
 
   /* ---------- Stats ---------- */
