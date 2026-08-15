@@ -20,6 +20,8 @@ window.I18N_DATA["en"] = {
   "theme.option.day": "Day",
   "theme.option.night": "Night",
   "theme.option.auto": "Auto (time-based)",
+  "date.today": "Today",
+  "date.clear": "Clear",
 
   /* ---------- Hero ---------- */
   "hero.cta": "Get Started",

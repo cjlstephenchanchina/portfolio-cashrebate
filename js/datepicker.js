@@ -30,6 +30,7 @@
 
   var pop = null;
   var popOpenAt = 0;
+  var popHandledEvent = null;
 
   function closePop() {
     if (pop) { pop.remove(); pop = null; }
@@ -39,6 +40,9 @@
     window.removeEventListener("resize", onResizeGrace);
   }
   function onDocClick(e) {
+    /* 彈窗內已處理的事件（如切月、今天/清除）重繪後原按鈕已脫離 DOM，
+       直接略過，避免誤關彈窗 */
+    if (e === popHandledEvent) { popHandledEvent = null; return; }
     if (pop && !pop.contains(e.target) && !(e.target.classList && e.target.classList.contains("date-pick"))) closePop();
   }
   function onDocKey(e) { if (e.key === "Escape") closePop(); }
@@ -63,6 +67,8 @@
     var tag = langTag();
     var months = monthNames(tag);
     var weeks = weekdayNames(tag);
+    var todayLabel = (window.I18N && I18N.t("date.today")) || "今天";
+    var clearLabel = (window.I18N && I18N.t("date.clear")) || "清除";
 
     pop = document.createElement("div");
     pop.className = "date-pop";
@@ -94,16 +100,31 @@
         html += '<button type="button" class="' + cls + '" data-d="' + d + '">' + d + "</button>";
       }
       html += "</div>";
+      html +=
+        '<div class="dp-foot">' +
+          '<button type="button" class="dp-action" data-act="today">' + todayLabel + "</button>" +
+          '<button type="button" class="dp-action" data-act="clear">' + clearLabel + "</button>" +
+        "</div>";
       pop.innerHTML = html;
       pop.querySelector(".dp-title").textContent = title;
     }
     render();
 
     pop.addEventListener("click", function (e) {
+      popHandledEvent = e;
       var nav = e.target.closest("[data-nav]");
       if (nav) {
         view = new Date(view.getFullYear(), view.getMonth() + (+nav.getAttribute("data-nav")), 1);
         render();
+        return;
+      }
+      var act = e.target.closest("[data-act]");
+      if (act) {
+        var a = act.getAttribute("data-act");
+        if (a === "today") input.value = fmt(new Date());
+        else if (a === "clear") input.value = "";
+        input.dispatchEvent(new Event("change", { bubbles: true }));
+        closePop();
         return;
       }
       var cell = e.target.closest(".dp-cell:not(.blank)");

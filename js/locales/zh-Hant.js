@@ -20,6 +20,8 @@ window.I18N_DATA["zh-Hant"] = {
   "theme.option.day": "白天",
   "theme.option.night": "深夜",
   "theme.option.auto": "自動（跟隨時段）",
+  "date.today": "今天",
+  "date.clear": "清除",
 
   /* ---------- 頁頭 / Hero ---------- */
   "hero.cta": "開始使用",
