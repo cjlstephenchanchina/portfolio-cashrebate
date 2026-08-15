@@ -401,20 +401,22 @@ html[data-theme="day"] .hero-cinema {
   --hc-line-strong: rgba(27, 36, 52, 0.26);
   --hc-fill-ghost: rgba(27, 36, 52, 0.05);
   --hc-fill-solid: rgba(27, 36, 52, 0.10);
-  background: #F3F6FB;
+  /* 背景在底部漸層溶解為透明，讓固定極光（淡綠藍）從 hero 底部直接透出，
+     與章節之間不再有「純白 → 揭開極光」的硬分界 */
+  background: linear-gradient(to bottom,
+    #F3F6FB                       0%,
+    #F3F6FB                      50%,
+    rgba(243, 246, 251, 0.62)    68%,
+    rgba(243, 246, 251, 0.20)    84%,
+    rgba(243, 246, 251, 0)      100%);
 }
 
 /* 白天：隱藏影片層（由 hero-day 取代） */
 html[data-theme="day"] .hero-cinema__media { display: none; }
 
-/* 白天：底部淡白漸層，與內容區無縫銜接 */
+/* 白天：不再覆蓋白色紗幕（由 hero 背景漸層＋極光直接承接） */
 html[data-theme="day"] .hero-cinema__fade {
-  height: clamp(150px, 24vh, 280px);
-  background: linear-gradient(to bottom,
-    transparent,
-    rgba(255, 255, 255, 0.35) 38%,
-    rgba(255, 255, 255, 0.75) 68%,
-    #FFFFFF 100%);
+  background: transparent;
 }
 
 /* ── 白天媒體層（預設隱藏，day 時顯示） ── */
@@ -430,14 +432,15 @@ html[data-theme="day"] .hero-day { display: block; }
 
 /* 白天：hero-day 內容（背景圖／霧／曲線／顆粒）在底緣前漸次溶解，避免生硬切邊 */
 html[data-theme="day"] .hero-day {
+  /* 內容（背景圖／霧／曲線／顆粒）從 40% 高度起長距離溶解，與極光融為一體 */
   -webkit-mask-image: linear-gradient(to bottom,
-    #000 55%,
-    rgba(0, 0, 0, 0.35) 78%,
-    transparent 98%);
+    #000 40%,
+    rgba(0, 0, 0, 0.40) 68%,
+    transparent 100%);
   mask-image: linear-gradient(to bottom,
-    #000 55%,
-    rgba(0, 0, 0, 0.35) 78%,
-    transparent 98%);
+    #000 40%,
+    rgba(0, 0, 0, 0.40) 68%,
+    transparent 100%);
 }
 
 .hero-day__bg {

@@ -1006,20 +1006,10 @@ html[data-theme="day"] {
 }
 html[data-theme="day"] { background: #F3F6FB; }
 
-/* hero→內容區無縫銜接：#quote 頂部漸層改白（接白天 hero 底部淡白） */
+/* hero→內容區無縫銜接：白天 hero 底部已直接溶解透出極光，
+   此處不再覆蓋白色紗幕，章節直接承接極光背景 */
 html[data-theme="day"] #quote::before {
-  /* 鋪滿整個單筆查詢章節：白→透明在章節內完成，絕不漏到下一個章節 */
-  height: auto;
-  bottom: 0;
-  background: linear-gradient(to bottom,
-    #FFFFFF                       0%,
-    #FFFFFF                      22%,
-    rgba(255, 255, 255, 0.96)    32%,
-    rgba(255, 255, 255, 0.82)    48%,
-    rgba(31, 169, 124, 0.03)     60%,
-    rgba(255, 255, 255, 0.40)    72%,
-    rgba(255, 255, 255, 0.12)    88%,
-    rgba(255, 255, 255, 0)      100%);
+  background: transparent;
 }
 
 /* 白天按鈕 hover 微調（原為淺綠／藍色殘留） */
