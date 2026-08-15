@@ -76,11 +76,29 @@
     pop.setAttribute("aria-label", "Date picker");
     document.body.appendChild(pop);
 
+    var prevY = null, prevM = null;   /* 上一幀的年／月，用來判斷只有月份變還是跨年 */
+
     function render() {
       var y = view.getFullYear(), m = view.getMonth();
-      var title = tag === "en" ? months[m] + " " + y : y + " 年 " + months[m];
-      var prevEl = pop.querySelector(".dp-title-txt");
-      var prevTitle = prevEl ? prevEl.textContent : null;
+      var zh = tag !== "en";
+      var yearTxt = zh ? y + " 年 " : " " + y;
+      var monthTxt = months[m];
+      var yearChanged = prevY !== null && prevY !== y;
+      var monthChanged = prevM !== null && prevM !== m;
+      /* 年份與月份分開成兩個可裁剪小盒：平常只跳月份，跨年才連年份一起跳 */
+      var yearHtml =
+        '<span class="dp-title-year">' +
+          (yearChanged
+            ? '<span class="dp-title-txt dp-title-out">' + (zh ? prevY + " 年 " : " " + prevY) + '</span>' +
+              '<span class="dp-title-txt dp-title-in">' + yearTxt + '</span>'
+            : '<span class="dp-title-txt">' + yearTxt + '</span>') +
+        '</span>';
+      var monthHtml =
+        '<span class="dp-title-month">' +
+          (monthChanged ? '<span class="dp-title-txt dp-title-out">' + months[prevM] + '</span>' : '') +
+          '<span class="dp-title-txt' + (monthChanged ? " dp-title-in" : "") + '">' + monthTxt + '</span>' +
+        '</span>';
+      var titleHtml = zh ? yearHtml + monthHtml : monthHtml + yearHtml;
       var startDow = new Date(y, m, 1).getDay();
       var daysInMonth = new Date(y, m + 1, 0).getDate();
       var now = new Date();
@@ -88,10 +106,7 @@
       var html =
         '<div class="dp-head">' +
           '<button type="button" class="dp-nav" data-nav="-1" aria-label="Prev">‹</button>' +
-          '<div class="dp-title">' +
-            (prevTitle ? '<span class="dp-title-txt dp-title-out">' + prevTitle + "</span>" : "") +
-            '<span class="dp-title-txt dp-title-in">' + title + "</span>" +
-          "</div>" +
+          '<div class="dp-title">' + titleHtml + "</div>" +
           '<button type="button" class="dp-nav" data-nav="1" aria-label="Next">›</button>' +
         '</div>' +
         '<div class="dp-week">' + weeks.map(function (w) { return "<span>" + w + "</span>"; }).join("") + "</div>" +
@@ -111,6 +126,8 @@
           '<button type="button" class="dp-action" data-act="clear">' + clearLabel + "</button>" +
         "</div>";
       pop.innerHTML = html;
+      prevY = y;
+      prevM = m;
     }
     render();
 

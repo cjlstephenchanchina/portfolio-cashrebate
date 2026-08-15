@@ -236,6 +236,8 @@ body.nav-ready .site-nav {
 .lang-btn:hover { background: var(--glass-active); border-color: var(--nav-border-hi); }
 .lang-btn:active { transform: translateY(1px); }
 .lang-btn .caret { font-size: 9px; opacity: .82; line-height: 1; }
+.theme-current { display: inline-flex; align-items: center; justify-content: center; line-height: 1; }
+.theme-current svg { width: 15px; height: 15px; display: block; }
 .lang-menu {
   position: absolute; top: calc(100% + 9px); right: 0;
   min-width: 138px; margin: 0; padding: 6px; list-style: none;
@@ -1181,10 +1183,15 @@ html[data-theme="day"] option { background: #FFFFFF; color: #1B2434; }
 
 /* ═════════ 自訂日期選擇器（圓角彈窗＋圓角日期格＋主題色高亮） ═════════ */
 .date-pick {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%238A93A0' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='3' y='4' width='18' height='18' rx='2'/%3E%3Cline x1='16' y1='2' x2='16' y2='6'/%3E%3Cline x1='8' y1='2' x2='8' y2='6'/%3E%3Cline x1='3' y1='10' x2='21' y2='10'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='17' height='17' viewBox='0 0 24 24' fill='none' stroke='%235ED29C' stroke-width='1.9' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='3' y='4' width='18' height='18' rx='2'/%3E%3Cline x1='16' y1='2' x2='16' y2='6'/%3E%3Cline x1='8' y1='2' x2='8' y2='6'/%3E%3Cline x1='3' y1='10' x2='21' y2='10'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: right 12px center;
-  padding-right: 36px;
+  background-size: 17px 17px;
+  padding-right: 38px;
+}
+/* 白天主題：calendar icon 換深綠色，淺底上依然清楚 */
+html[data-theme="day"] .date-pick {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='17' height='17' viewBox='0 0 24 24' fill='none' stroke='%231FA97C' stroke-width='1.9' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='3' y='4' width='18' height='18' rx='2'/%3E%3Cline x1='16' y1='2' x2='16' y2='6'/%3E%3Cline x1='8' y1='2' x2='8' y2='6'/%3E%3Cline x1='3' y1='10' x2='21' y2='10'/%3E%3C/svg%3E");
 }
 /* 批量日期右側有鎖頭圖示，日曆 icon 往左挪 */
 .date-lock-wrap .date-pick {
@@ -1211,32 +1218,49 @@ html[data-theme="day"] option { background: #FFFFFF; color: #1B2434; }
 }
 .date-pop .dp-title {
   position: relative;
+  flex: 1 1 auto;                  /* 佔滿導覽鈕之間的中間區塊，避免寬度塌縮成 0 */
+  text-align: center;
   height: 18px;
   min-width: 0;
   overflow: hidden;
+  line-height: 18px;               /* 與容器同高，文字垂直置中且不裁切 */
   font-size: 13px; font-weight: 600; color: var(--text);
 }
+/* 年份與月份各自一個可裁剪小盒：平常只跳月份，跨年時才連年份一起跳 */
+.date-pop .dp-title-year,
+.date-pop .dp-title-month {
+  position: relative;
+  display: inline-block;
+  vertical-align: top;
+  height: 18px;
+  overflow: hidden;
+  line-height: 18px;
+}
 .date-pop .dp-title-txt {
-  position: absolute;
-  left: 0; right: 0; top: 0;
   display: block;
   white-space: nowrap;
 }
-/* 與 header 章節跳動同款：舊標題上滑離開、新標題從下方彈簧進場 */
-.date-pop .dp-title-in {
-  transform: translateY(120%);
-  animation: dpTitleIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
-}
+/* 與 header 章節跳動同款：舊標題上滑離開、新標題從下方彈簧進場。
+   底色狀態一律可見（in: translateY(0)／out: opacity:0），動畫只用
+   backwards 填充做增強；即使動畫沒跑（或瀏覽器沒重跑動畫），
+   月份年份也永遠不會被 overflow:hidden 藏住。 */
 .date-pop .dp-title-out {
-  animation: dpTitleOut 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  position: absolute;
+  left: 0; right: 0; top: 0;
+  opacity: 0;
+  animation: dpTitleOut 0.4s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+}
+.date-pop .dp-title-in {
+  transform: translateY(0);
+  animation: dpTitleIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) backwards;
 }
 @keyframes dpTitleIn {
   from { transform: translateY(120%); }
   to   { transform: translateY(0); }
 }
 @keyframes dpTitleOut {
-  from { transform: translateY(0); }
-  to   { transform: translateY(-120%); }
+  from { opacity: 1; transform: translateY(0); }
+  to   { opacity: 0; transform: translateY(-120%); }
 }
 @media (prefers-reduced-motion: reduce) {
   .date-pop .dp-title-txt { animation: none !important; transform: none !important; }

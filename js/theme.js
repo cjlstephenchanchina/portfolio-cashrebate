@@ -29,7 +29,26 @@
     return (h >= DAY_START && h < DAY_END) ? "day" : "night";
   }
 
-  var ICONS = { day: "☀", night: "🌙", auto: "⏱" };
+  /* 主題圖示：內嵌 SVG，顏色明確（白天＝黃色太陽、深夜＝紫色月亮、自動＝黃紫半日半月的自動時段意象） */
+  var ICONS = {
+    day: '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true">' +
+      '<circle cx="12" cy="12" r="4.2" fill="#FFC53D"/>' +
+      '<g stroke="#FFC53D" stroke-width="1.8" stroke-linecap="round">' +
+        '<line x1="12" y1="2.2" x2="12" y2="4.6"/>' +
+        '<line x1="12" y1="19.4" x2="12" y2="21.8"/>' +
+        '<line x1="2.2" y1="12" x2="4.6" y2="12"/>' +
+        '<line x1="19.4" y1="12" x2="21.8" y2="12"/>' +
+        '<line x1="4.95" y1="4.95" x2="6.7" y2="6.7"/>' +
+        '<line x1="17.3" y1="17.3" x2="19.05" y2="19.05"/>' +
+        '<line x1="4.95" y1="19.05" x2="6.7" y2="17.3"/>' +
+        '<line x1="17.3" y1="6.7" x2="19.05" y2="4.95"/>' +
+      "</g></svg>",
+    night: '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true">' +
+      '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79Z" fill="#A78BFA"/></svg>',
+    auto: '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true">' +
+      '<path d="M12 2a10 10 0 1 0 0 20V2Z" fill="#FFC53D"/>' +
+      '<path d="M12 2a10 10 0 1 1 0 20V2Z" fill="#A78BFA"/></svg>'
+  };
   var linesBuilt = false;
   var sceneBuilt = false;
 
@@ -129,7 +148,7 @@
     if (btn) {
       btn.setAttribute("aria-label", window.I18N ? I18N.t("theme.aria") : "切換主題");
       var cur = document.getElementById("themeCurrent");
-      if (cur) cur.textContent = ICONS[eff] || ICONS.night;
+      if (cur) cur.innerHTML = ICONS[eff] || ICONS.night;
     }
     var menu = document.getElementById("themeMenu");
     if (menu) {
@@ -153,7 +172,7 @@
     var mode = getMode();
     box.innerHTML =
       '<button class="lang-btn theme-btn" id="themeBtn" type="button" aria-haspopup="true" aria-expanded="false">' +
-        '<span class="theme-current" id="themeCurrent">' + (ICONS[effective(mode)] || "🌙") + '</span>' +
+        '<span class="theme-current" id="themeCurrent">' + (ICONS[effective(mode)] || ICONS.night) + '</span>' +
         '<span class="caret" aria-hidden="true">▾</span>' +
       '</button>' +
       '<ul class="lang-menu theme-menu" id="themeMenu" role="menu" hidden>' +

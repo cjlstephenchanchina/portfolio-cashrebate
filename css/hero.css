@@ -556,3 +556,32 @@ html[data-theme="day"] .m-cta {
 }
 html[data-theme="day"] .m-cta { border-color: rgba(27, 36, 52, 0.26); }
 html[data-theme="day"] .nav__toggle .bar { background: #1B2434; }
+
+/* ══════════════════════════════════════════════════════════════════════
+ * slogan 主題色聚光（取代原本 difference 反相）
+ * 文字以 radial-gradient 著色：鼠標附近（--cx / --cy，由 cursor-effect.js
+ * 每幀更新）轉為主題綠，向外漸變回原色；不反相、不蓋住文字。
+ * 瀏覽器不支援 background-clip:text 時回退為純色文字。
+ * ══════════════════════════════════════════════════════════════════════ */
+.hc-slogan {
+  --cx: -200%;
+  --cy: -200%;
+}
+@supports ((-webkit-background-clip: text) or (background-clip: text)) {
+  .hc-slogan {
+    background-image: radial-gradient(
+      circle 120px at var(--cx) var(--cy),
+      var(--hc-accent, #5ED29C) 0%,
+      var(--hc-accent, #5ED29C) 30%,
+      var(--hc-text, #FFFFFF) 74%
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+  }
+  .hc-dot {
+    color: var(--hc-accent, #5ED29C);
+    -webkit-text-fill-color: var(--hc-accent, #5ED29C);   /* 保留句號的固定主題綠，不被聚光覆蓋 */
+  }
+}
