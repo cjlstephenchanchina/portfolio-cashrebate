@@ -991,13 +991,14 @@ html[data-theme="day"] { background: #F3F6FB; }
 
 /* hero→內容區無縫銜接：#quote 頂部漸層改白（接白天 hero 底部淡白） */
 html[data-theme="day"] #quote::before {
+  height: 38vh;
   background: linear-gradient(to bottom,
-    rgba(243, 246, 251, 1)    0%,
-    rgba(243, 246, 251, 0.82) 18%,
-    rgba(243, 246, 251, 0.52) 38%,
-    rgba(243, 246, 251, 0.26) 56%,
-    rgba(243, 246, 251, 0.09) 74%,
-    rgba(243, 246, 251, 0)   100%);
+    rgba(31, 169, 124, 0.06)         0%,
+    rgba(243, 246, 251, 0.96)       12%,
+    rgba(243, 246, 251, 0.60)       34%,
+    rgba(243, 246, 251, 0.28)       54%,
+    rgba(243, 246, 251, 0.10)       74%,
+    rgba(243, 246, 251, 0)         100%);
 }
 
 /* 白天按鈕 hover 微調（原為淺綠／藍色殘留） */

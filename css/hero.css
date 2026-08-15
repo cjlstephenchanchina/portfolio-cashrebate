@@ -409,9 +409,11 @@ html[data-theme="day"] .hero-cinema__media { display: none; }
 
 /* 白天：底部淡白漸層，與內容區無縫銜接 */
 html[data-theme="day"] .hero-cinema__fade {
+  height: clamp(150px, 24vh, 280px);
   background: linear-gradient(to bottom,
     transparent,
-    rgba(255, 255, 255, 0.4) 40%,
+    rgba(255, 255, 255, 0.35) 38%,
+    rgba(255, 255, 255, 0.75) 68%,
     #FFFFFF 100%);
 }
 
@@ -425,6 +427,18 @@ html[data-theme="day"] .hero-cinema__fade {
   background: #F3F6FB;
 }
 html[data-theme="day"] .hero-day { display: block; }
+
+/* 白天：hero-day 內容（背景圖／霧／曲線／顆粒）在底緣前漸次溶解，避免生硬切邊 */
+html[data-theme="day"] .hero-day {
+  -webkit-mask-image: linear-gradient(to bottom,
+    #000 55%,
+    rgba(0, 0, 0, 0.35) 78%,
+    transparent 98%);
+  mask-image: linear-gradient(to bottom,
+    #000 55%,
+    rgba(0, 0, 0, 0.35) 78%,
+    transparent 98%);
+}
 
 .hero-day__bg {
   position: absolute;
