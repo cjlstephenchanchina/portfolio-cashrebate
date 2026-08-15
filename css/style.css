@@ -993,12 +993,14 @@ html[data-theme="day"] { background: #F3F6FB; }
 html[data-theme="day"] #quote::before {
   height: 38vh;
   background: linear-gradient(to bottom,
-    rgba(31, 169, 124, 0.06)         0%,
-    rgba(243, 246, 251, 0.96)       12%,
-    rgba(243, 246, 251, 0.60)       34%,
-    rgba(243, 246, 251, 0.28)       54%,
-    rgba(243, 246, 251, 0.10)       74%,
-    rgba(243, 246, 251, 0)         100%);
+    #FFFFFF                         0%,
+    #FFFFFF                        12%,
+    rgba(243, 246, 251, 0.92)      20%,
+    rgba(243, 246, 251, 0.60)      38%,
+    rgba(31, 169, 124, 0.04)       50%,
+    rgba(243, 246, 251, 0.25)      62%,
+    rgba(243, 246, 251, 0.08)      80%,
+    rgba(243, 246, 251, 0)        100%);
 }
 
 /* 白天按鈕 hover 微調（原為淺綠／藍色殘留） */
