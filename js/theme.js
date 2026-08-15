@@ -72,13 +72,11 @@
 
     var i;
     var greens = ["94,210,156", "47,191,142", "160,230,190"];
-    var blues = ["110,190,235", "135,205,245", "170,215,245"];
     for (i = 0; i < 12; i++) {
       var b = document.createElement("i");
       b.className = "ds-blob";
       var size = 180 + Math.random() * 520;
       var g = greens[Math.floor(Math.random() * greens.length)];
-      var bl = blues[Math.floor(Math.random() * blues.length)];
       var a = (0.24 + Math.random() * 0.20).toFixed(2);   // 明顯可見：0.24–0.44
       var dx = ((Math.random() < 0.5 ? -1 : 1) * (8 + Math.random() * 16)).toFixed(1) + "vw";
       var dy = ((Math.random() < 0.5 ? -1 : 1) * (8 + Math.random() * 16)).toFixed(1) + "vh";
@@ -91,11 +89,7 @@
         "--fadeDur:" + (9 + Math.random() * 9).toFixed(1) + "s;" +
         "--fadeDelay:" + (-Math.random() * 14).toFixed(1) + "s;" +
         "--driftDur:" + (40 + Math.random() * 40).toFixed(1) + "s;" +
-        "--colorDur:" + (12 + Math.random() * 12).toFixed(1) + "s;" +
-        "--colorDelay:" + (-Math.random() * 20).toFixed(1) + "s;" +
-        "background-image:" +
-          "radial-gradient(circle, rgba(" + g + "," + a + "), rgba(" + g + ",0) 70%)," +
-          "radial-gradient(circle, rgba(" + bl + "," + a + "), rgba(" + bl + ",0) 70%);";
+        "background:radial-gradient(circle, rgba(" + g + "," + a + "), rgba(" + g + ",0) 70%);";
       frag.appendChild(b);
     }
     sc.appendChild(frag);
