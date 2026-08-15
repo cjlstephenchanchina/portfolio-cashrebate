@@ -515,6 +515,15 @@ input[type="file"]::file-selector-button {
   border-color: var(--accent-line);
   background: var(--glass-hover);
 }
+/* 白天 hover：顏色變化要明顯（淡綠底＋實心綠框＋綠色光圈） */
+html[data-theme="day"] .b-file-drop:hover {
+  border-color: #1FA97C;
+  background: rgba(31, 169, 124, 0.12);
+  box-shadow: 0 0 0 3px rgba(31, 169, 124, 0.15);
+}
+html[data-theme="day"] .b-file-drop:hover .b-file-icon {
+  color: #14805D;
+}
 .b-file-drop:has(input:focus-visible) {
   outline: 2px solid var(--focus-border);
   outline-offset: 2px;
