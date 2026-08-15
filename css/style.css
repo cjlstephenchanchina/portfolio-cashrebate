@@ -175,7 +175,6 @@ body.nav-ready .site-nav {
 }
 .brand:hover { color: inherit; }
 .brand-logo { width: 30px; height: 30px; flex: none; display: block;
-  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.45));
   transition: filter .35s ease;
 }
 .brand-text { letter-spacing: -0.005em; }
@@ -911,7 +910,11 @@ table.data .num { font-family: var(--font-mono); }
 .site-footer { border-top: 1px solid var(--border); background: transparent; padding: 30px 0; }
 .footer-row { display: flex; flex-direction: column; gap: 10px; }
 .footer-brand { font-weight: 600; font-size: 14px; display: inline-flex; align-items: center; gap: 8px; }
-.footer-logo { width: 22px; height: 22px; flex: none; filter: drop-shadow(0 1px 3px rgba(0,0,0,.5)); }
+.footer-logo { width: 22px; height: 22px; flex: none; }
+/* 白天：頁尾 logo 同步切換為黑色版 */
+html[data-theme="day"] .footer-logo {
+  content: url("../img/logo-mark-black-64.png");
+}
 /* 頁尾品牌標語：統一使用站體 sans-serif（不套用 hero 區塊的特殊字體） */
 .brand-slogan {
   margin-left: 2px;
@@ -1075,8 +1078,9 @@ html[data-theme="day"] .lang-menu,
 html[data-theme="day"] .theme-menu {
   box-shadow: 0 16px 40px rgba(23, 45, 80, 0.16);
 }
+/* 白天：品牌 logo 切換為黑色版（不帶陰影） */
 html[data-theme="day"] .brand-logo {
-  filter: drop-shadow(0 2px 6px rgba(23, 45, 80, 0.25));
+  content: url("../img/logo-mark-black-192.png");
 }
 
 /* 白天 KPI 高亮卡：淡綠底（原為深綠 #1B2F28） */
