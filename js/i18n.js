@@ -132,7 +132,17 @@ function MARKET_LABEL(m) {
     var btn = document.getElementById("langBtn");
     var menu = document.getElementById("langMenu");
 
-    function open() { menu.hidden = false; btn.setAttribute("aria-expanded", "true"); }
+    function open() {
+      /* 互相排除：開啟語言選單時關閉主題選單（兩按鈕的 stopPropagation 會擋掉 document 關閉監聽） */
+      var tm = document.getElementById("themeMenu");
+      if (tm) {
+        tm.hidden = true;
+        var tb = document.getElementById("themeBtn");
+        if (tb) tb.setAttribute("aria-expanded", "false");
+      }
+      menu.hidden = false;
+      btn.setAttribute("aria-expanded", "true");
+    }
     function close() { menu.hidden = true; btn.setAttribute("aria-expanded", "false"); }
 
     btn.addEventListener("click", function (e) {

@@ -249,9 +249,26 @@ body.nav-ready .site-nav {
 .lang-menu li {
   font-size: 13px; color: var(--text); padding: 8px 12px; border-radius: 8px;
   cursor: pointer; white-space: nowrap; transition: background .15s ease, color .15s ease;
+  position: relative; z-index: 1;   /* 文字/圖示顯示在跟隨色塊之上 */
 }
-.lang-menu li:hover { background: var(--glass-hover); }
+.lang-menu li:hover { background: transparent; }   /* 高亮改由跟隨色塊提供 */
 .lang-menu li.active { color: var(--accent-hi); background: var(--accent-soft); }
+
+/* 下拉選單「跟隨鼠標」高亮色塊（深夜為淺色、白天為深色） */
+.lang-menu .menu-hover {
+  position: absolute;
+  left: 6px; right: 6px;
+  top: 6px; height: 32px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.12);
+  opacity: 0;
+  pointer-events: none;
+  transition: top .16s ease, height .16s ease, opacity .18s ease;
+  z-index: 0;
+}
+html[data-theme="day"] .lang-menu .menu-hover {
+  background: rgba(27, 36, 52, 0.10);
+}
 
 /* ── 滾動後：Apple 深色磨砂液態玻璃膠囊（只包住 logo→真實行情，非通欄白條） ──
    依 liquid-glass-design 原則：模糊背後內容、反射周圍光影、回應指針互動、
@@ -1040,6 +1057,15 @@ html[data-theme="day"] .r-cell,
 html[data-theme="day"] .top3-card {
   backdrop-filter: blur(18px) saturate(150%);
   -webkit-backdrop-filter: blur(18px) saturate(150%);
+}
+
+/* 白天輸入框/選擇框：近乎不透明的白底，避免毛玻璃父層的合成深色帶
+   （市場標籤旁的那條藍色區域即此問題）；毛玻璃效果保留在卡片本身 */
+html[data-theme="day"] input[type="text"],
+html[data-theme="day"] input[type="number"],
+html[data-theme="day"] input[type="date"],
+html[data-theme="day"] select {
+  background-color: rgba(255, 255, 255, 0.94);
 }
 
 /* 白天 Logo 縮寫字／港交所徽章：白底上需用深色字（原為 #fff） */

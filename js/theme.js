@@ -121,7 +121,17 @@
 
     var btn = document.getElementById("themeBtn");
     var menu = document.getElementById("themeMenu");
-    function open() { menu.hidden = false; btn.setAttribute("aria-expanded", "true"); }
+    function open() {
+      /* 互相排除：開啟主題選單時關閉語言選單（避免兩個下拉重疊） */
+      var lm = document.getElementById("langMenu");
+      if (lm) {
+        lm.hidden = true;
+        var lb = document.getElementById("langBtn");
+        if (lb) lb.setAttribute("aria-expanded", "false");
+      }
+      menu.hidden = false;
+      btn.setAttribute("aria-expanded", "true");
+    }
     function close() { menu.hidden = true; btn.setAttribute("aria-expanded", "false"); }
 
     btn.addEventListener("click", function (e) {
@@ -149,12 +159,36 @@
       I18N.registerDynamic(function () {
         refreshLabels(box);
         updateUI(getMode(), effective());
+        wireMenuHover();
       });
     }
   }
 
+  /* ── 下拉選單「色塊跟隨鼠標」：一個移動高亮塊跟著 hover 的項目跑 ── */
+  function wireMenuHover() {
+    document.querySelectorAll(".lang-menu").forEach(function (menu) {
+      if (menu.dataset.hover) return;
+      menu.dataset.hover = "1";
+      var hover = document.createElement("span");
+      hover.className = "menu-hover";
+      hover.setAttribute("aria-hidden", "true");
+      menu.appendChild(hover);
+      menu.querySelectorAll("li[data-theme-opt], li[data-lang]").forEach(function (li) {
+        li.addEventListener("mouseenter", function () {
+          hover.style.opacity = "1";
+          hover.style.top = li.offsetTop + "px";
+          hover.style.height = li.offsetHeight + "px";
+        });
+      });
+      menu.addEventListener("mouseleave", function () {
+        hover.style.opacity = "0";
+      });
+    });
+  }
+
   function init() {
     buildUI();
+    wireMenuHover();
     apply(getMode());
     /* auto 模式下每 30 秒檢查時段邊界（僅在跨 06:00／18:00 時有實際變化） */
     setInterval(function () {
