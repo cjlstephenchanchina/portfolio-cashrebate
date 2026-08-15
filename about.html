@@ -26,8 +26,23 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Alibaba+PuHuiTi:wght@300;400;500;600&family=IBM+Plex+Mono:wght@300;400;500&family=Inter:wght@200;300;400;500;600;800&family=Instrument+Serif:ital@0;1&family=Ma+Shan+Zheng&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/style.css?v=20260814bc">
-<link rel="stylesheet" href="css/hero.css?v=20260814bf">
+<script>
+  /* 白天／深夜主題：於 CSS 載入前先決定 data-theme，避免閃色（FOUC）。 */
+  (function () {
+    var t = "auto";
+    try {
+      var v = localStorage.getItem("site_theme");
+      if (v === "day" || v === "night" || v === "auto") t = v;
+    } catch (e) { /* ignore */ }
+    if (t === "auto") {
+      var h = new Date().getHours();
+      t = (h >= 6 && h < 18) ? "day" : "night";
+    }
+    document.documentElement.setAttribute("data-theme", t);
+  })();
+</script>
+<link rel="stylesheet" href="css/style.css?v=20260816a">
+<link rel="stylesheet" href="css/hero.css?v=20260816a">
 <style>
   /* 關於頁：光束動效背景＋大字報式滾動逐段顯現（無卡片） */
   body {
@@ -132,6 +147,16 @@
       opacity: 1 !important; transform: none !important; transition: none !important;
     }
   }
+
+  /* ═══════ 白天主題：關於頁 ═══════ */
+  html[data-theme="day"] body { background: #F3F6FB; }
+  html[data-theme="day"] #about-frost { background: rgba(255, 255, 255, 0.32); }
+  html[data-theme="day"] #about-beams { opacity: 0.42; }
+  html[data-theme="day"] .about-hero h1,
+  html[data-theme="day"] .about-block h2 { color: #1B2434; }
+  html[data-theme="day"] .about-hero p,
+  html[data-theme="day"] .about-block p { color: rgba(27, 36, 52, 0.72); }
+  html[data-theme="day"] .about-block.about-disclaimer p { color: rgba(27, 36, 52, 0.55); }
 </style>
 </head>
 <body>
@@ -150,6 +175,7 @@
       <a href="about.html" class="active"><span class="nav-link__txt" data-i18n="nav.about">關於</span><span class="nav-link__txt" aria-hidden="true" data-i18n="nav.about">關於</span></a>
     </nav>
     <span class="nav-live"><i class="dot"></i><span data-i18n="nav.live">真實行情</span></span>
+    <div class="theme-switch" id="themeSwitch"></div>
     <div class="lang-switch" id="langSwitch"></div>
     <button class="nav__toggle" id="menuToggle" aria-expanded="false" aria-controls="mobileMenu" aria-label="Open menu" data-i18n-aria="nav.menu">
       <span class="bar"></span>
@@ -237,6 +263,7 @@
 <script src="js/locales/zh-Hans.js?v=20260814bd"></script>
 <script src="js/locales/en.js?v=20260814bd"></script>
 <script src="js/i18n.js?v=20260814bd"></script>
+<script src="js/theme.js?v=20260816a"></script>
 <script src="js/about.js?v=20260814aw"></script>
 <script src="js/hero-menu.js?v=20260814az"></script>
 </body>

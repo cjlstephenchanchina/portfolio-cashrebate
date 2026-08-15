@@ -876,7 +876,7 @@ table.data .num { font-family: var(--font-mono); }
   .container { padding: 0 16px; }
   /* 窄螢幕導覽收窄間距；主題按鈕僅顯示圖示，避免與語言切換／漢堡擠壓 */
   .nav-row { gap: 10px; }
-  .theme-switch .theme-current { display: none; }
+  .theme-switch .caret { display: none; }
   .theme-btn { padding: 5px 9px; }
   .nav-links { display: none; }
   .hero-cinema { padding: 0; }
@@ -920,3 +920,116 @@ input[type="text"], input[type="number"], input[type="date"], select, input[type
   #overview { padding: 0; }
   .chart { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
 }
+
+/* ══════════════════════════════════════════════════════════════════════
+ * 白天主題（html[data-theme="day"]）— 冷白底＋深色文字＋品牌綠
+ * 深夜值保留在 :root；此處僅覆寫白天需要的變數與少量寫死顏色。
+ * ══════════════════════════════════════════════════════════════════════ */
+html[data-theme="day"] {
+  --bg:        #F3F6FB;
+  --bg-soft:   #EAEFF6;
+  --surface:   #FFFFFF;
+  --surface-2: #F7FAFC;
+  --surface-3: #EDF2F8;
+  --border:        rgba(15, 23, 42, 0.12);
+  --border-strong: rgba(15, 23, 42, 0.22);
+
+  --text:  #1B2434;
+  --muted: #5B6572;
+  --faint: #8A93A0;
+
+  --accent:      #1FA97C;
+  --accent-hi:   #2FBF8E;
+  --accent-soft: rgba(31, 169, 124, 0.12);
+  --accent-line: rgba(31, 169, 124, 0.35);
+
+  --up:   #E5484D;
+  --down: #12B981;
+  --up-soft:   rgba(229, 72, 77, 0.10);
+  --down-soft: rgba(18, 185, 129, 0.12);
+  --green: var(--down);
+  --red:   var(--up);
+
+  --shadow:    0 1px 0 rgba(255, 255, 255, 0.9) inset, 0 8px 24px rgba(23, 45, 80, 0.08);
+  --shadow-lg: 0 16px 48px rgba(23, 45, 80, 0.14);
+
+  /* 導覽／玻璃：白天改為白底深字，玻璃轉白半透明＋柔和陰影 */
+  --nav-ink: #1B2434;
+  --nav-text-dim: rgba(27, 36, 52, 0.62);
+  --nav-text: rgba(27, 36, 52, 0.80);
+  --nav-text-strong: rgba(27, 36, 52, 0.94);
+  --nav-border: rgba(27, 36, 52, 0.16);
+  --nav-border-hi: rgba(27, 36, 52, 0.30);
+  --nav-glass: linear-gradient(180deg,
+      rgba(255, 255, 255, 0.86) 0%,
+      rgba(255, 255, 255, 0.72) 100%);
+  --nav-glass-hover: linear-gradient(180deg,
+      rgba(255, 255, 255, 0.94) 0%,
+      rgba(255, 255, 255, 0.82) 100%);
+  --menu-bg: rgba(250, 252, 255, 0.98);
+
+  --glass: rgba(255, 255, 255, 0.72);
+  --glass-soft: rgba(255, 255, 255, 0.60);
+  --glass-subtle: rgba(255, 255, 255, 0.50);
+  --glass-strong: rgba(255, 255, 255, 0.85);
+  --glass-hover: rgba(255, 255, 255, 0.95);
+  --glass-active: rgba(255, 255, 255, 1);
+  --glass-border: rgba(15, 23, 42, 0.14);
+  --glass-border-2: rgba(15, 23, 42, 0.12);
+  --glass-border-soft: rgba(15, 23, 42, 0.10);
+  --glass-border-faint: rgba(15, 23, 42, 0.08);
+  --glass-border-input: rgba(15, 23, 42, 0.20);
+  --inset-hi: rgba(255, 255, 255, 0.9);
+  --card-sheen: linear-gradient(180deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0) 30%);
+  --card-shadow: 0 24px 64px rgba(23, 45, 80, 0.10), 0 2px 10px rgba(23, 45, 80, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  --focus-border: rgba(31, 169, 124, 0.60);
+  --focus-ring: rgba(31, 169, 124, 0.16);
+
+  color-scheme: light;
+}
+html[data-theme="day"] { background: #F3F6FB; }
+
+/* hero→內容區無縫銜接：#quote 頂部漸層改白（接白天 hero 底部淡白） */
+html[data-theme="day"] #quote::before {
+  background: linear-gradient(to bottom,
+    rgba(243, 246, 251, 1)    0%,
+    rgba(243, 246, 251, 0.82) 18%,
+    rgba(243, 246, 251, 0.52) 38%,
+    rgba(243, 246, 251, 0.26) 56%,
+    rgba(243, 246, 251, 0.09) 74%,
+    rgba(243, 246, 251, 0)   100%);
+}
+
+/* 白天按鈕 hover 微調（原為淺綠／藍色殘留） */
+html[data-theme="day"] .btn-primary:hover { background: #2FBF8E; }
+html[data-theme="day"] .btn-soft:hover { background: rgba(31, 169, 124, 0.20); }
+
+/* 白天導覽膠囊：白玻璃＋柔和陰影（深夜版為深玻璃） */
+html[data-theme="day"] .site-nav .nav-row::before {
+  backdrop-filter: blur(26px) saturate(160%) brightness(1.05);
+  -webkit-backdrop-filter: blur(26px) saturate(160%) brightness(1.05);
+  box-shadow:
+    0 14px 38px rgba(23, 45, 80, 0.12),
+    0 2px 10px rgba(23, 45, 80, 0.08);
+}
+html[data-theme="day"] .lang-menu,
+html[data-theme="day"] .theme-menu {
+  box-shadow: 0 16px 40px rgba(23, 45, 80, 0.16);
+}
+html[data-theme="day"] .brand-logo {
+  filter: drop-shadow(0 2px 6px rgba(23, 45, 80, 0.25));
+}
+
+/* 白天 KPI 高亮卡：淡綠底（原為深綠 #1B2F28） */
+html[data-theme="day"] .kpi-hl {
+  background-color: #EAF8F2;
+  background-image: linear-gradient(180deg, rgba(31, 169, 124, 0.16), rgba(31, 169, 124, 0.04));
+}
+
+/* 白天 Logo 縮寫字／港交所徽章：白底上需用深色字（原為 #fff） */
+html[data-theme="day"] .top3-mono,
+html[data-theme="day"] .top30-mono { color: #1B2434; }
+html[data-theme="day"] .top30-badge { box-shadow: 0 3px 12px rgba(23, 45, 80, 0.12); }
+
+/* 白天表單的日期選擇器圖示等系統控件隨 color-scheme 自動適應 */
+html[data-theme="day"] option { background: #FFFFFF; color: #1B2434; }

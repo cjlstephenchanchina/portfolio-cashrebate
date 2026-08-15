@@ -24,7 +24,30 @@ const NIGHT_PALETTE = {
   areaBottom: "rgba(94,210,156,0.02)",
 };
 
-/* 全站僅保留深夜（dark）調色盤（白天模式已移除） */
+/* 白天（light）調色盤：深色文字、淺色 tooltip、深色 grid/axis */
+const DAY_PALETTE = {
+  text: "#1B2434",
+  muted: "#5B6572",
+  faint: "rgba(27, 36, 52, 0.45)",
+  ink: "#1B2434",
+  gray: "#5B6572",
+  accent: "#1FA97C",
+  accentHi: "#2FBF8E",
+  accentDeep: "#14805D",
+  up: "#E5484D",
+  down: "#12B981",
+  grid: "rgba(15, 23, 42, 0.08)",
+  axis: "rgba(15, 23, 42, 0.16)",
+  tooltipBg: "rgba(255, 255, 255, 0.97)",
+  tooltipBorder: "rgba(31, 169, 124, 0.4)",
+  tooltipShadow: "0 18px 40px rgba(23, 45, 80, 0.16)",
+  pieBorder: "rgba(15, 23, 42, 0.10)",
+  zoomBg: "rgba(15, 23, 42, 0.05)",
+  zoomFiller: "rgba(31, 169, 124, 0.25)",
+  areaTop: "rgba(31, 169, 124, 0.22)",
+  areaBottom: "rgba(31, 169, 124, 0.02)",
+};
+
 let CHART_COLORS = { ...NIGHT_PALETTE };
 
 /* MARKET_LABEL 已移至 i18n.js（語言感知函式），此處不再重複定義 */
@@ -266,7 +289,8 @@ function renderKline(id, data, title) {
 
 /* ---------- 主題切換：以新調色盤重繪所有既有圖表 ---------- */
 function applyChartTheme() {
-  CHART_COLORS = { ...NIGHT_PALETTE };
+  const day = document.documentElement.getAttribute("data-theme") === "day";
+  CHART_COLORS = { ...(day ? DAY_PALETTE : NIGHT_PALETTE) };
   const c = chartCache;
   if (c.top3) renderTop3(c.top3.id, c.top3.data);
   if (c.market) renderMarket(c.market.id, c.market.data);

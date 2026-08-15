@@ -34,8 +34,24 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Alibaba+PuHuiTi:wght@300;400;500;600&family=IBM+Plex+Mono:wght@300;400;500&family=Inter:wght@200;300;400;500;600;800&family=Instrument+Serif:ital@0;1&family=Ma+Shan+Zheng&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/style.css?v=20260814bc">
-<link rel="stylesheet" href="css/hero.css?v=20260814bf">
+<script>
+  /* 白天／深夜主題：於 CSS 載入前先決定 data-theme，避免閃色（FOUC）。
+     localStorage("site_theme") ∈ {day, night, auto}；缺省 auto（06:00–17:59＝白天）。 */
+  (function () {
+    var t = "auto";
+    try {
+      var v = localStorage.getItem("site_theme");
+      if (v === "day" || v === "night" || v === "auto") t = v;
+    } catch (e) { /* ignore */ }
+    if (t === "auto") {
+      var h = new Date().getHours();
+      t = (h >= 6 && h < 18) ? "day" : "night";
+    }
+    document.documentElement.setAttribute("data-theme", t);
+  })();
+</script>
+    <link rel="stylesheet" href="css/style.css?v=20260816a">
+<link rel="stylesheet" href="css/hero.css?v=20260816a">
 </head>
 <body>
 
@@ -57,6 +73,7 @@
       <a href="about.html"><span class="nav-link__txt" data-i18n="nav.about">關於</span><span class="nav-link__txt" aria-hidden="true" data-i18n="nav.about">關於</span></a>
     </nav>
     <span class="nav-live"><i class="dot"></i><span data-i18n="nav.live">真實行情</span></span>
+    <div class="theme-switch" id="themeSwitch"></div>
     <div class="lang-switch" id="langSwitch"></div>
     <button class="nav__toggle" id="menuToggle" aria-expanded="false" aria-controls="mobileMenu" aria-label="Open menu" data-i18n-aria="nav.menu">
       <span class="bar"></span>
@@ -84,6 +101,14 @@
       poster="video/hero-codenest-poster.jpg">
       <source src="https://stream.mux.com/tLkHO1qZoaaQOUeVWo8hEBeGQfySP02EPS02BmnNFyXys.m3u8" type="application/x-mpegURL">
     </video>
+  </div>
+  <!-- 白天 hero：白底＋綠調背景圖＋兩側柔綠霧＋純白曲線＋顆粒（僅 data-theme="day" 顯示） -->
+  <div class="hero-day" id="heroDay" aria-hidden="true">
+    <div class="hero-day__bg"></div>
+    <div class="hero-day__fog hero-day__fog--l" aria-hidden="true"></div>
+    <div class="hero-day__fog hero-day__fog--r" aria-hidden="true"></div>
+    <div class="hero-day__lines" id="heroDayLines" aria-hidden="true"></div>
+    <div class="hero-day__grain" aria-hidden="true"></div>
   </div>
   <div class="hero-cinema__scrim" aria-hidden="true"></div>
   <div class="hero-cinema__fade" aria-hidden="true"></div>
@@ -386,16 +411,17 @@
 <script src="js/locales/zh-Hans.js?v=20260814bd"></script>
 <script src="js/locales/en.js?v=20260814bd"></script>
 <script src="js/i18n.js?v=20260814a"></script>
+<script src="js/theme.js?v=20260816a"></script>
 <script src="js/data.js?v=20260814w"></script>
 <script src="js/hk-logos.js?v=20260809p"></script>
 <script src="js/top30-names.js?v=20260812a"></script>
 <script src="js/top30.js?v=20260812a"></script>
-<script src="js/charts.js?v=20260814y"></script>
+<script src="js/charts.js?v=20260816a"></script>
 <script src="js/excel.js?v=20260810i"></script>
 <script src="js/portfolio.js?v=20260814x"></script>
 <script src="js/app.js?v=20260814aa"></script>
 <script src="vendor/hls.min.js?v=1.5.13"></script>
-<script src="js/hero-hls.js?v=20260814e"></script>
+<script src="js/hero-hls.js?v=20260816a"></script>
 <script src="js/hero-menu.js?v=20260814az"></script>
 </body>
 </html>

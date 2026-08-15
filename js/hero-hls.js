@@ -13,6 +13,9 @@
   var src = (source && source.getAttribute("src")) || video.getAttribute("src");
   if (!src) return;
 
+  var started = false;
+
+  function initHls() {
   if (window.Hls && Hls.isSupported()) {
     var hls = new Hls({ enableWorker: false });
     hls.loadSource(src);
@@ -41,5 +44,25 @@
     video.addEventListener("ended", function () {
       try { video.currentTime = 0; video.play(); } catch (e) { /* ignore */ }
     });
+  }
+  }
+
+  /* theme.js 切回深夜時呼叫：已初始化則 resume，未初始化則建立串流 */
+  function start() {
+    if (started) {
+      if (video.paused) {
+        var p = video.play();
+        if (p && p.catch) p.catch(function () { /* autoplay policy 時忽略 */ });
+      }
+      return;
+    }
+    started = true;
+    initHls();
+  }
+  window.HeroHLS = { start: start };
+
+  /* 白天模式：先不載入影片串流（theme.js 切回深夜時再 start） */
+  if (document.documentElement.getAttribute("data-theme") !== "day") {
+    start();
   }
 })();
