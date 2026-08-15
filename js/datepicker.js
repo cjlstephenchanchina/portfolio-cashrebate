@@ -81,7 +81,9 @@
     function render() {
       var y = view.getFullYear(), m = view.getMonth();
       var zh = tag !== "en";
-      var yearTxt = zh ? y + " 年 " : " " + y;
+      /* 空格不再寫進文字（block 元素的行首/行尾空格會被 CSS 吃掉），
+         統一由 .dp-title 的 flex gap 提供 Apple 式字距 */
+      var yearTxt = zh ? y + " 年" : String(y);
       var monthTxt = months[m];
       var yearChanged = prevY !== null && prevY !== y;
       var monthChanged = prevM !== null && prevM !== m;
@@ -89,7 +91,7 @@
       var yearHtml =
         '<span class="dp-title-year">' +
           (yearChanged
-            ? '<span class="dp-title-txt dp-title-out">' + (zh ? prevY + " 年 " : " " + prevY) + '</span>' +
+            ? '<span class="dp-title-txt dp-title-out">' + (zh ? prevY + " 年" : String(prevY)) + '</span>' +
               '<span class="dp-title-txt dp-title-in">' + yearTxt + '</span>'
             : '<span class="dp-title-txt">' + yearTxt + '</span>') +
         '</span>';
