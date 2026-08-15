@@ -76,7 +76,7 @@ function renderTable() {
     return `
       <tr data-i="${i}">
         <td data-label="${escAttr(I18N.t("pf.th.market"))}"><select class="field-inline" data-f="market">${marketOptions(h.market)}</select></td>
-        <td data-label="${escAttr(I18N.t("pf.th.code"))}"><input class="field-inline" data-f="code" value="${escAttr(h.code)}" autocomplete="off"></td>
+        <td data-label="${escAttr(I18N.t("pf.th.code"))}"><input class="field-inline" type="text" data-f="code" value="${escAttr(h.code)}" autocomplete="off"></td>
         <td data-label="${escAttr(I18N.t("pf.th.shares"))}"><input class="field-inline num" data-f="shares" type="number" min="0" step="any" value="${escAttr(h.shares)}"></td>
         <td data-label="${escAttr(I18N.t("pf.th.cost"))}"><input class="field-inline num" data-f="cost" type="number" min="0" step="any" placeholder="${escAttr(I18N.t("pf.costPh"))}" value="${escAttr(h.cost)}"></td>
         <td data-label="${escAttr(I18N.t("pf.th.price"))}" class="pf-val">${priceCell}</td>

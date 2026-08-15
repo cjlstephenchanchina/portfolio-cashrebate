@@ -759,6 +759,9 @@ table.data .num { font-family: var(--font-mono); }
 .pf-table tbody td { padding: 8px 12px; border-bottom: 1px solid var(--border); vertical-align: middle; }
 .pf-table tbody tr:hover { background: var(--surface-2); }
 .pf-table input, .pf-table select { padding: 7px 9px; font-size: 13px; }
+/* 持倉表格輸入框 hover：綠邊框（與成本價等欄位一致） */
+.pf-table input:hover,
+.pf-table select:hover { border-color: var(--accent-line); }
 .pf-table select.field-inline {
   width: auto;
   min-width: 122px;              /* 避免市場選項被窄欄位壓縮而擠在一起 */
