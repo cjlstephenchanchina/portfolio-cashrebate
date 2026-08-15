@@ -1178,3 +1178,68 @@ html[data-theme="day"] .top30-badge { box-shadow: 0 3px 12px rgba(23, 45, 80, 0.
 
 /* 白天表單的日期選擇器圖示等系統控件隨 color-scheme 自動適應 */
 html[data-theme="day"] option { background: #FFFFFF; color: #1B2434; }
+
+/* ═════════ 自訂日期選擇器（圓角彈窗＋圓角日期格＋主題色高亮） ═════════ */
+.date-pop {
+  position: fixed;
+  z-index: 300;
+  width: 288px;
+  padding: 12px;
+  border-radius: 16px;               /* 圓角彈窗 */
+  background: var(--menu-bg);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--shadow-lg);
+  font-family: var(--font-sans);
+  backdrop-filter: blur(20px) saturate(150%);
+  -webkit-backdrop-filter: blur(20px) saturate(150%);
+}
+.date-pop .dp-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+.date-pop .dp-title { font-size: 13px; font-weight: 600; color: var(--text); }
+.date-pop .dp-nav {
+  width: 26px; height: 26px;
+  border-radius: 8px;
+  background: transparent;
+  border: 1px solid var(--border-strong);
+  color: var(--text);
+  font-size: 14px;
+  cursor: pointer;
+  display: inline-flex; align-items: center; justify-content: center;
+  transition: border-color .15s, color .15s;
+}
+.date-pop .dp-nav:hover { border-color: var(--accent); color: var(--accent); }
+.date-pop .dp-week {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 2px;
+  margin-bottom: 4px;
+}
+.date-pop .dp-week span { text-align: center; font-size: 10.5px; color: var(--faint); padding: 3px 0; }
+.date-pop .dp-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; }
+.date-pop .dp-cell {
+  height: 30px;
+  border-radius: 9px;                /* 圓角矩形日期格 */
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--text);
+  font-size: 12.5px;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: background .15s, border-color .15s;
+}
+.date-pop .dp-cell:hover { background: var(--glass-hover); border-color: var(--accent-line); }
+.date-pop .dp-cell.blank { visibility: hidden; pointer-events: none; }
+.date-pop .dp-cell.today { border-color: var(--accent); }
+.date-pop .dp-cell.selected {
+  background: var(--accent);         /* 主題色高亮 */
+  border-color: var(--accent);
+  color: #070B0A;
+  font-weight: 600;
+}
+@media (max-width: 639px) {
+  .date-pop { width: min(288px, calc(100vw - 24px)); }
+}
