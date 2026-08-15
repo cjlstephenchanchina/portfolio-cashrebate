@@ -991,16 +991,17 @@ html[data-theme="day"] { background: #F3F6FB; }
 
 /* hero→內容區無縫銜接：#quote 頂部漸層改白（接白天 hero 底部淡白） */
 html[data-theme="day"] #quote::before {
-  height: 60vh;
+  /* 鋪滿整個單筆查詢章節：白→透明在章節內完成，絕不漏到下一個章節 */
+  height: auto;
+  bottom: 0;
   background: linear-gradient(to bottom,
     #FFFFFF                       0%,
-    #FFFFFF                      12%,
-    rgba(255, 255, 255, 0.96)    24%,
-    rgba(255, 255, 255, 0.84)    40%,
-    rgba(255, 255, 255, 0.58)    56%,
-    rgba(31, 169, 124, 0.03)     68%,
-    rgba(255, 255, 255, 0.22)    80%,
-    rgba(255, 255, 255, 0.08)    92%,
+    #FFFFFF                      22%,
+    rgba(255, 255, 255, 0.96)    32%,
+    rgba(255, 255, 255, 0.82)    48%,
+    rgba(31, 169, 124, 0.03)     60%,
+    rgba(255, 255, 255, 0.40)    72%,
+    rgba(255, 255, 255, 0.12)    88%,
     rgba(255, 255, 255, 0)      100%);
 }
 
