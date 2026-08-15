@@ -107,13 +107,13 @@
 
     // 眩光點：noise 峰值觸發
     "  float glow = pow(max(0.0, n - 0.15), 3.5) * 2.5;",
-    // 白天時降低眩光強度，避免過曝
-    "  glow *= mix(1.0, 0.45, u_theme);",
+    // 白天時略降強度但仍明顯可見（淡綠藍極光）
+    "  glow *= mix(1.0, 0.68, u_theme);",
 
-    // 眩光顏色：藍青為主，偶爾暖色
+    // 眩光顏色：深夜藍青為主；白天改為淡綠藍（teal）
     "  float colorVar = fbm(vec3(p*3.0, t*0.2));",
-    "  vec3  glowCool = mix(vec3(0.35, 0.65, 1.0), vec3(0.72, 0.84, 1.0), u_theme);",   // 藍青（白天→柔和淺藍）
-    "  vec3  glowWarm = mix(vec3(1.0, 0.68, 0.25), vec3(0.98, 0.87, 0.60), u_theme);", // 琥珀（白天→柔和淺暖）
+    "  vec3  glowCool = mix(vec3(0.35, 0.65, 1.0), vec3(0.42, 0.88, 0.82), u_theme);",  // 藍青（白天→淡綠藍 teal）
+    "  vec3  glowWarm = mix(vec3(1.0, 0.68, 0.25), vec3(0.72, 0.94, 0.76), u_theme);",  // 琥珀（白天→淡綠）
     "  vec3  glowColor = mix(glowCool, glowWarm, smoothstep(0.5, 0.8, colorVar));",
 
     // 眩光柔暈
@@ -126,8 +126,8 @@
     // tonemap（降低分母讓暗部也有一點光）
     "  glowCol = glowCol / (glowCol + 0.55);",
 
-    // 基底：深夜純黑 / 白天近白
-    "  vec3 base = mix(vec3(0.0, 0.0, 0.0), vec3(0.963, 0.975, 0.996), u_theme);",
+    // 基底：深夜純黑 / 白天淡綠藍（可見但不搶內容）
+    "  vec3 base = mix(vec3(0.0, 0.0, 0.0), vec3(0.93, 0.985, 0.975), u_theme);",
 
     // 各處皆自然可見：滾動略增強（0.7→1.0），但不依賴滾動才出現
     "  float vis = 0.7 + 0.3 * smoothstep(0.0, 1.5, u_scroll);",
