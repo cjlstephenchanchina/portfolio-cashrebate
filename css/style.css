@@ -1082,15 +1082,62 @@ html[data-theme="day"] .kpi-hl {
   background-image: linear-gradient(180deg, rgba(31, 169, 124, 0.18), rgba(31, 169, 124, 0.05));
 }
 
-/* 白天 box 毛玻璃：半透明白底＋模糊，透出底層淡綠藍極光 */
+/* 白天 box 毛玻璃（參考 shadcn GlassCard：bg-primary-foreground/30、
+   border-primary-foreground/30、backdrop-blur-md）：
+   白 30% 底＋白 35% 邊框＋16px 模糊，透出底層白天場景 */
+html[data-theme="day"] .card,
 html[data-theme="day"] .kpi,
 html[data-theme="day"] .chart-box,
 html[data-theme="day"] .curve-box,
 html[data-theme="day"] .table-wrap,
 html[data-theme="day"] .r-cell,
-html[data-theme="day"] .top3-card {
-  backdrop-filter: blur(18px) saturate(150%);
-  -webkit-backdrop-filter: blur(18px) saturate(150%);
+html[data-theme="day"] .top3-card,
+html[data-theme="day"] .quote-result,
+html[data-theme="day"] .note-box {
+  background: rgba(255, 255, 255, 0.30);
+  border-color: rgba(255, 255, 255, 0.35);
+  backdrop-filter: blur(16px) saturate(160%);
+  -webkit-backdrop-filter: blur(16px) saturate(160%);
+}
+
+/* ═════════ 白天章節背景層（取代極光）：綠色漸變物體＋變換線條 ═════════ */
+#dayScene {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  overflow: hidden;
+}
+html[data-theme="day"] #dayScene { display: block; }
+html[data-theme="day"] #aurora-canvas { display: none; }
+
+#dayScene .ds-base {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, #F1FAF5 0%, #E9F6EF 55%, #E1F1E8 100%);
+}
+#dayScene .ds-blob {
+  position: absolute;
+  border-radius: 50%;
+  opacity: 0;
+  animation: dsBlobFade 12s ease-in-out infinite;
+  will-change: opacity;
+}
+#dayScene .ds-line {
+  position: absolute;
+  opacity: 0;
+  animation: dsLinePulse 6s ease-in-out infinite;
+  will-change: opacity;
+}
+@keyframes dsBlobFade {
+  0%, 100% { opacity: 0.12; }
+  50%      { opacity: 0.90; }
+}
+@keyframes dsLinePulse {
+  0%, 100% { opacity: 0.05; }
+  25%      { opacity: 0.80; }
+  60%      { opacity: 0.35; }
 }
 
 /* 白天輸入框/選擇框：近乎不透明的白底，避免毛玻璃父層的合成深色帶

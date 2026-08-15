@@ -31,6 +31,7 @@
 
   var ICONS = { day: "☀", night: "🌙", auto: "⏱" };
   var linesBuilt = false;
+  var sceneBuilt = false;
 
   /* 白天 hero 曲線：桌面左右各 20、手機左右各 12；近全高（top 0、高度 92–98%） */
   function buildDayLines() {
@@ -59,6 +60,53 @@
     box.appendChild(frag);
   }
 
+  /* 白天章節背景：綠色漸變物體＋變換線條（隨機大小／樣式／位置，漸隱漸出） */
+  function buildDayScene() {
+    var sc = document.getElementById("dayScene");
+    if (!sc || sceneBuilt) return;
+    sceneBuilt = true;
+    var frag = document.createDocumentFragment();
+    var base = document.createElement("div");
+    base.className = "ds-base";
+    frag.appendChild(base);
+
+    var i;
+    for (i = 0; i < 10; i++) {
+      var b = document.createElement("i");
+      b.className = "ds-blob";
+      var size = 130 + Math.random() * 420;
+      var h = Math.random();
+      var rgb = h < 0.45 ? "94,210,156" : (h < 0.8 ? "47,191,142" : "160,230,190");
+      var a = 0.10 + Math.random() * 0.14;
+      b.style.cssText =
+        "left:" + (Math.random() * 96).toFixed(1) + "%;" +
+        "top:" + (Math.random() * 96).toFixed(1) + "%;" +
+        "width:" + Math.round(size) + "px;" +
+        "height:" + Math.round(size * (0.7 + Math.random() * 0.7)) + "px;" +
+        "background:radial-gradient(circle, rgba(" + rgb + "," + a.toFixed(2) + "), rgba(" + rgb + ",0) 70%);" +
+        "animation-duration:" + (9 + Math.random() * 9).toFixed(1) + "s;" +
+        "animation-delay:" + (-Math.random() * 14).toFixed(1) + "s;";
+      frag.appendChild(b);
+    }
+    for (i = 0; i < 16; i++) {
+      var l = document.createElement("i");
+      l.className = "ds-line";
+      var vertical = Math.random() < 0.5;
+      var len = 60 + Math.random() * 240;
+      var green = Math.random() < 0.5;
+      var col = green ? "rgba(94,210,156,0.55)" : "rgba(255,255,255,0.85)";
+      var pos = "left:" + (Math.random() * 94).toFixed(1) + "%;top:" + (Math.random() * 94).toFixed(1) + "%;";
+      var shape = vertical
+        ? "width:2px;height:" + Math.round(len) + "px;"
+        : "width:" + Math.round(len) + "px;height:2px;";
+      l.style.cssText = pos + shape + "background:" + col + ";border-radius:99px;" +
+        "animation-duration:" + (5 + Math.random() * 5).toFixed(1) + "s;" +
+        "animation-delay:" + (-Math.random() * 8).toFixed(1) + "s;";
+      frag.appendChild(l);
+    }
+    sc.appendChild(frag);
+  }
+
   function apply(mode) {
     var m = mode || getMode();
     var eff = effective(m);
@@ -72,6 +120,7 @@
     if (window.applyChartTheme) applyChartTheme();
     if (eff === "day") {
       buildDayLines();
+      buildDayScene();
       var v = document.querySelector(".hero-cinema__media video");
       if (v && !v.paused) { try { v.pause(); } catch (e) { /* ignore */ } }
     } else if (window.HeroHLS && HeroHLS.start) {
