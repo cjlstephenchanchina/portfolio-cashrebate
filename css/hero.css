@@ -569,6 +569,11 @@ html[data-theme="day"] .nav__toggle .bar { background: #1B2434; }
 }
 @supports ((-webkit-background-clip: text) or (background-clip: text)) {
   .hc-slogan {
+    /* WebKit 的 background-clip:text 會把超出元素盒的 glyph（p/y 的 descender、
+       斜體 ascender）裁掉；上下加 padding 擴大裁切盒，文字不再截斷。
+       用 vw 而非 em（em 會以容器 16px 計算，跟不上 72px 標語的字級）。 */
+    padding-top: clamp(7px, 1.1vw, 13px);
+    padding-bottom: clamp(8px, 1.2vw, 14px);
     background-image: radial-gradient(
       circle 120px at var(--cx) var(--cy),
       var(--hc-accent, #5ED29C) 0%,
