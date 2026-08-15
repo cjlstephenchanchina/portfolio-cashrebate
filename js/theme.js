@@ -71,13 +71,13 @@
     frag.appendChild(base);
 
     var i;
-    for (i = 0; i < 10; i++) {
+    for (i = 0; i < 12; i++) {
       var b = document.createElement("i");
       b.className = "ds-blob";
-      var size = 130 + Math.random() * 420;
+      var size = 180 + Math.random() * 520;
       var h = Math.random();
       var rgb = h < 0.45 ? "94,210,156" : (h < 0.8 ? "47,191,142" : "160,230,190");
-      var a = 0.10 + Math.random() * 0.14;
+      var a = 0.24 + Math.random() * 0.20;   // 明顯可見：0.24–0.44
       b.style.cssText =
         "left:" + (Math.random() * 96).toFixed(1) + "%;" +
         "top:" + (Math.random() * 96).toFixed(1) + "%;" +
@@ -87,22 +87,6 @@
         "animation-duration:" + (9 + Math.random() * 9).toFixed(1) + "s;" +
         "animation-delay:" + (-Math.random() * 14).toFixed(1) + "s;";
       frag.appendChild(b);
-    }
-    for (i = 0; i < 16; i++) {
-      var l = document.createElement("i");
-      l.className = "ds-line";
-      var vertical = Math.random() < 0.5;
-      var len = 60 + Math.random() * 240;
-      var green = Math.random() < 0.5;
-      var col = green ? "rgba(94,210,156,0.55)" : "rgba(255,255,255,0.85)";
-      var pos = "left:" + (Math.random() * 94).toFixed(1) + "%;top:" + (Math.random() * 94).toFixed(1) + "%;";
-      var shape = vertical
-        ? "width:2px;height:" + Math.round(len) + "px;"
-        : "width:" + Math.round(len) + "px;height:2px;";
-      l.style.cssText = pos + shape + "background:" + col + ";border-radius:99px;" +
-        "animation-duration:" + (5 + Math.random() * 5).toFixed(1) + "s;" +
-        "animation-delay:" + (-Math.random() * 8).toFixed(1) + "s;";
-      frag.appendChild(l);
     }
     sc.appendChild(frag);
   }
