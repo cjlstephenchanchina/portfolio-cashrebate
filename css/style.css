@@ -1241,6 +1241,51 @@ input.date-pick { padding-right: 38px; }   /* 讓文字不與右側 icon 重疊 
   overflow: hidden;
   line-height: 18px;
 }
+.date-pop .dp-title-year,
+.date-pop .dp-title-month {
+  cursor: pointer;                 /* 點年份／月份開快速選擇視窗 */
+  border-radius: 6px;
+  padding: 0 3px;
+  transition: background 0.15s ease;
+}
+.date-pop .dp-title-year:hover,
+.date-pop .dp-title-month:hover,
+.date-pop .dp-part:focus-visible {
+  background: var(--glass-hover);
+}
+.date-pop .dp-part:focus-visible { outline: none; }
+.date-pop .dp-quick {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 4px;
+  margin-top: 6px;
+}
+.date-pop .dp-quick button {
+  height: 30px;
+  border-radius: 9px;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--text);
+  font-size: 12.5px;
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+.date-pop .dp-quick button:hover {
+  background: var(--glass-hover);
+  border-color: var(--accent-line);
+}
+.date-pop .dp-quick button.is-cur {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #070B0A;
+  font-weight: 600;
+}
+.date-pop .dp-quick-foot {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+}
+.date-pop .dp-quick-foot .dp-action { height: 28px; }
 .date-pop .dp-title-txt {
   display: block;
   white-space: nowrap;

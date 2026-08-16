@@ -76,6 +76,8 @@
     pop.setAttribute("aria-label", "Date picker");
     document.body.appendChild(pop);
 
+    var mode = "date";        /* date | year | month（快速選擇視窗） */
+    var yrStart = 0;          /* 年份視窗的起始年 */
     var prevY = null, prevM = null;   /* 上一幀的年／月，用來判斷只有月份變還是跨年 */
 
     function render() {
@@ -89,14 +91,14 @@
       var monthChanged = prevM !== null && prevM !== m;
       /* 年份與月份分開成兩個可裁剪小盒：平常只跳月份，跨年才連年份一起跳 */
       var yearHtml =
-        '<span class="dp-title-year">' +
+        '<span class="dp-title-year dp-part" data-part="year" role="button" tabindex="0" aria-label="Select year">' +
           (yearChanged
             ? '<span class="dp-title-txt dp-title-out">' + (zh ? prevY + " 年" : String(prevY)) + '</span>' +
               '<span class="dp-title-txt dp-title-in">' + yearTxt + '</span>'
             : '<span class="dp-title-txt">' + yearTxt + '</span>') +
         '</span>';
       var monthHtml =
-        '<span class="dp-title-month">' +
+        '<span class="dp-title-month dp-part" data-part="month" role="button" tabindex="0" aria-label="Select month">' +
           (monthChanged ? '<span class="dp-title-txt dp-title-out">' + months[prevM] + '</span>' : '') +
           '<span class="dp-title-txt' + (monthChanged ? " dp-title-in" : "") + '">' + monthTxt + '</span>' +
         '</span>';
@@ -110,23 +112,42 @@
           '<button type="button" class="dp-nav" data-nav="-1" aria-label="Prev">‹</button>' +
           '<div class="dp-title">' + titleHtml + "</div>" +
           '<button type="button" class="dp-nav" data-nav="1" aria-label="Next">›</button>' +
-        '</div>' +
-        '<div class="dp-week">' + weeks.map(function (w) { return "<span>" + w + "</span>"; }).join("") + "</div>" +
-        '<div class="dp-grid">';
-      for (var i = 0; i < startDow; i++) html += '<span class="dp-cell blank"></span>';
-      for (var d = 1; d <= daysInMonth; d++) {
-        var date = new Date(y, m, d);
-        var cls = "dp-cell";
-        if (sel && fmt(date) === fmt(sel)) cls += " selected";
-        if (fmt(date) === fmt(today)) cls += " today";
-        html += '<button type="button" class="' + cls + '" data-d="' + d + '">' + d + "</button>";
+        '</div>';
+      if (mode === "year") {
+        html += '<div class="dp-quick">';
+        for (var yi = 0; yi < 12; yi++) {
+          var yy = yrStart + yi;
+          html += '<button type="button" class="' + (yy === y ? "is-cur" : "") + '" data-year="' + yy + '">' + yy + "</button>";
+        }
+        html += '</div>' +
+          '<div class="dp-quick-foot">' +
+            '<button type="button" class="dp-action" data-yrnav="-12" aria-label="Prev 12 years">‹</button>' +
+            '<button type="button" class="dp-action" data-yrnav="12" aria-label="Next 12 years">›</button>' +
+          '</div>';
+      } else if (mode === "month") {
+        html += '<div class="dp-quick">';
+        for (var mi = 0; mi < 12; mi++) {
+          html += '<button type="button" class="' + (mi === m ? "is-cur" : "") + '" data-month="' + mi + '">' + months[mi] + "</button>";
+        }
+        html += '</div>';
+      } else {
+        html += '<div class="dp-week">' + weeks.map(function (w) { return "<span>" + w + "</span>"; }).join("") + "</div>" +
+          '<div class="dp-grid">';
+        for (var i = 0; i < startDow; i++) html += '<span class="dp-cell blank"></span>';
+        for (var d = 1; d <= daysInMonth; d++) {
+          var date = new Date(y, m, d);
+          var cls = "dp-cell";
+          if (sel && fmt(date) === fmt(sel)) cls += " selected";
+          if (fmt(date) === fmt(today)) cls += " today";
+          html += '<button type="button" class="' + cls + '" data-d="' + d + '">' + d + "</button>";
+        }
+        html += "</div>";
+        html +=
+          '<div class="dp-foot">' +
+            '<button type="button" class="dp-action" data-act="today">' + todayLabel + "</button>" +
+            '<button type="button" class="dp-action" data-act="clear">' + clearLabel + "</button>" +
+          "</div>";
       }
-      html += "</div>";
-      html +=
-        '<div class="dp-foot">' +
-          '<button type="button" class="dp-action" data-act="today">' + todayLabel + "</button>" +
-          '<button type="button" class="dp-action" data-act="clear">' + clearLabel + "</button>" +
-        "</div>";
       pop.innerHTML = html;
       prevY = y;
       prevM = m;
@@ -138,6 +159,35 @@
       var nav = e.target.closest("[data-nav]");
       if (nav) {
         view = new Date(view.getFullYear(), view.getMonth() + (+nav.getAttribute("data-nav")), 1);
+        mode = "date";   /* 用箭頭切月時先關掉快速選擇視窗 */
+        render();
+        return;
+      }
+      var part = e.target.closest("[data-part]");
+      if (part) {
+        var p = part.getAttribute("data-part");
+        if (p === "year") yrStart = Math.floor(view.getFullYear() / 10) * 10 - 1;
+        mode = mode === p ? "date" : p;
+        render();
+        return;
+      }
+      var qy = e.target.closest("[data-year]");
+      if (qy) {
+        view = new Date(+qy.getAttribute("data-year"), view.getMonth(), 1);
+        mode = "date";
+        render();
+        return;
+      }
+      var qm = e.target.closest("[data-month]");
+      if (qm) {
+        view = new Date(view.getFullYear(), +qm.getAttribute("data-month"), 1);
+        mode = "date";
+        render();
+        return;
+      }
+      var yn = e.target.closest("[data-yrnav]");
+      if (yn) {
+        yrStart += +yn.getAttribute("data-yrnav");
         render();
         return;
       }
@@ -156,6 +206,15 @@
       input.value = fmt(picked);
       input.dispatchEvent(new Event("change", { bubbles: true }));
       closePop();
+    });
+
+    /* Esc：先退回日期模式，再按一次才關閉彈窗 */
+    pop.addEventListener("keydown", function (e) {
+      if (e.key === "Escape" && mode !== "date") {
+        mode = "date";
+        render();
+        e.stopPropagation();
+      }
     });
 
     var r = input.getBoundingClientRect();
